@@ -10,7 +10,6 @@ import streamlit as st
 import plotly.graph_objects as go
 from pathlib import Path
 import sys
-import os
 
 # ── Añadir glue al path ─────────────────────────────────────────────────
 APP_DIR = Path(__file__).resolve().parent
@@ -310,24 +309,12 @@ with tab_dash:
 # TAB 2: CHAT IA
 # ══════════════════════════════════════════════════════════════════════════
 with tab_chat:
-    # Inicializar KB perezosamente
+    # Inicializar KB (usa TF-IDF + JSON index, sin modelos externos)
     if st.session_state.kb is None:
         with st.spinner("Inicializando base de conocimiento SIES..."):
-            try:
-                from glue import SIESKnowledgeBase
-                try:
-                    st.session_state.kb = SIESKnowledgeBase()
-                    st.session_state.kb_ready = True
-                except Exception as e:
-                    st.session_state.kb_ready = False
-                    st.warning(f"No se pudo cargar la base de conocimiento completa. El modelo de embeddings puede estar descargándose aún. Detalle: {str(e)[:200]}")
-            except ImportError as e:
-                st.session_state.kb_ready = False
-                st.warning(f"Error de importación: {e}")
-
-    if not st.session_state.get("kb_ready", True):
-        st.info("💡 Puedes explorar el **Grafo del Conocimiento** (tercer tab) mientras tanto.")
-        st.stop()
+            from glue import SIESKnowledgeBase
+            st.session_state.kb = SIESKnowledgeBase()
+            st.session_state.kb_ready = True
 
     kb = st.session_state.kb
 
@@ -387,86 +374,8 @@ with tab_graph:
 
     graph_html = CHROMA_DIR / "grafo_conocimiento.html"
 
-    if not graph_html.exists() or st.button("🔄 Regenerar grafo", use_container_width=True):
-        with st.spinner("Construyendo grafo de conocimiento desde ChromaDB..."):
-            try:
-                import chromadb
-                from pyvis.network import Network
-                import json
-
-                client = chromadb.PersistentClient(path=str(CHROMA_DIR))
-                # La primera carga puede demorar (descarga modelo ONNX ~79 MB)
-                try:
-                    collection = client.get_collection("sies-matricula")
-                except Exception as e:
-                    st.error(f"No se pudo cargar ChromaDB. En el primer inicio puede demorar ~1 minuto descargando el modelo de embeddings. Intenta regenerar en unos minutos. Detalle: {str(e)[:200]}")
-                    st.stop()
-
-                # Obtener todos los documentos
-                all_docs = collection.get()
-                doc_ids = all_docs["ids"]
-                metas = all_docs["metadatas"]
-                count = len(doc_ids)
-
-                # Crear red
-                net = Network(height="600px", width="100%", bgcolor=p["bg"], font_color=p["text"])
-                net.set_options("""
-                {
-                    "physics": { "stabilization": { "iterations": 100 }, 
-                                "barnesHut": { "gravitationalConstant": -3000, "springConstant": 0.04 } },
-                    "edges": { "color": { "inherit": true, "opacity": 0.3 }, "width": 1 },
-                    "nodes": { "borderWidth": 1, "size": 15, "font": { "size": 11 } }
-                }
-                """)
-
-                # Colores por tipo
-                type_colors = {
-                    "concept": "#60A5FA",
-                    "entity": "#FBBF24",
-                    "meta": "#94A3B8",
-                    "raw_pdf": "#34D399",
-                }
-                type_shapes = {
-                    "concept": "box",
-                    "entity": "star",
-                    "meta": "ellipse",
-                    "raw_pdf": "dot",
-                }
-
-                # Agregar nodos
-                node_labels = {}
-                for i, (doc_id, meta) in enumerate(zip(doc_ids, metas)):
-                    doc_type = meta.get("type", "raw_pdf")
-                    label = doc_id.replace("wiki/", "").replace("raw/", "").replace("_", " ").replace("-", " ").title()
-                    if len(label) > 30:
-                        label = label[:30] + "…"
-                    color = type_colors.get(doc_type, "#64748B")
-                    shape = type_shapes.get(doc_type, "dot")
-                    title = f"<b>{doc_id}</b><br>Tipo: {doc_type}<br>Fuente: {meta.get('source', '')}"
-                    net.add_node(doc_id, label=label, title=title, color=color, shape=shape, size=18 if doc_type != "raw_pdf" else 10)
-                    node_labels[doc_id] = label
-
-                # Agregar aristas basadas en similitud (cada nodo consulta sus top-k similares)
-                edges_added = set()
-                for doc_id in doc_ids[:count]:
-                    try:
-                        similar = collection.query(query_texts=[doc_id.replace("wiki/", " ").replace("raw/", " ").replace("_", " ")], n_results=4)
-                        if similar["ids"][0]:
-                            for sim_id, dist in zip(similar["ids"][0], similar["distances"][0]):
-                                if sim_id != doc_id and dist < 0.6:
-                                    edge_key = tuple(sorted([doc_id, sim_id]))
-                                    if edge_key not in edges_added:
-                                        weight = max(1, int((1 - dist) * 5))
-                                        net.add_edge(doc_id, sim_id, value=weight, title=f"sim: {1-dist:.2f}")
-                                        edges_added.add(edge_key)
-                    except:
-                        pass
-
-                # Guardar
-                net.save_graph(str(graph_html))
-                st.success(f"✅ Grafo generado: {count} nodos, {len(edges_added)} conexiones")
-            except Exception as e:
-                st.error(f"Error generando grafo: {e}")
+    if not graph_html.exists():
+        st.warning("El archivo del grafo no se encontró. El grafo se generó localmente y debe estar incluido en el repositorio.")
 
     # Mostrar grafo
     if graph_html.exists():
@@ -504,9 +413,9 @@ with tab_graph:
                 <li>📄 <strong>9 páginas wiki</strong> (conceptos, entidades, schema)</li>
                 <li>📑 <strong>23 informes PDF</strong> convertidos a markdown</li>
                 <li>🔗 <strong>Similitud semántica</strong> como conexiones entre documentos</li>
-                <li>⚡ <strong>Streamlit + ChromaDB + DuckDB</strong> — todo open-source, local, sin nube</li>
+                <li>⚡ <strong>Streamlit + TF-IDF + DuckDB</strong> — todo open-source, local, sin nube</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
     else:
-        st.info("Haz clic en 'Regenerar grafo' para construir la visualización por primera vez.")
+        st.info("El grafo pre-generado no está disponible en este despliegue. El Chat y Dashboard siguen operativos.")
