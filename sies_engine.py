@@ -239,23 +239,36 @@ class SIESEngine:
         if not self.grafo_cargado:
             return []
 
-        # 1. Intentar búsqueda directa con alias
-        palabras = re.findall(r'\b\w{3,}\b', pregunta.lower())
+        # Stopwords que nunca deberían buscar entidades (3+ letras)
+        stopwords = {
+            "que", "las", "los", "del", "para", "con", "por", "como",
+            "mas", "pero", "esta", "este", "entre", "todo", "esa", "eso",
+            "son", "era", "han", "ser", "dos", "tres", "vez", "asi",
+            "cual", "donde", "quien", "solo", "cada", "muy", "casi",
+            "dice", "hace", "puede", "tiene", "sobre", "saber",
+            "sus", "asi", "año", "ver", "dar", "fue", "hea", "sea",
+        }
+        # Extraer palabras de 3+ caracteres sin stopwords
+        palabras = [
+            p for p in re.findall(r'\b\w{3,}\b', pregunta.lower())
+            if p not in stopwords
+        ]
         todas_entidades = []
 
         for palabra in palabras:
             resultados = self.grafo.buscar_con_aliases(palabra)
             todas_entidades.extend(resultados)
 
-        # 2. Quitar duplicados
+        # Quitar duplicados y ordenar por relevancia (más hechos primero)
         vistos = set()
         unicas = []
         for e in todas_entidades:
             if e["nombre"] not in vistos:
                 vistos.add(e["nombre"])
                 unicas.append(e)
+        unicas.sort(key=lambda x: x["n_hechos"], reverse=True)
 
-        return unicas[:5]  # Máximo 5 entidades
+        return unicas[:3]  # Máximo 3 entidades
 
     # ── Modo semántico (grafo + OpenCode API) ─────────────────────────────
 
@@ -289,32 +302,38 @@ class SIESEngine:
 
     def _responder_semantico_sin_llm(self, entidades: list) -> dict:
         """Responde con datos estructurados del grafo (sin LLM)."""
-        partes = []
-        fuentes = set()
-
-        for ent in entidades[:2]:  # Máximo 2 entidades
-            data = self.grafo.query_entidad(ent["nombre"])
-            if data.get("encontrada"):
-                respuesta = formatear_respuesta_entidad(ent["nombre"], data)
-                partes.append(respuesta)
-                # Extraer fuentes
-                for e_name, e_info in data["entidades"].items():
-                    for doc in e_info.get("documentos", []):
-                        fuentes.add(doc.get("archivo", ""))
-
-        if not partes:
+        if not entidades:
             return self._respuesta_guiada("")
 
-        texto = "\n\n---\n\n".join(partes)
+        fuentes = set()
+
+        # Solo mostrar la entidad principal (la de más hechos)
+        ent_principal = entidades[0]
+        data = self.grafo.query_entidad(ent_principal["nombre"])
+        if not data.get("encontrada"):
+            return self._respuesta_guiada("")
+
+        respuesta = formatear_respuesta_entidad(ent_principal["nombre"], data)
+
+        # Extraer fuentes
+        for e_name, e_info in data["entidades"].items():
+            for doc in e_info.get("documentos", []):
+                fuentes.add(doc.get("archivo", ""))
+
+        # Mencionar otras entidades relacionadas
+        if len(entidades) > 1:
+            otras = ", ".join(e["nombre"] for e in entidades[1:4])
+            respuesta += f"\n\n💡 *También encontré información sobre: {otras}*"
+
         if fuentes:
-            texto += f"\n\n📎 Fuentes: {', '.join(sorted(fuentes)[:5])}"
+            respuesta += f"\n\n📎 Fuentes: {', '.join(sorted(fuentes)[:5])}"
 
         # Si la respuesta es muy larga, truncar con sugerencia
-        if len(texto) > 3000:
-            texto = texto[:2800] + "\n\n*💡 Demasiados datos? Pregunta por algo más específico.*"
+        if len(respuesta) > 3000:
+            respuesta = respuesta[:2800] + "\n\n*💡 Demasiados datos? Pregunta por algo más específico.*"
 
         return {
-            "respuesta": texto,
+            "respuesta": respuesta,
             "fuentes": list(fuentes),
             "modo_usado": "semantico_estructurado",
             "sugerencias": self._generar_sugerencias(entidades),
@@ -609,11 +628,14 @@ class SIESEngine:
                 "¿Cómo ha evolucionado la matrícula?",
             ]
         nombre = entidades[0]["nombre"]
+        # Usar versión corta si existe un alias conocido
+        alias_corto = {"Universidad Católica de Temuco": "la UCT"}
+        ref = alias_corto.get(nombre, nombre)
         return [
-            f"¿Qué dice el informe de {nombre}?",
-            f"¿Cómo ha evolucionado {nombre}?",
+            f"¿Qué sabemos de {ref}?",
+            f"Datos numéricos de {ref}",
             "¿Cuántos estudiantes había en 2025?",
-            "¿Qué otras instituciones destacan?",
+            "¿Qué instituciones tienen más estudiantes?",
         ]
 
 
