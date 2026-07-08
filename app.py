@@ -4,6 +4,7 @@ Paleta cálida: terracota, crema, ámbar, tierra
 Tipografía: DM Sans · JetBrains Mono
 """
 import traceback
+import json
 import sqlite3, pandas as pd, streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
