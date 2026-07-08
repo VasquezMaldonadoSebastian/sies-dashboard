@@ -24,8 +24,13 @@ DB_EXISTS = DB.exists()
 for key, default in [
     ("page", "💬 Chat IA"),
     ("messages", [{"role": "assistant",
-                   "content": "¡Hola! Soy tu analista de datos SIES. Puedo consultar **506 hechos** extraídos de **5 informes** oficiales. ¿Qué te gustaría saber sobre la educación superior chilena?"}]),
-    ("kb", None),
+                   "content": "¡Hola! Soy tu **Analista SIES**. Puedo consultar **506 datos** extraídos de **5 informes** oficiales del SIES.\n\n"
+                              "📊 **Matrícula** — totales, evolución, por región\n"
+                              "👤 **Brechas de Género** — participación femenina\n"
+                              "🎓 **Titulación** — titulados por año\n"
+                              "📈 **Retención** — permanencia 1er año\n\n"
+                              "💡 *Prueba preguntando: \"¿Cuántos estudiantes en 2025?\" o \"¿Qué sabemos de la UCT?\"*"}]),
+    ("engine", None),
 ]:
     if key not in st.session_state:
         st.session_state[key] = default
@@ -306,11 +311,11 @@ if st.session_state.page == "💬 Chat IA":
     st.markdown('<div class="page-header"><h1>💬 Chat IA · SIES</h1><p>Consulta sobre educación superior chilena</p></div>', unsafe_allow_html=True)
     show_kpis()
     try:
-        if st.session_state.kb is None:
+        if st.session_state.get("engine") is None:
             with st.spinner("Cargando base de conocimiento..."):
-                from glue import SIESKnowledgeBase
-                st.session_state.kb = SIESKnowledgeBase()
-        kb = st.session_state.kb
+                from sies_engine import SIESEngine
+                st.session_state.engine = SIESEngine()
+        engine = st.session_state.engine
         for msg in st.session_state.messages:
             with st.chat_message(msg["role"]):
                 st.markdown(msg["content"])
@@ -321,10 +326,18 @@ if st.session_state.page == "💬 Chat IA":
             with st.chat_message("assistant"):
                 with st.spinner("Consultando..."):
                     try:
-                        r = kb.consultar(prompt)
+                        r = engine.consultar(prompt)
                         st.markdown(r["respuesta"])
                         if r.get("fuentes"):
                             st.caption(f"📎 {', '.join(r['fuentes'][:3])}")
+                        if r.get("sugerencias"):
+                            sugerencias = r["sugerencias"][:4]
+                            cols = st.columns(len(sugerencias))
+                            for i, sug in enumerate(sugerencias):
+                                if cols[i].button(sug[:25], key=f"sug_{i}_{len(st.session_state.messages)}"):
+                                    # Reinicia con la sugerencia como prompt
+                                    st.session_state.messages.append({"role": "user", "content": sug})
+                                    st.rerun()
                         st.session_state.messages.append({"role": "assistant", "content": r["respuesta"]})
                     except Exception as e:
                         st.error(f"⚠️ {traceback.format_exc()}")
@@ -471,21 +484,21 @@ elif st.session_state.page == "🔧 Diagnóstico":
         d.append(f"**search_index.json:** {'✅' if si.exists() else '❌'} ({si.stat().st_size/1024:.0f} KB)" if si.exists() else "❌")
         gh = Path(CHROMA_DIR/'grafo_conocimiento.html')
         d.append(f"**grafo:** {'✅' if gh.exists() else '❌'} ({gh.stat().st_size/1024:.0f} KB)" if gh.exists() else "❌")
-        d.append(f"**glue.py:** {'✅' if Path(APP_DIR/'glue.py').exists() else '❌'}")
+        d.append(f"**sies_engine.py:** {'✅' if Path(APP_DIR/'sies_engine.py').exists() else '❌'}")
+        d.append(f"**grafo_sies.json:** {'✅' if Path(APP_DIR/'grafo/grafo_sies.json').exists() else '❌'}")
         d.append(f"**DB:** {'✅' if DB_EXISTS else '❌ No disponible'}")
         d.append(f"**lib/:** {'✅' if Path(APP_DIR/'lib/bindings/utils.js').exists() else '❌'}")
         try:
-            from glue import SIESKnowledgeBase
-            kb = SIESKnowledgeBase()
-            d.append(f"**KB docs:** {len(kb.documents)}")
-            d.append(f"**KB TF-IDF:** {'✅' if kb.tfidf_vectorizer else '❌'}")
-            d.append(f"**KB DB:** {'✅' if kb.db_disponible else '❌'}")
+            from sies_engine import SIESEngine
+            engine = SIESEngine()
+            d.append(f"**Grafo:** {'✅' if engine.grafo_cargado else '❌'}")
+            d.append(f"**Modelos API:** {', '.join(engine.modelos_api)}")
         except Exception as e:
-            d.append(f"**KB ERROR:** {str(e)[:200]}")
+            d.append(f"**ENGINE ERROR:** {str(e)[:200]}")
         st.markdown("\n".join(d))
         st.subheader("Test de consulta")
         try:
-            r = kb.consultar("matrícula 2025")
+            r = engine.consultar("matrícula 2025")
             st.text_area("Respuesta (primeros 500 chars)", r["respuesta"][:500])
             st.caption(f"Fuentes: {', '.join(r['fuentes'][:3])}")
         except Exception as e:

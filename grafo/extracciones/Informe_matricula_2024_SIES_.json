@@ -1,0 +1,1630 @@
+{
+  "archivo": "Informe_matricula_2024_SIES_.md",
+  "categoria": "matricula",
+  "año": null,
+  "resumen_ejecutivo": "Informe de matricula SIES ",
+  "entidades": {
+    "instituciones": [
+      {
+        "nombre": "Centros de Formación Técnica (CFT)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Institutos Profesionales (IP)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidades",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidad Católica de Temuco",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Institutos Profesionales (IP)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Centros de Formación Técnica (CFT)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidades",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Centros de Formación Técnica (CFT)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Pontificia Universidad Católica de Chile",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Centros de Formación Técnica (CFT)",
+        "tipo": "desconocido"
+      }
+    ],
+    "regiones": [
+      {
+        "nombre": "Región Metropolitana"
+      }
+    ],
+    "areas_conocimiento": [],
+    "niveles_formacion": [],
+    "tipos_ies": []
+  },
+  "hechos_numericos": [
+    {
+      "id": "h-001",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 137,
+      "unidad": "estudiantes",
+      "contexto": "",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-002",
+      "entidad": "Matrícula Total",
+      "valor": 1385828,
+      "unidad": "estudiantes",
+      "contexto": "",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-003",
+      "entidad": "Matrícula de Pregrado",
+      "valor": 126,
+      "unidad": "estudiantes",
+      "contexto": "",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-005",
+      "entidad": "Participación Femenina",
+      "valor": "738681 estudiantes",
+      "unidad": "",
+      "contexto": "Maturidad total femenina 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-006",
+      "entidad": "Participación Masculina",
+      "valor": "647133 estudiantes",
+      "unidad": "",
+      "contexto": "Maturidad total masculina 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-007",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": "96,9%",
+      "unidad": "",
+      "contexto": "Participación en instituciones acreditadas",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-008",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": "1,9%",
+      "unidad": "",
+      "contexto": "Participación en instituciones no acreditadas",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-009",
+      "entidad": "Posgrado",
+      "valor": 52061,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula total Posgrado 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-010",
+      "entidad": "Magíster",
+      "valor": "-716 registros",
+      "unidad": "",
+      "contexto": "-1,4% de caída respecto a 2023",
+      "categoria": "matricula",
+      "año": 2023,
+      "variacion": "-1,4%"
+    },
+    {
+      "id": "h-011",
+      "entidad": "Doctorado",
+      "valor": "522 registros",
+      "unidad": "",
+      "contexto": "5,2% de aumento respecto a 2023",
+      "categoria": "matricula",
+      "año": 2023,
+      "variacion": "5,2%"
+    },
+    {
+      "id": "h-012",
+      "entidad": "Postítulo",
+      "valor": 56427,
+      "unidad": "estudiantes",
+      "contexto": "42% de aumento respecto al año anterior",
+      "categoria": "matricula",
+      "año": 2024,
+      "variacion": "42%"
+    },
+    {
+      "id": "h-013",
+      "entidad": "Pueblos Originarios",
+      "valor": 150953,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula Total de Pueblos Originarios",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-014",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 114540,
+      "unidad": "estudiantes",
+      "contexto": "Matrículas Mapuche",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-015",
+      "entidad": "Aymara",
+      "valor": 14909,
+      "unidad": "estudiantes",
+      "contexto": "Matrículas Aymara",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-016",
+      "entidad": "Diaguita",
+      "valor": 13124,
+      "unidad": "estudiantes",
+      "contexto": "Matrículas Diaguita",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-017",
+      "entidad": "Universidades",
+      "valor": "706040 estudiantes",
+      "unidad": "",
+      "contexto": "Máxima matrícula en historia",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-018",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": "145225 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula Total CFT 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-019",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": "426075 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula Total IP 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-020",
+      "entidad": "Total general",
+      "valor": "303422 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula total educación superior Chile 2020",
+      "categoria": "matricula",
+      "año": 2020
+    },
+    {
+      "id": "h-021",
+      "entidad": "Total general",
+      "valor": "314432 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula total educación superior Chile 2021",
+      "categoria": "matricula",
+      "año": 2021
+    },
+    {
+      "id": "h-022",
+      "entidad": "Total general",
+      "valor": "318411 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula total educación superior Chile 2022",
+      "categoria": "matricula",
+      "año": 2022
+    },
+    {
+      "id": "h-023",
+      "entidad": "Total general",
+      "valor": "345494 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula total educación superior Chile 2023",
+      "categoria": "matricula",
+      "año": 2023
+    },
+    {
+      "id": "h-024",
+      "entidad": "Total general",
+      "valor": "350683 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula total educación superior Chile 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-025",
+      "entidad": "Doctorado",
+      "valor": 7473,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula de Doctorados en 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-026",
+      "entidad": "Diurno",
+      "valor": 6930,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula Diurnos en 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-027",
+      "entidad": "Vespertino",
+      "valor": 447,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula Vespertinos en 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-028",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 35,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula Semipresenciales en 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-029",
+      "entidad": "ADistancia",
+      "valor": 29,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula ADistancias en 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-030",
+      "entidad": "Magíster",
+      "valor": 52061,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula de Magíster en 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-031",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 48186,
+      "unidad": "estudiantes",
+      "contexto": "",
+      "categoria": "matricula"
+    },
+    {
+      "id": "h-032",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 21573,
+      "unidad": "estudiantes",
+      "contexto": "",
+      "categoria": "matricula"
+    },
+    {
+      "id": "h-033",
+      "entidad": "Universidades",
+      "valor": 75788,
+      "unidad": "estudiantes",
+      "contexto": "",
+      "categoria": "matricula"
+    },
+    {
+      "id": "h-034",
+      "entidad": "Arica y Parinacota",
+      "valor": "1.542 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula Total 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-035",
+      "entidad": "Tarapacá",
+      "valor": "2.444 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula Total 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-036",
+      "entidad": "Atacama",
+      "valor": "3.280 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula Total 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-037",
+      "entidad": "Aysén",
+      "valor": "1.044 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula Total 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-038",
+      "entidad": "Los Lagos",
+      "valor": "2.444 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula Total 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-039",
+      "entidad": "Magallanes",
+      "valor": "1.832 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula Total 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-040",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": "3.044 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula Total 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-041",
+      "entidad": "Metropolitana",
+      "valor": "2.244 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula Total 2024",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-042",
+      "entidad": "Matrícula Total",
+      "valor": "13099 matrículas",
+      "unidad": "",
+      "contexto": "Matrícula total de personas con discapacidad",
+      "categoria": "matricula",
+      "año": 2024
+    },
+    {
+      "id": "h-043",
+      "entidad": "Matrícula Total",
+      "valor": "1385828 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula total educación superior chilena",
+      "categoria": "matricula",
+      "año": 2024
+    }
+  ],
+  "hechos_cualitativos": [
+    {
+      "id": "q-001",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-002",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "46",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-003",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "33",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-004",
+      "entidad": "Universidades",
+      "afirmacion": "58",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-005",
+      "entidad": "Retención 1er Año",
+      "afirmacion": "126",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-006",
+      "entidad": "Posgrado",
+      "afirmacion": "126",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-007",
+      "entidad": "Postítulo",
+      "afirmacion": "126",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-008",
+      "entidad": "Brecha de género en carreras de ingeniería",
+      "afirmacion": "23%",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-009",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "8432 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-010",
+      "entidad": "Universidades",
+      "afirmacion": "1385828 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-011",
+      "entidad": "Retención 1er Año",
+      "afirmacion": "1271116 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-012",
+      "entidad": "Posgrado",
+      "afirmacion": "-7060 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-013",
+      "entidad": "Postítulo",
+      "afirmacion": "41760 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-014",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "423984 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-015",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "146511 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-016",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-017",
+      "entidad": "Universidades",
+      "afirmacion": "677.340 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-018",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "443.940 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-019",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "143.320 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-020",
+      "entidad": "No Binarios",
+      "afirmacion": "12 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-021",
+      "entidad": "15-19 años",
+      "afirmacion": "20.665 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-022",
+      "entidad": "20-24 años",
+      "afirmacion": "20.665 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-023",
+      "entidad": "35 y más años",
+      "afirmacion": "12.500 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-024",
+      "entidad": "Universidades",
+      "afirmacion": "190.968 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-025",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "15.041 matrículas totales",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-026",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "7.8%",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-027",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "-7,3%",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-028",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "58.8%",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-029",
+      "entidad": "Especialidades médicas u odontológicas",
+      "afirmacion": "10,6%",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-030",
+      "entidad": "Postítulos",
+      "afirmacion": "-18,1%",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-031",
+      "entidad": "Pueblos Originarios",
+      "afirmacion": "10,9%",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-032",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-033",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "8432 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-034",
+      "entidad": "Universidades",
+      "afirmacion": "585.480 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-035",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "417.111 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-036",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "143.557 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-037",
+      "entidad": "Retención 1er Año",
+      "afirmacion": "1.277.340 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-038",
+      "entidad": "Posgrado",
+      "afirmacion": "52.061 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-039",
+      "entidad": "Postítulo",
+      "afirmacion": "56.427 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-040",
+      "entidad": "Universidad de Chile",
+      "afirmacion": "1385828 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-041",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-042",
+      "entidad": "Universidades",
+      "afirmacion": "190968 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-043",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "11,4%",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-044",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "17,9%",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-045",
+      "entidad": "Universidades",
+      "afirmacion": "55,3%",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-046",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-047",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "8432 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-048",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "56159 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-049",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "109617 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-050",
+      "entidad": "Universidades",
+      "afirmacion": "137646 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-051",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "60449 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-052",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "120935 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-053",
+      "entidad": "Universidades",
+      "afirmacion": "135217 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-054",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "59428 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-055",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "129801 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-056",
+      "entidad": "Universidades",
+      "afirmacion": "132582 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-057",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "60649 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-058",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "135710 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-059",
+      "entidad": "Universidades",
+      "afirmacion": "149635 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-060",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "64672 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-061",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "130410 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-062",
+      "entidad": "Universidades",
+      "afirmacion": "153501 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-063",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "9649169 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-064",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "15041 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-065",
+      "entidad": "No Acreditadas",
+      "afirmacion": "24735 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-066",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-067",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "114.540",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-068",
+      "entidad": "Atacameña",
+      "afirmacion": "4.016",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-069",
+      "entidad": "Aymara",
+      "afirmacion": "14.214",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-070",
+      "entidad": "Diaguita",
+      "afirmacion": "13.124",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-071",
+      "entidad": "Kawashkar",
+      "afirmacion": "66",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-072",
+      "entidad": "Quechua",
+      "afirmacion": "1.654",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-073",
+      "entidad": "Rapanui",
+      "afirmacion": "454",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-074",
+      "entidad": "Yagan",
+      "afirmacion": "19",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-075",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "Pregrado",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-076",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "Posgrado",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-077",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "Postítulo",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-078",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-079",
+      "entidad": "Universidades",
+      "afirmacion": "6056 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-080",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "4726 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-081",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "2307 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-082",
+      "entidad": "Retención 1er Año",
+      "afirmacion": "12479 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-083",
+      "entidad": "Posgrado",
+      "afirmacion": "320 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-084",
+      "entidad": "Postítulo",
+      "afirmacion": "300 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    },
+    {
+      "id": "q-085",
+      "entidad": "Región Metropolitana",
+      "afirmacion": "728168 estudiantes",
+      "categoria": "matricula",
+      "seccion": ""
+    }
+  ],
+  "relaciones": [
+    {
+      "origen": "IP",
+      "tipo": "relacionado_con",
+      "destino": "Instituciones Acreditadas",
+      "valor": "96,9%"
+    },
+    {
+      "origen": "IP",
+      "tipo": "relacionado_con",
+      "destino": "Instituciones No Acreditadas",
+      "valor": "1,9%"
+    },
+    {
+      "origen": "CFT",
+      "tipo": "relacionado_con",
+      "destino": "CFT",
+      "valor": "145225 estudiantes"
+    },
+    {
+      "origen": "IP",
+      "tipo": "relacionado_con",
+      "destino": "IP",
+      "valor": "426075 estudiantes"
+    }
+  ],
+  "menciones_entidades": {
+    "ENTIDAD": [
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      }
+    ],
+    "Universidad Católica de Temuco": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT en 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT en 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT en 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "2024"
+      }
+    ],
+    "Universidades": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total de pregrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total universitarias en 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Máxima matrícula en historia"
+      },
+      {
+        "seccion": "",
+        "contexto": "Máxima matrícula en universidades estatales"
+      },
+      {
+        "seccion": "",
+        "contexto": "Distribución de matrículas universitarias 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula universitarias 2020"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula universitarias 2021"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula universitarias 2022"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula universitarias 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula universitarias 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrículas de personas con discapacidad en universidades"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total de pregrado"
+      }
+    ],
+    "Retención 1er Año": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula de Pregrado 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total Pregrado en 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrículas de personas con discapacidad en pregrado"
+      }
+    ],
+    "Posgrado": [
+      {
+        "seccion": "",
+        "contexto": "Maturidad de Posgrado 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total Posgrado 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total Posgrado en 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrículas de personas con discapacidad en posgrado"
+      }
+    ],
+    "Postítulo": [
+      {
+        "seccion": "",
+        "contexto": "Maturidad de Postítulo 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "42% de aumento respecto al año anterior"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total Postítulo en 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrículas de personas con discapacidad en postítulo"
+      }
+    ],
+    "Institutos Profesionales (IP)": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula IP 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total de pregrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula Total IP 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Variación de la Matrícula IP 2020-2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula IP 2020"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula IP 2021"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula IP 2022"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula IP 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula IP 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrículas de personas con discapacidad en IP"
+      },
+      {
+        "seccion": "",
+        "contexto": "Incremento en matrícula de carreras profesionales"
+      },
+      {
+        "seccion": "",
+        "contexto": "Disminución en matrícula de carreras técnicas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Aumento en matrícula"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula Semipresenciales en 2024"
+      }
+    ],
+    "Centros de Formación Técnica (CFT)": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula CFT 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total de pregrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula Total CFT 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Variación de la Matrícula CFT 2020-2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula CFT 2020"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula CFT 2021"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula CFT 2022"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula CFT 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula CFT 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrículas de personas con discapacidad en CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total de pregrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total CFT en 2024"
+      }
+    ],
+    "Participación Femenina": [
+      {
+        "seccion": "",
+        "contexto": "Maturidad total femenina 2024"
+      }
+    ],
+    "Participación Masculina": [
+      {
+        "seccion": "",
+        "contexto": "Maturidad total masculina 2024"
+      }
+    ],
+    "No Binarios": [
+      {
+        "seccion": "",
+        "contexto": "Número de estudiantes no binarios"
+      }
+    ],
+    "15-19 años": [
+      {
+        "seccion": "",
+        "contexto": "Aumento en número de estudiantes"
+      }
+    ],
+    "20-24 años": [
+      {
+        "seccion": "",
+        "contexto": "Aumento en número de estudiantes"
+      }
+    ],
+    "35 y más años": [
+      {
+        "seccion": "",
+        "contexto": "Aumento en número de estudiantes"
+      }
+    ],
+    "Pontificia Universidad Católica de Chile": [
+      {
+        "seccion": "",
+        "contexto": "Participación en instituciones acreditadas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula instituciones acreditadas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Participación en instituciones no acreditadas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrículas Mapuche"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total PPOO 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total IP en 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula instituciones bajo tutela"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula Total 2024"
+      }
+    ],
+    "Magíster": [
+      {
+        "seccion": "",
+        "contexto": "-1,4% de caída respecto a 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula de Magíster en 2024"
+      }
+    ],
+    "Doctorado": [
+      {
+        "seccion": "",
+        "contexto": "5,2% de aumento respecto a 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula de Doctorados en 2024"
+      }
+    ],
+    "Especialidades médicas u odontológicas": [
+      {
+        "seccion": "",
+        "contexto": "Aumento en matrícula"
+      }
+    ],
+    "Postítulos": [
+      {
+        "seccion": "",
+        "contexto": "Disminución"
+      }
+    ],
+    "Pueblos Originarios": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Total de Pueblos Originarios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Proporción de PPOO en Matrícula Total"
+      }
+    ],
+    "Aymara": [
+      {
+        "seccion": "",
+        "contexto": "Matrículas Aymara"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula Aymara 2024"
+      }
+    ],
+    "Diaguita": [
+      {
+        "seccion": "",
+        "contexto": "Matrículas Diaguita"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula Diaguita 2024"
+      }
+    ],
+    "Universidad de Chile": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2024"
+      }
+    ],
+    "Total general": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2020"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2021"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2022"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2024"
+      }
+    ],
+    "No Acreditadas": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula instituciones no acreditadas"
+      }
+    ],
+    "Diurno": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Diurnos en 2024"
+      }
+    ],
+    "Vespertino": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Vespertinos en 2024"
+      }
+    ],
+    "ADistancia": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula ADistancias en 2024"
+      }
+    ],
+    "Atacameña": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Atacameña 2024"
+      }
+    ],
+    "Kawashkar": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Kawashkar 2024"
+      }
+    ],
+    "Quechua": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Quechua 2024"
+      }
+    ],
+    "Rapanui": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Rapanui 2024"
+      }
+    ],
+    "Yagan": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Yagan 2024"
+      }
+    ],
+    "Arica y Parinacota": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Total 2024"
+      }
+    ],
+    "Tarapacá": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Total 2024"
+      }
+    ],
+    "Atacama": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Total 2024"
+      }
+    ],
+    "Aysén": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Total 2024"
+      }
+    ],
+    "Los Lagos": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Total 2024"
+      }
+    ],
+    "Magallanes": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Total 2024"
+      }
+    ],
+    "Metropolitana": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula Total 2024"
+      }
+    ],
+    "Matrícula Total": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total de personas con discapacidad"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior chilena"
+      }
+    ],
+    "Región Metropolitana": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula RM 2024"
+      }
+    ]
+  },
+  "secciones_detectadas": [
+    "JULIO 2024 SUPERIOR EN CHILE",
+    "Informe de Matrícula en Educación Superior en Chile 2024",
+    "ANTECEDENTES",
+    "Matrícula Total",
+    "Matrícula de Pregrado",
+    "Matrícula de Posgrado y Postítulo",
+    "Matrícula de Pueblos Originarios",
+    "Matrícula de estudiantes con discapacidad",
+    "MATRÍCULA TOTAL",
+    "MATRÍCULA DE PREGRADO",
+    "Gráfico 1 Panorama de la Matrícula de carreras de Pregrado 2024",
+    "MATRÍCULA DE POSGRADO Y POSTÍTULO",
+    "MATRÍCULA DE PERSONAS PERTENECIENTES A PUEBLOS ORIGINARIOS",
+    "Nivel de formación",
+    "Matrícula de Pregrado por Tipo de Institución",
+    "Matrícula Total de Pregrado 2024 de pueblos originarios por etnia",
+    "MATRÍCULA DE PERSONAS CON DISCAPACIDAD",
+    "GLOSARIO",
+    "Programas Regulares de Continuidad:"
+  ],
+  "_metadata": {
+    "modelo": "llama3.2:3b",
+    "chunks": 19,
+    "lineas_extraidas": 128,
+    "procesado": "2026-07-08 12:43:44"
+  }
+}

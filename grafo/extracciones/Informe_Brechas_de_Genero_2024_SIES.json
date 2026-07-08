@@ -1,0 +1,1896 @@
+{
+  "archivo": "Informe_Brechas_de_Genero_2024_SIES.md",
+  "categoria": "brechas-genero",
+  "año": null,
+  "resumen_ejecutivo": "Informe de brechas-genero SIES ",
+  "entidades": {
+    "instituciones": [
+      {
+        "nombre": "SIES",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidades",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Centros de Formación Técnica (CFT)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Institutos Profesionales (IP)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidad Católica de Temuco",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Centros de Formación Técnica (CFT)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Institutos Profesionales (IP)",
+        "tipo": "desconocido"
+      }
+    ],
+    "regiones": [
+      {
+        "nombre": "Región Metropolitana"
+      }
+    ],
+    "areas_conocimiento": [
+      {
+        "nombre": "Educación"
+      },
+      {
+        "nombre": "Salud"
+      },
+      {
+        "nombre": "Ciencias Sociales"
+      },
+      {
+        "nombre": "Tecnología"
+      },
+      {
+        "nombre": "Ciencias Básicas"
+      },
+      {
+        "nombre": "Educación Superior"
+      }
+    ],
+    "niveles_formacion": [],
+    "tipos_ies": []
+  },
+  "hechos_numericos": [
+    {
+      "id": "h-001",
+      "entidad": "SIES",
+      "valor": "53.3%",
+      "unidad": "",
+      "contexto": "Porcentaje de mujeres en matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-002",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 1385828,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula total educación superior Chile 2024",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-003",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": "84.8%",
+      "unidad": "",
+      "contexto": "Máxima tasa de aprobación anual en mujeres",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-004",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": "80%",
+      "unidad": "",
+      "contexto": "Máxima tasa de aprobación anual en hombres",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-005",
+      "entidad": "Matrícula Total",
+      "valor": "350.680 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula total educación superior Chile 2024",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-006",
+      "entidad": "Participación Femenina",
+      "valor": "52,6%",
+      "unidad": "",
+      "contexto": "Porcentaje de mujeres en matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-007",
+      "entidad": "Participación Masculina",
+      "valor": "47,4%",
+      "unidad": "",
+      "contexto": "Porcentaje de hombres en matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-008",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": "53.3%",
+      "unidad": "",
+      "contexto": "Mujeres en matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-009",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": "36.7%",
+      "unidad": "",
+      "contexto": "Hombres en matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-010",
+      "entidad": "SIES",
+      "valor": "56.2%",
+      "unidad": "",
+      "contexto": "Participación de mujeres en Titulación Total",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-011",
+      "entidad": "Participación Femenina",
+      "valor": "19,4%",
+      "unidad": "",
+      "contexto": "Crecimiento de titulaciones femeninas",
+      "categoria": "brechas-genero"
+    },
+    {
+      "id": "h-012",
+      "entidad": "Participación Masculina",
+      "valor": "22,5%",
+      "unidad": "",
+      "contexto": "Crecimiento de titulaciones masculinas",
+      "categoria": "brechas-genero"
+    },
+    {
+      "id": "h-013",
+      "entidad": "Participación Masculina",
+      "valor": "4.1%",
+      "unidad": "",
+      "contexto": "Crecimiento de titulaciones masculinas",
+      "categoria": "brechas-genero"
+    },
+    {
+      "id": "h-014",
+      "entidad": "Participación Femenina",
+      "valor": "0.7%",
+      "unidad": "",
+      "contexto": "Crecimiento de titulaciones femeninas",
+      "categoria": "brechas-genero"
+    },
+    {
+      "id": "h-015",
+      "entidad": "SIES",
+      "valor": 246143,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula total educación superior Chile 2019",
+      "categoria": "brechas-genero",
+      "año": 2019
+    },
+    {
+      "id": "h-016",
+      "entidad": "SIES",
+      "valor": 202270,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula total educación superior Chile 2020",
+      "categoria": "brechas-genero",
+      "año": 2020
+    },
+    {
+      "id": "h-017",
+      "entidad": "SIES",
+      "valor": 280593,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula total educación superior Chile 2021",
+      "categoria": "brechas-genero",
+      "año": 2021
+    },
+    {
+      "id": "h-018",
+      "entidad": "SIES",
+      "valor": 290902,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula total educación superior Chile 2022",
+      "categoria": "brechas-genero",
+      "año": 2022
+    },
+    {
+      "id": "h-019",
+      "entidad": "SIES",
+      "valor": 297174,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula total educación superior Chile 2023",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-020",
+      "entidad": "SIES",
+      "valor": 139969,
+      "unidad": "estudiantes",
+      "contexto": "Mujeres",
+      "categoria": "brechas-genero",
+      "año": 2019
+    },
+    {
+      "id": "h-021",
+      "entidad": "SIES",
+      "valor": 106174,
+      "unidad": "estudiantes",
+      "contexto": "Hombres",
+      "categoria": "brechas-genero",
+      "año": 2019
+    },
+    {
+      "id": "h-022",
+      "entidad": "SIES",
+      "valor": 114461,
+      "unidad": "estudiantes",
+      "contexto": "Mujeres",
+      "categoria": "brechas-genero",
+      "año": 2020
+    },
+    {
+      "id": "h-023",
+      "entidad": "SIES",
+      "valor": 87809,
+      "unidad": "estudiantes",
+      "contexto": "Hombres",
+      "categoria": "brechas-genero",
+      "año": 2020
+    },
+    {
+      "id": "h-024",
+      "entidad": "SIES",
+      "valor": 162941,
+      "unidad": "estudiantes",
+      "contexto": "Mujeres",
+      "categoria": "brechas-genero",
+      "año": 2021
+    },
+    {
+      "id": "h-025",
+      "entidad": "SIES",
+      "valor": 117652,
+      "unidad": "estudiantes",
+      "contexto": "Hombres",
+      "categoria": "brechas-genero",
+      "año": 2021
+    },
+    {
+      "id": "h-026",
+      "entidad": "SIES",
+      "valor": 165969,
+      "unidad": "estudiantes",
+      "contexto": "Mujeres",
+      "categoria": "brechas-genero",
+      "año": 2022
+    },
+    {
+      "id": "h-027",
+      "entidad": "SIES",
+      "valor": 124933,
+      "unidad": "estudiantes",
+      "contexto": "Hombres",
+      "categoria": "brechas-genero",
+      "año": 2022
+    },
+    {
+      "id": "h-028",
+      "entidad": "SIES",
+      "valor": 167135,
+      "unidad": "estudiantes",
+      "contexto": "Mujeres",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-029",
+      "entidad": "SIES",
+      "valor": 130039,
+      "unidad": "estudiantes",
+      "contexto": "Hombres",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-030",
+      "entidad": "Retención 1er Año",
+      "valor": "23.6 semestres",
+      "unidad": "",
+      "contexto": "Duración Real promedio Pregrado",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-031",
+      "entidad": "Posgrado",
+      "valor": "2.5 semestres",
+      "unidad": "",
+      "contexto": "Duración Real promedio Posgrado",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-032",
+      "entidad": "Postítulo",
+      "valor": "19.4 semestres",
+      "unidad": "",
+      "contexto": "Duración Real promedio Postítulo",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-033",
+      "entidad": "Pedagogía",
+      "valor": "42.3 p.p.",
+      "unidad": "",
+      "contexto": "Brecha de género en Pedagogía",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-034",
+      "entidad": "Participación Femenina",
+      "valor": 22001,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula de mujeres en carreras STEM 2024",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-035",
+      "entidad": "Participación Masculina",
+      "valor": 83639,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula de hombres en carreras STEM 2024",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-036",
+      "entidad": "Universidades",
+      "valor": "-40,5",
+      "unidad": "",
+      "contexto": "Matrícula total universitaria",
+      "categoria": "brechas-genero",
+      "año": 2020
+    },
+    {
+      "id": "h-037",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": "-73,6",
+      "unidad": "",
+      "contexto": "Matrícula total institucional",
+      "categoria": "brechas-genero",
+      "año": 2020
+    },
+    {
+      "id": "h-038",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": "-78,0",
+      "unidad": "",
+      "contexto": "Matrícula total CFT",
+      "categoria": "brechas-genero",
+      "año": 2020
+    },
+    {
+      "id": "h-039",
+      "entidad": "Universidades",
+      "valor": "-39,0",
+      "unidad": "",
+      "contexto": "Matrícula total universitaria",
+      "categoria": "brechas-genero",
+      "año": 2021
+    },
+    {
+      "id": "h-040",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": "-74,5",
+      "unidad": "",
+      "contexto": "Matrícula total institucional",
+      "categoria": "brechas-genero",
+      "año": 2021
+    },
+    {
+      "id": "h-041",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": "-77,0",
+      "unidad": "",
+      "contexto": "Matrícula total CFT",
+      "categoria": "brechas-genero",
+      "año": 2021
+    },
+    {
+      "id": "h-042",
+      "entidad": "Universidades",
+      "valor": "-40,5",
+      "unidad": "",
+      "contexto": "Matrícula total universitaria",
+      "categoria": "brechas-genero",
+      "año": 2022
+    },
+    {
+      "id": "h-043",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": "-74,6",
+      "unidad": "",
+      "contexto": "Matrícula total institucional",
+      "categoria": "brechas-genero",
+      "año": 2022
+    },
+    {
+      "id": "h-044",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": "-76,2",
+      "unidad": "",
+      "contexto": "Matrícula total CFT",
+      "categoria": "brechas-genero",
+      "año": 2022
+    },
+    {
+      "id": "h-045",
+      "entidad": "Universidades",
+      "valor": "-39,4",
+      "unidad": "",
+      "contexto": "Matrícula total universitaria",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-046",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": "-72,5",
+      "unidad": "",
+      "contexto": "Matrícula total institucional",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-047",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": "-75,4",
+      "unidad": "",
+      "contexto": "Matrícula total CFT",
+      "categoria": "brechas-genero",
+      "año": 2023
+    },
+    {
+      "id": "h-048",
+      "entidad": "Universidades",
+      "valor": "-37,6",
+      "unidad": "",
+      "contexto": "Matrícula total universitaria",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-049",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": "-70,7",
+      "unidad": "",
+      "contexto": "Matrícula total institucional",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-050",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": "-70,1",
+      "unidad": "",
+      "contexto": "Matrícula total CFT",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-051",
+      "entidad": "Universidades",
+      "valor": "85.258 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula total educación superior Chile 2024",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-052",
+      "entidad": "Universidades",
+      "valor": "82.437 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula total educación superior Chile 2021",
+      "categoria": "brechas-genero",
+      "año": 2021
+    },
+    {
+      "id": "h-053",
+      "entidad": "Universidades",
+      "valor": "47.302 estudiantes",
+      "unidad": "",
+      "contexto": "Mujeres en matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2020
+    },
+    {
+      "id": "h-054",
+      "entidad": "Universidades",
+      "valor": "45.481 estudiantes",
+      "unidad": "",
+      "contexto": "Hombres en matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2020
+    },
+    {
+      "id": "h-055",
+      "entidad": "Universidades",
+      "valor": "41.538 estudiantes",
+      "unidad": "",
+      "contexto": "Mujeres en matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-056",
+      "entidad": "Universidades",
+      "valor": "49.416 estudiantes",
+      "unidad": "",
+      "contexto": "Hombres en matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-057",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": "41.538 estudiantes",
+      "unidad": "",
+      "contexto": "Mujeres en matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-058",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": "49.416 estudiantes",
+      "unidad": "",
+      "contexto": "Hombres en matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-059",
+      "entidad": "Participación Femenina",
+      "valor": 23105,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula total mujeres",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-060",
+      "entidad": "Participación Masculina",
+      "valor": 27817,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula total hombres",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-061",
+      "entidad": "Matrícula Total",
+      "valor": 50922,
+      "unidad": "estudiantes",
+      "contexto": "Matrícula total",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-062",
+      "entidad": "SIES",
+      "valor": "1385828 estudiantes",
+      "unidad": "",
+      "contexto": "Matrícula total educación superior Chile 2024|",
+      "categoria": "brechas-genero",
+      "año": 2024
+    },
+    {
+      "id": "h-064",
+      "entidad": "SIES",
+      "valor": "23%",
+      "unidad": "",
+      "contexto": "Brecha de género en carreras de ingeniería|",
+      "categoria": "brechas-genero",
+      "año": 2024
+    }
+  ],
+  "hechos_cualitativos": [
+    {
+      "id": "q-001",
+      "entidad": "SIES",
+      "afirmacion": "No se menciona",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-002",
+      "entidad": "SIES",
+      "afirmacion": "No se menciona",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-003",
+      "entidad": "SIES",
+      "afirmacion": "Ciencia, Tecnología, Ingeniería y Matemáticas",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-004",
+      "entidad": "SIES",
+      "afirmacion": "Brecha de género en Educación Superior",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-005",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-006",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "51.4 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-007",
+      "entidad": "Salud",
+      "afirmacion": "51.1 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-008",
+      "entidad": "Ciencias Sociales",
+      "afirmacion": "41.4 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-009",
+      "entidad": "Tecnología",
+      "afirmacion": "-61.3 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-010",
+      "entidad": "Ciencias Básicas",
+      "afirmacion": "-7.8 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-011",
+      "entidad": "Universidades",
+      "afirmacion": "728168 estudiantes",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-012",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "11,5 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-013",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "-4.6 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-014",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-015",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "184.563 estudiantes",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-016",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "166.117 estudiantes",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-017",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "11,5 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-018",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "10.2 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-019",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "-4.6 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-020",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "tipo",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-021",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "------",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-022",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-023",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-024",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-025",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-026",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-027",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-028",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-029",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-030",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-031",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-032",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-033",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-034",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-035",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-036",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-037",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-038",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-039",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "cifra",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-040",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-041",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "8432 estudiantes",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-042",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "728168 estudiantes",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-043",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "N/A",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-044",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "84.8%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-045",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "80%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-046",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-047",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-048",
+      "entidad": "SIES",
+      "afirmacion": "56,9%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-049",
+      "entidad": "SIES",
+      "afirmacion": "43,1%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-050",
+      "entidad": "SIES",
+      "afirmacion": "56,6%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-051",
+      "entidad": "SIES",
+      "afirmacion": "43,4%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-052",
+      "entidad": "SIES",
+      "afirmacion": "58,1%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-053",
+      "entidad": "SIES",
+      "afirmacion": "41,9%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-054",
+      "entidad": "SIES",
+      "afirmacion": "57,1%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-055",
+      "entidad": "SIES",
+      "afirmacion": "42,9%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-056",
+      "entidad": "SIES",
+      "afirmacion": "56,2%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-057",
+      "entidad": "SIES",
+      "afirmacion": "43,8%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-058",
+      "entidad": "SIES",
+      "afirmacion": "53,3%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-059",
+      "entidad": "SIES",
+      "afirmacion": "43.1%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-060",
+      "entidad": "SIES",
+      "afirmacion": "13,7",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-061",
+      "entidad": "SIES",
+      "afirmacion": "13,2",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-062",
+      "entidad": "SIES",
+      "afirmacion": "16,1",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-063",
+      "entidad": "SIES",
+      "afirmacion": "14,1",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-064",
+      "entidad": "SIES",
+      "afirmacion": "12,5",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-065",
+      "entidad": "Salud",
+      "afirmacion": "57,6 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-066",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "56,6 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-067",
+      "entidad": "Ciencias Sociales",
+      "afirmacion": "45,6 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-068",
+      "entidad": "Tecnología",
+      "afirmacion": "-62,2 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-069",
+      "entidad": "Ciencias Básicas",
+      "afirmacion": "-15,5 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-070",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-071",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "-37,6 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-072",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "-70,1 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-073",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "-70,7 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-074",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-075",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "40.470 estudiantes",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-076",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "48.528 estudiantes",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-077",
+      "entidad": "Región Metropolitana",
+      "afirmacion": "728168 estudiantes",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-078",
+      "entidad": "Brecha M-H (p.p.)",
+      "afirmacion": "-8,7 p.p.",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-079",
+      "entidad": "%Mujer",
+      "afirmacion": "45,4%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-080",
+      "entidad": "%Hombre",
+      "afirmacion": "54,6%",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-081",
+      "entidad": "Brecha M-H (p.p.)",
+      "afirmacion": "-9,3",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-082",
+      "entidad": "INE",
+      "afirmacion": "Brechas de Género",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-083",
+      "entidad": "INE",
+      "afirmacion": "Cobertura Neta",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-084",
+      "entidad": "SIES",
+      "afirmacion": "Universidad Católica de Temuco",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-085",
+      "entidad": "SIES",
+      "afirmacion": "Región Metropolitana",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    },
+    {
+      "id": "q-086",
+      "entidad": "SIES",
+      "afirmacion": "Ciencias Sociales y Jurídicas",
+      "categoria": "brechas-genero",
+      "seccion": ""
+    }
+  ],
+  "relaciones": [
+    {
+      "origen": "IP",
+      "tipo": "relacionado_con",
+      "destino": "SIES",
+      "valor": "56.2%"
+    }
+  ],
+  "menciones_entidades": {
+    "SIES": [
+      {
+        "seccion": "",
+        "contexto": "No se menciona"
+      },
+      {
+        "seccion": "",
+        "contexto": "No se menciona"
+      },
+      {
+        "seccion": "",
+        "contexto": "No se menciona"
+      },
+      {
+        "seccion": "",
+        "contexto": "No se menciona"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Participación de mujeres en Titulación Total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2019"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2020"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2021"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2022"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha M-H (p.p.)"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha M-H (p.p.)"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha M-H (p.p.)"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha M-H (p.p.)"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha M-H (p.p.)"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2024|"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres en matrícula total|"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en carreras de ingeniería|"
+      }
+    ],
+    "ENTIDAD": [
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      }
+    ],
+    "Pontificia Universidad Católica de Chile": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Máxima tasa de aprobación anual en mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Máxima tasa de aprobación anual en hombres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula RM 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres en Aprobación Anual"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres en Aprobación Anual"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres en Aprobación Anual"
+      },
+      {
+        "seccion": "",
+        "contexto": "Máxima brecha de género en favor de las mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en Educación"
+      }
+    ],
+    "Salud": [
+      {
+        "seccion": "",
+        "contexto": "Máxima brecha de género en favor de las mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en Salud"
+      }
+    ],
+    "Ciencias Sociales": [
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en favor de las mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en Ciencias Sociales"
+      }
+    ],
+    "Tecnología": [
+      {
+        "seccion": "",
+        "contexto": "Máxima brecha de género en contra de las mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en Tecnología"
+      }
+    ],
+    "Ciencias Básicas": [
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en contra de las mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en Ciencias Básicas"
+      }
+    ],
+    "Universidades": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula RM 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total universitaria"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total universitaria"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total universitaria"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total universitaria"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total universitaria"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2021"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres en matrícula total"
+      }
+    ],
+    "Centros de Formación Técnica (CFT)": [
+      {
+        "seccion": "",
+        "contexto": "Brecha favorable a las mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en CFT 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha negativa en CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total CFT"
+      }
+    ],
+    "Institutos Profesionales (IP)": [
+      {
+        "seccion": "",
+        "contexto": "Brecha favorable a los hombres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en IP 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha negativa en IP"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total institucional"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total institucional"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total institucional"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total institucional"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total institucional"
+      }
+    ],
+    "Universidad Católica de Temuco": [
+      {
+        "seccion": "",
+        "contexto": "Mujeres en matrícula total UCT 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres en matrícula total UCT 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en UCT 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT en 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha negativa en universidades"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "año|contexto|"
+      },
+      {
+        "seccion": "",
+        "contexto": "-----|---------|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2020|Matrícula femenina Pedagogía 2020|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2020|Matrícula masculina Pedagogía 2020|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2020|Matrícula total Pedagogía 2020|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2021|Matrícula femenina Pedagogía 2021|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2021|Matrícula masculina Pedagogía 2021|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2021|Matrícula total Pedagogía 2021|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2022|Matrícula femenina Pedagogía 2022|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2022|Matrícula masculina Pedagogía 2022|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2022|Matrícula total Pedagogía 2022|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2023|Matrícula femenina Pedagogía 2023|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2023|Matrícula masculina Pedagogía 2023|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2023|Matrícula total Pedagogía 2023|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2024|Matrícula femenina Pedagogía 2024|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2024|Matrícula masculina Pedagogía 2024|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2024|Matrícula total Pedagogía 2024|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2020|Porcentaje de mujeres en matrícula total Pedagogía 2020|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2020|Porcentaje de hombres en matrícula total Pedagogía 2020|"
+      },
+      {
+        "seccion": "",
+        "contexto": "2020|Brecha porcentual entre mujeres y hombres en matrícula Pedagogía 2020|"
+      }
+    ],
+    "Matrícula Total": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2024"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total"
+      }
+    ],
+    "Participación Femenina": [
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Crecimiento de titulaciones femeninas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Crecimiento de titulaciones femeninas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total mujeres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula de mujeres en carreras STEM 2024"
+      }
+    ],
+    "Participación Masculina": [
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Crecimiento de titulaciones masculinas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Crecimiento de titulaciones masculinas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total hombres"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula de hombres en carreras STEM 2024"
+      }
+    ],
+    "Retención 1er Año": [
+      {
+        "seccion": "",
+        "contexto": "Duración Real promedio Pregrado"
+      }
+    ],
+    "Posgrado": [
+      {
+        "seccion": "",
+        "contexto": "Duración Real promedio Posgrado"
+      }
+    ],
+    "Postítulo": [
+      {
+        "seccion": "",
+        "contexto": "Duración Real promedio Postítulo"
+      }
+    ],
+    "Pedagogía": [
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en Pedagogía"
+      }
+    ],
+    "Región Metropolitana": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula RM 2024"
+      }
+    ],
+    "Brecha M-H (p.p.)": [
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Brecha de género en matrícula total"
+      }
+    ],
+    "%Mujer": [
+      {
+        "seccion": "",
+        "contexto": "% de mujeres en matrícula total"
+      }
+    ],
+    "%Hombre": [
+      {
+        "seccion": "",
+        "contexto": "% de hombres en matrícula total"
+      }
+    ]
+  },
+  "secciones_detectadas": [
+    "Brechas de Género en Educación Superior 2025",
+    "ÍNDICE",
+    "ANTECEDENTES",
+    "PRINCIPALES RESULTADOS",
+    "COBERTURA NETA EN EDUCACIÓN SUPERIOR",
+    "Evolución de la Cobertura Neta de Educación Superior por sexo",
+    "PARTICIPACIÓN EN LA MATRÍCULA DE 1 er  AÑO DE PREGRADO",
+    "Retención de 1 er  año de Pregrado",
+    "Evolución de la participación en Matrícula de 1 er  año en carreras de Pedagogía por sexo",
+    "RENDIMIENTO Y TRAYECTORIA ACADÉMICA",
+    "PARTICIPACIÓN EN LA TITULACIÓN TOTAL",
+    "Evolución de la participación en la Titulación y brechas de género",
+    "Evolución brechas de género en participación en Titulación por nivel de formación (p.p.)",
+    "ÁREAS STEM EN EDUCACIÓN SUPERIOR",
+    "er  año en carreras de Pregrado STEM y Brechas de Género",
+    "er  año en",
+    "er  año en",
+    "PERSONAL ACADÉMICO EN EDUCACIÓN SUPERIOR",
+    "Participación en el número de JCE en Educación Superior por sexo",
+    "GLOSARIO"
+  ],
+  "_metadata": {
+    "modelo": "llama3.2:3b",
+    "chunks": 20,
+    "lineas_extraidas": 150,
+    "procesado": "2026-07-08 12:19:09"
+  }
+}

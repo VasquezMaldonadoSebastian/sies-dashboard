@@ -1,0 +1,1280 @@
+{
+  "archivo": "Informe_Retencion_2025_SIES.md",
+  "categoria": "retencion",
+  "año": null,
+  "resumen_ejecutivo": "Informe de retención SIES ",
+  "entidades": {
+    "instituciones": [
+      {
+        "nombre": "Pontificia Universidad Católica de Chile",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidad Católica de Temuco",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Centros de Formación Técnica (CFT)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Institutos Profesionales (IP)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidad de Chile",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Instituto Tecnológico y de Estudios Superiores de Monterrey (ITESM)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidades",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Instituto Universitario de Tecnología e Innovación (IUTI)",
+        "tipo": "desconocido"
+      }
+    ],
+    "regiones": [],
+    "areas_conocimiento": [],
+    "niveles_formacion": [],
+    "tipos_ies": []
+  },
+  "hechos_numericos": [
+    {
+      "id": "h-0001",
+      "entidad": "Retención 1er Año",
+      "valor": 74.5,
+      "unidad": "%",
+      "contexto": "Porcentaje de estudiantes que continúan en la misma institución y cohorte al año siguiente",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0002",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 65.2,
+      "unidad": "%",
+      "contexto": "Porcentaje de estudiantes que continúan en la misma institución y nueva cohorte al año siguiente",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0003",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 83.5,
+      "unidad": "%",
+      "contexto": "Porcentaje de estudiantes que continúan en educación superior al año siguiente",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0004",
+      "entidad": "Universidades",
+      "valor": 84.0,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0005",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 72.8,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0006",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 70.9,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0007",
+      "entidad": "Carreras Profesionales",
+      "valor": 81.8,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0008",
+      "entidad": "Carreras Técnicas",
+      "valor": 70.1,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0009",
+      "entidad": "Diurnas",
+      "valor": 81.9,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0010",
+      "entidad": "Vespertinas",
+      "valor": 69.7,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0011",
+      "entidad": "A Distancia",
+      "valor": 63.5,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0012",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 77.7,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0013",
+      "entidad": "No Acreditadas",
+      "valor": 58.2,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0014",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 68.1,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0015",
+      "entidad": "Participación Femenina",
+      "valor": 79.0,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0016",
+      "entidad": "Participación Masculina",
+      "valor": 75.4,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0017",
+      "entidad": "Particular Pagados",
+      "valor": 85.2,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0018",
+      "entidad": "Particular Subvencionados",
+      "valor": 79.1,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0019",
+      "entidad": "Corporaciones Delegada",
+      "valor": 77.0,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0020",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 75.3,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0021",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 77.3,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0022",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 78.3,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en la misma institución",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0023",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 84.3,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en educación superior",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0024",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 21.7,
+      "unidad": "%",
+      "contexto": "No matrícula",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0025",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 22.6,
+      "unidad": "%",
+      "contexto": "No matrícula",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0026",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 8.4,
+      "unidad": "%",
+      "contexto": "Porcentaje de estudiantes que cambian institución o carrera al año siguiente",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0027",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 6.5,
+      "unidad": "%",
+      "contexto": "Porcentaje de estudiantes que persisten cambiándose de institución o iniciando una nueva carrera al año siguiente",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0028",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 5.5,
+      "unidad": "%",
+      "contexto": "Porcentaje de estudiantes que persisten cambiándose de institución o iniciando una nueva carrera al año siguiente",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0029",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 84.0,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año en universidades",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0032",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 81.8,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año en carreras profesionales",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0033",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 70.1,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año en carreras técnicas",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0034",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 72.2,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año en IP (anterior a 2024)",
+      "categoria": "retencion",
+      "año": 2023
+    },
+    {
+      "id": "h-0038",
+      "entidad": "Matrícula Total",
+      "valor": 77.3,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0039",
+      "entidad": "SIES",
+      "valor": 77.3,
+      "unidad": "%",
+      "contexto": "Tasa de retención de primer año",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0040",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 79.0,
+      "unidad": "%",
+      "contexto": "Mujeres en matrícula total",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0041",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 75.4,
+      "unidad": "%",
+      "contexto": "Hombres en matrícula total",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0042",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 78.1,
+      "unidad": "%",
+      "contexto": "Mujeres en matrícula total",
+      "categoria": "retencion",
+      "año": 2023
+    },
+    {
+      "id": "h-0043",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 74.7,
+      "unidad": "%",
+      "contexto": "Hombres en matrícula total",
+      "categoria": "retencion",
+      "año": 2023
+    },
+    {
+      "id": "h-0044",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 77.9,
+      "unidad": "%",
+      "contexto": "Mujeres en matrícula total",
+      "categoria": "retencion",
+      "año": 2022
+    },
+    {
+      "id": "h-0045",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 73.8,
+      "unidad": "%",
+      "contexto": "Hombres en matrícula total",
+      "categoria": "retencion",
+      "año": 2022
+    },
+    {
+      "id": "h-0046",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 83.2,
+      "unidad": "%",
+      "contexto": "Retención de 1er año en carreras de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0047",
+      "entidad": "Universidad de Chile",
+      "valor": 84.5,
+      "unidad": "%",
+      "contexto": "Retención de 1er año en carreras de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0048",
+      "entidad": "Instituto Tecnológico y de Estudios Superiores de Monterrey (ITESM)",
+      "valor": 85.6,
+      "unidad": "%",
+      "contexto": "Retención de 1er año en carreras de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0049",
+      "entidad": "Universidades",
+      "valor": 86.5,
+      "unidad": "%",
+      "contexto": "Retención de 1er año en carreras de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0050",
+      "entidad": "Instituto Universitario de Tecnología e Innovación (IUTI)",
+      "valor": 87.3,
+      "unidad": "%",
+      "contexto": "Retención de 1er año en carreras de pregrado",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0051",
+      "entidad": "Medicina",
+      "valor": 95.8,
+      "unidad": "%",
+      "contexto": "Máxima retención en carrera",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0052",
+      "entidad": "Obstetricia y Puericultura",
+      "valor": 91.4,
+      "unidad": "%",
+      "contexto": "Segunda máxima retención en carrera",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0053",
+      "entidad": "Química y Farmacia",
+      "valor": 91.0,
+      "unidad": "%",
+      "contexto": "Tercera máxima retención en carrera",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0054",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 90.9,
+      "unidad": "%",
+      "contexto": "Máxima retención en área de Pedagogía",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0055",
+      "entidad": "Enfermería",
+      "valor": 89.3,
+      "unidad": "%",
+      "contexto": "Cuarta máxima retención en carrera",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0056",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 88.7,
+      "unidad": "%",
+      "contexto": "Quinta máxima retención en área de Pedagogía",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0057",
+      "entidad": "Psicología",
+      "valor": 88.6,
+      "unidad": "%",
+      "contexto": "Sexta máxima retención en carrera",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0058",
+      "entidad": "Bachillerato y/o Licenciatura en Ciencias Básicas",
+      "valor": 69.4,
+      "unidad": "%",
+      "contexto": "Mínima retención en área de Ciencias Básicas",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0059",
+      "entidad": "Ingeniería en Computación e Informática",
+      "valor": 79.0,
+      "unidad": "%",
+      "contexto": "Máxima retención en carrera de Ingeniería",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0060",
+      "entidad": "Técnico Veterinario",
+      "valor": 81.6,
+      "unidad": "%",
+      "contexto": "Máxima retención en carrera de Técnico",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0061",
+      "entidad": "Particular Pagado",
+      "valor": 85.2,
+      "unidad": "%",
+      "contexto": "Tasa de retención del primer año en establecimientos particulares pagados",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0062",
+      "entidad": "Particular Subvencionado",
+      "valor": 79.1,
+      "unidad": "%",
+      "contexto": "Tasa de retención del primer año en establecimientos particulares subvencionados",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0063",
+      "entidad": "Corporaciones de Administración Delegada",
+      "valor": 77.0,
+      "unidad": "%",
+      "contexto": "Tasa de retención del primer año en corporaciones de administración delegada",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0064",
+      "entidad": "Públicos",
+      "valor": 75.3,
+      "unidad": "%",
+      "contexto": "Tasa de retención del primer año en establecimientos públicos",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0065",
+      "entidad": "Administración Delegada",
+      "valor": 77.0,
+      "unidad": "%",
+      "contexto": "Tasa de retención del primer año en administración delegada",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0067",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 1.0,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en la misma institución en CFT",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0068",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 5.5,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en educación superior en CFT",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0069",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 22.6,
+      "unidad": "%",
+      "contexto": "Porcentaje de no matriculados al año siguiente en CFT",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0070",
+      "entidad": "Con Beneficios",
+      "valor": 76.0,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año con beneficios",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0071",
+      "entidad": "Con Beneficios",
+      "valor": 1.1,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en la misma institución con beneficios",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0072",
+      "entidad": "Con Beneficios",
+      "valor": 4.7,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en educación superior con beneficios",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0073",
+      "entidad": "Con Beneficios",
+      "valor": 18.3,
+      "unidad": "%",
+      "contexto": "Porcentaje de no matriculados al año siguiente con beneficios",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0074",
+      "entidad": "Sin Beneficios",
+      "valor": 53.5,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año sin beneficios",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0075",
+      "entidad": "Sin Beneficios",
+      "valor": 0.6,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en la misma institución sin beneficios",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0076",
+      "entidad": "Sin Beneficios",
+      "valor": 8.3,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en educación superior sin beneficios",
+      "categoria": "retencion",
+      "año": 2024
+    },
+    {
+      "id": "h-0077",
+      "entidad": "Sin Beneficios",
+      "valor": 37.6,
+      "unidad": "%",
+      "contexto": "Porcentaje de no matriculados al año siguiente sin beneficios",
+      "categoria": "retencion",
+      "año": 2024
+    }
+  ],
+  "hechos_cualitativos": [
+    {
+      "id": "q-0001",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "SIES",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0002",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0003",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0004",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0005",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "Profesionales",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0006",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "Técnicas",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0007",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "Técnicas",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0008",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0009",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0010",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0011",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0012",
+      "entidad": "Con Beneficios",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0013",
+      "entidad": "Sin Beneficios",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0014",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "8432 estudiantes",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0015",
+      "entidad": "Retención 1er Año",
+      "afirmacion": "No especificado",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0016",
+      "entidad": "Programas regulares",
+      "afirmacion": "No especificado",
+      "categoria": "retencion",
+      "seccion": ""
+    }
+  ],
+  "relaciones": [],
+  "menciones_entidades": {
+    "Pontificia Universidad Católica de Chile": [
+      {
+        "seccion": "",
+        "contexto": "Fecha de corte de los datos"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de estudiantes que continúan en la misma institución y nueva cohorte al año siguiente"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de estudiantes que continúan en educación superior al año siguiente"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "Máxima retención en área de Pedagogía"
+      },
+      {
+        "seccion": "",
+        "contexto": "Quinta máxima retención en área de Pedagogía"
+      }
+    ],
+    "Retención 1er Año": [
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de estudiantes que continúan en la misma institución y cohorte al año siguiente"
+      },
+      {
+        "seccion": "",
+        "contexto": "Nivel de formación"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año"
+      }
+    ],
+    "ENTIDAD": [
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      }
+    ],
+    "Universidades": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "Retención de 1er año en carreras de pregrado"
+      }
+    ],
+    "Institutos Profesionales (IP)": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "No matrícula"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de estudiantes que persisten cambiándose de institución o iniciando una nueva carrera al año siguiente"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año en IP"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año en IP (anterior a 2024)"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año en IP (anterior a 2024)"
+      },
+      {
+        "seccion": "",
+        "contexto": "2023|Tasa de retención de primer año en IP (anterior a 2024)"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres en matrícula total"
+      }
+    ],
+    "Centros de Formación Técnica (CFT)": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "No matrícula"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de estudiantes que persisten cambiándose de institución o iniciando una nueva carrera al año siguiente"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año en CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año en carreras técnicas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Retención de primer año en carreras técnicas"
+      },
+      {
+        "seccion": "",
+        "contexto": "2024|Retención de primer año en carreras técnicas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año en CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en la misma institución en CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en educación superior en CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de no matriculados al año siguiente en CFT"
+      }
+    ],
+    "Carreras Profesionales": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      }
+    ],
+    "Carreras Técnicas": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      }
+    ],
+    "Diurnas": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      }
+    ],
+    "Vespertinas": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      }
+    ],
+    "A Distancia": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      }
+    ],
+    "No Acreditadas": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      }
+    ],
+    "Participación Femenina": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      }
+    ],
+    "Participación Masculina": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      }
+    ],
+    "Particular Pagados": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      }
+    ],
+    "Particular Subvencionados": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      }
+    ],
+    "Corporaciones Delegada": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año de pregrado"
+      }
+    ],
+    "Universidad Católica de Temuco": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en la misma institución"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en educación superior"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de estudiantes que cambian institución o carrera al año siguiente"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año en universidades"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año en carreras profesionales"
+      },
+      {
+        "seccion": "",
+        "contexto": "Retención de primer año en carreras profesionales"
+      },
+      {
+        "seccion": "",
+        "contexto": "2024|Retención de primer año en carreras profesionales"
+      },
+      {
+        "seccion": "",
+        "contexto": "Mujeres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Hombres en matrícula total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Retención de 1er año en carreras de pregrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT en 2024"
+      }
+    ],
+    "Matrícula Total": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año"
+      }
+    ],
+    "SIES": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención de primer año"
+      }
+    ],
+    "Universidad de Chile": [
+      {
+        "seccion": "",
+        "contexto": "Retención de 1er año en carreras de pregrado"
+      }
+    ],
+    "Instituto Tecnológico y de Estudios Superiores de Monterrey (ITESM)": [
+      {
+        "seccion": "",
+        "contexto": "Retención de 1er año en carreras de pregrado"
+      }
+    ],
+    "Instituto Universitario de Tecnología e Innovación (IUTI)": [
+      {
+        "seccion": "",
+        "contexto": "Retención de 1er año en carreras de pregrado"
+      }
+    ],
+    "Medicina": [
+      {
+        "seccion": "",
+        "contexto": "Máxima retención en carrera"
+      }
+    ],
+    "Obstetricia y Puericultura": [
+      {
+        "seccion": "",
+        "contexto": "Segunda máxima retención en carrera"
+      }
+    ],
+    "Química y Farmacia": [
+      {
+        "seccion": "",
+        "contexto": "Tercera máxima retención en carrera"
+      }
+    ],
+    "Enfermería": [
+      {
+        "seccion": "",
+        "contexto": "Cuarta máxima retención en carrera"
+      }
+    ],
+    "Psicología": [
+      {
+        "seccion": "",
+        "contexto": "Sexta máxima retención en carrera"
+      }
+    ],
+    "Bachillerato y/o Licenciatura en Ciencias Básicas": [
+      {
+        "seccion": "",
+        "contexto": "Mínima retención en área de Ciencias Básicas"
+      }
+    ],
+    "Ingeniería en Computación e Informática": [
+      {
+        "seccion": "",
+        "contexto": "Máxima retención en carrera de Ingeniería"
+      }
+    ],
+    "Técnico Veterinario": [
+      {
+        "seccion": "",
+        "contexto": "Máxima retención en carrera de Técnico"
+      }
+    ],
+    "Particular Pagado": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención del primer año en establecimientos particulares pagados"
+      }
+    ],
+    "Particular Subvencionado": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención del primer año en establecimientos particulares subvencionados"
+      }
+    ],
+    "Corporaciones de Administración Delegada": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención del primer año en corporaciones de administración delegada"
+      }
+    ],
+    "Públicos": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención del primer año en establecimientos públicos"
+      }
+    ],
+    "Administración Delegada": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención del primer año en administración delegada"
+      }
+    ],
+    "Con Beneficios": [
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año con beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en la misma institución con beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en educación superior con beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de no matriculados al año siguiente con beneficios"
+      }
+    ],
+    "Sin Beneficios": [
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año sin beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en la misma institución sin beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en educación superior sin beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de no matriculados al año siguiente sin beneficios"
+      }
+    ],
+    "Programas regulares": [
+      {
+        "seccion": "",
+        "contexto": "Tipo de programas"
+      }
+    ]
+  },
+  "secciones_detectadas": [
+    "AGOSTO 2025 RETENCIÓN DE 1 er  AÑO DE PREGRADO COHORTES 2020 - 2024 INFORME 2025",
+    "Informe de Retención de 1 er  Año de Pregrado Cohortes 2020 - 2024",
+    "ÍNDICE",
+    "ANTECEDENTES",
+    "PRINCIPALES RESULTADOS",
+    "COMPARACIÓN DE RETENCIÓN, PERSISTENCIAS Y NO MATRÍCULA AL 1 er  AÑO EN EDUCACIÓN SUPERIOR",
+    "RETENCIÓN DE 1 er  AÑO",
+    "RETENCIÓN DE 1 er  AÑO POR SEXO",
+    "RETENCIÓN DE 1 er  AÑO EN PRINCIPALES CARRERAS DE PREGRADO",
+    "RETENCIÓN DE 1 er  AÑO POR TIPO DE ESTABLECIMIENTO EDUCACIONAL DE ORIGEN",
+    "BENEFICIOS ESTUDIANTILES Y SU RELACIÓN CON LA RETENCIÓN DE 1 er  AÑO, PERSISTENCIA EN LA MISMA INSTITUCIÓN Y EN EDUCACIÓN SUPERIOR",
+    "GLOSARIO",
+    "Persistencia de 1 er año en la misma institución de Educación Superior:"
+  ],
+  "_metadata": {
+    "v": "v2",
+    "modelo": "llama3.2:3b",
+    "chunks": 13,
+    "lineas_raw": 94,
+    "procesado": "2026-07-08 12:47:23"
+  }
+}

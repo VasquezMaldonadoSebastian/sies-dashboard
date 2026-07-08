@@ -1,0 +1,1194 @@
+{
+  "archivo": "Informe_Retencion_SIES_2021.md",
+  "categoria": "retencion",
+  "año": null,
+  "resumen_ejecutivo": "Informe de retención SIES ",
+  "entidades": {
+    "instituciones": [
+      {
+        "nombre": "SIES",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidad Católica de Temuco",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Centros de Formación Técnica (CFT)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Institutos Profesionales (IP)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidades",
+        "tipo": "desconocido"
+      }
+    ],
+    "regiones": [],
+    "areas_conocimiento": [],
+    "niveles_formacion": [],
+    "tipos_ies": []
+  },
+  "hechos_numericos": [
+    {
+      "id": "h-0001",
+      "entidad": "Universidades",
+      "valor": 91.5,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en Educación Superior",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0002",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 74.7,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en Educación Superior",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0003",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 74.0,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en Educación Superior",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0004",
+      "entidad": "Total general",
+      "valor": 82.1,
+      "unidad": "%",
+      "contexto": "Tasa de persistencia en Educación Superior",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0005",
+      "entidad": "Universidades",
+      "valor": 85.0,
+      "unidad": "%",
+      "contexto": "Retención de 1er año en universidades",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0006",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 66.2,
+      "unidad": "%",
+      "contexto": "Retención de 1er año en CFT",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0007",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 68.8,
+      "unidad": "%",
+      "contexto": "Retención de 1er año en IP",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0008",
+      "entidad": "Total general",
+      "valor": 75.6,
+      "unidad": "%",
+      "contexto": "Retención de 1er año total",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0009",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 95.5,
+      "unidad": "%",
+      "contexto": "Medicina",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0010",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 93.2,
+      "unidad": "%",
+      "contexto": "Obstetricia y Puericultura",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0011",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 91.6,
+      "unidad": "%",
+      "contexto": "Química y Farmacia",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0012",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 90.6,
+      "unidad": "%",
+      "contexto": "Tecnología Médica",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0014",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 89.5,
+      "unidad": "%",
+      "contexto": "Terapia Ocupacional",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0015",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 89.2,
+      "unidad": "%",
+      "contexto": "Enfermería",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0016",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 93.1,
+      "unidad": "%",
+      "contexto": "Pedagogía en Educación Diferencial",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0017",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 91.9,
+      "unidad": "%",
+      "contexto": "Pedagogía en Educación Básica",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0018",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 91.5,
+      "unidad": "%",
+      "contexto": "Pedagogía en Educación Parvularia",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0019",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 93.0,
+      "unidad": "%",
+      "contexto": "Ingeniería Civil plan común",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0020",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 89.6,
+      "unidad": "%",
+      "contexto": "Ingeniería Civil Industrial",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0021",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 89.0,
+      "unidad": "%",
+      "contexto": "Periodismo",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0022",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 79.2,
+      "unidad": "%",
+      "contexto": "Ingeniería en Computación e Informática",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0023",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 70.2,
+      "unidad": "%",
+      "contexto": "Técnico en Administración de Empresas",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0024",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 62.3,
+      "unidad": "%",
+      "contexto": "Bachillerato y/o Licenciatura en Ciencias",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0025",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 80.0,
+      "unidad": "%",
+      "contexto": "Matrícula total UCT en 2016",
+      "categoria": "retencion",
+      "año": 2016
+    },
+    {
+      "id": "h-0026",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 75.6,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en UCT 2016",
+      "categoria": "retencion",
+      "año": 2016
+    },
+    {
+      "id": "h-0027",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 76.5,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en UCT 2017",
+      "categoria": "retencion",
+      "año": 2017
+    },
+    {
+      "id": "h-0028",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 77.4,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en UCT 2018",
+      "categoria": "retencion",
+      "año": 2018
+    },
+    {
+      "id": "h-0029",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 76.3,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en UCT 2019",
+      "categoria": "retencion",
+      "año": 2019
+    },
+    {
+      "id": "h-0030",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 79.5,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en UCT 2020",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0031",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 69.1,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año hombres en UCT 2016",
+      "categoria": "retencion",
+      "año": 2016
+    },
+    {
+      "id": "h-0032",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 71.5,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año hombres en UCT 2017",
+      "categoria": "retencion",
+      "año": 2017
+    },
+    {
+      "id": "h-0033",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 72.3,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año hombres en UCT 2018",
+      "categoria": "retencion",
+      "año": 2018
+    },
+    {
+      "id": "h-0034",
+      "entidad": "Universidad Católica de Temuco",
+      "valor": 70.7,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año hombres en UCT 2019",
+      "categoria": "retencion",
+      "año": 2019
+    },
+    {
+      "id": "h-0035",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "valor": 71.2,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año hombres en UCT 2020",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0036",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 71.1,
+      "unidad": "%",
+      "contexto": "Matrícula total CFT en 2016",
+      "categoria": "retencion",
+      "año": 2016
+    },
+    {
+      "id": "h-0037",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 72.1,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en CFT 2016",
+      "categoria": "retencion",
+      "año": 2016
+    },
+    {
+      "id": "h-0038",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 65.0,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en CFT 2017",
+      "categoria": "retencion",
+      "año": 2017
+    },
+    {
+      "id": "h-0039",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 68.9,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en CFT 2018",
+      "categoria": "retencion",
+      "año": 2018
+    },
+    {
+      "id": "h-0040",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 66.6,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en CFT 2019",
+      "categoria": "retencion",
+      "año": 2019
+    },
+    {
+      "id": "h-0041",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 64.6,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en CFT 2020",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0042",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 72.1,
+      "unidad": "%",
+      "contexto": "Matrícula total IP en 2016",
+      "categoria": "retencion",
+      "año": 2016
+    },
+    {
+      "id": "h-0043",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 65.0,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en IP 2016",
+      "categoria": "retencion",
+      "año": 2016
+    },
+    {
+      "id": "h-0044",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 68.9,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en IP 2017",
+      "categoria": "retencion",
+      "año": 2017
+    },
+    {
+      "id": "h-0045",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 74.7,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en IP 2018",
+      "categoria": "retencion",
+      "año": 2018
+    },
+    {
+      "id": "h-0046",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 72.1,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en IP 2019",
+      "categoria": "retencion",
+      "año": 2019
+    },
+    {
+      "id": "h-0047",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 73.0,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en IP 2020",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0048",
+      "entidad": "Universidades",
+      "valor": 80.0,
+      "unidad": "%",
+      "contexto": "Matrícula total UCT en 2016",
+      "categoria": "retencion",
+      "año": 2016
+    },
+    {
+      "id": "h-0049",
+      "entidad": "Universidades",
+      "valor": 75.6,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en UCT 2016",
+      "categoria": "retencion",
+      "año": 2016
+    },
+    {
+      "id": "h-0050",
+      "entidad": "Universidades",
+      "valor": 76.5,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en UCT 2017",
+      "categoria": "retencion",
+      "año": 2017
+    },
+    {
+      "id": "h-0051",
+      "entidad": "Universidades",
+      "valor": 77.4,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en UCT 2018",
+      "categoria": "retencion",
+      "año": 2018
+    },
+    {
+      "id": "h-0052",
+      "entidad": "Universidades",
+      "valor": 76.3,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en UCT 2019",
+      "categoria": "retencion",
+      "año": 2019
+    },
+    {
+      "id": "h-0053",
+      "entidad": "Universidades",
+      "valor": 79.5,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año mujeres en UCT 2020",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0054",
+      "entidad": "Universidades",
+      "valor": 69.1,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año hombres en UCT 2016",
+      "categoria": "retencion",
+      "año": 2016
+    },
+    {
+      "id": "h-0055",
+      "entidad": "Universidades",
+      "valor": 71.5,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año hombres en UCT 2017",
+      "categoria": "retencion",
+      "año": 2017
+    },
+    {
+      "id": "h-0056",
+      "entidad": "Universidades",
+      "valor": 72.3,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año hombres en UCT 2018",
+      "categoria": "retencion",
+      "año": 2018
+    },
+    {
+      "id": "h-0057",
+      "entidad": "Universidades",
+      "valor": 707,
+      "unidad": "estudiantes",
+      "contexto": "70,7",
+      "categoria": "retencion",
+      "año": null
+    },
+    {
+      "id": "h-0058",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 72.3,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0059",
+      "entidad": "Particular Subvencionado",
+      "valor": 77.5,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0060",
+      "entidad": "Administración Delegada",
+      "valor": 72.7,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0061",
+      "entidad": "Carreras Profesionales",
+      "valor": 80.3,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0062",
+      "entidad": "Particular Pagado",
+      "valor": 85.1,
+      "unidad": "%",
+      "contexto": "Tasa de retención al primer año",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0063",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 70.4,
+      "unidad": "%",
+      "contexto": "Tasa de Retención de 1er año con beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0064",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 55.2,
+      "unidad": "%",
+      "contexto": "Tasa de Retención de 1er año sin beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0066",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 75.3,
+      "unidad": "%",
+      "contexto": "Tasa de Retención de 1er año con beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0067",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 60.0,
+      "unidad": "%",
+      "contexto": "Tasa de Retención de 1er año sin beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0069",
+      "entidad": "Universidades",
+      "valor": 88.6,
+      "unidad": "%",
+      "contexto": "Tasa de Retención de 1er año con beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0070",
+      "entidad": "Universidades",
+      "valor": 77.2,
+      "unidad": "%",
+      "contexto": "Tasa de Retención de 1er año sin beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0072",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 72.2,
+      "unidad": "%",
+      "contexto": "Tasa de Persistencia en la misma institución con beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0073",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 56.3,
+      "unidad": "%",
+      "contexto": "Tasa de Persistencia en la misma institución sin beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0074",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "valor": 67.7,
+      "unidad": "%",
+      "contexto": "Tasa de Persistencia en la misma institución total",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0075",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 76.7,
+      "unidad": "%",
+      "contexto": "Tasa de Persistencia en la misma institución con beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0076",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 60.9,
+      "unidad": "%",
+      "contexto": "Tasa de Persistencia en la misma institución sin beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0077",
+      "entidad": "Institutos Profesionales (IP)",
+      "valor": 70.1,
+      "unidad": "%",
+      "contexto": "Tasa de Persistencia en la misma institución total",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0078",
+      "entidad": "Universidades",
+      "valor": 89.7,
+      "unidad": "%",
+      "contexto": "Tasa de Persistencia en la misma institución con beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0079",
+      "entidad": "Universidades",
+      "valor": 78.7,
+      "unidad": "%",
+      "contexto": "Tasa de Persistencia en la misma institución sin beneficios",
+      "categoria": "retencion",
+      "año": 2020
+    },
+    {
+      "id": "h-0080",
+      "entidad": "Universidades",
+      "valor": 86.2,
+      "unidad": "%",
+      "contexto": "Tasa de Persistencia en la misma institución total",
+      "categoria": "retencion",
+      "año": 2020
+    }
+  ],
+  "hechos_cualitativos": [
+    {
+      "id": "q-0001",
+      "entidad": "SIES",
+      "afirmacion": "Universidad Católica de Temuco",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0002",
+      "entidad": "SIES",
+      "afirmacion": "Universidad Católica de Temuco",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0003",
+      "entidad": "SIES",
+      "afirmacion": "Universidad Católica de Temuco",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0004",
+      "entidad": "SIES",
+      "afirmacion": "Región de la Araucanía",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0005",
+      "entidad": "SIES",
+      "afirmacion": "Región de la Araucanía",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0006",
+      "entidad": "SIES",
+      "afirmacion": "Región de la Araucanía",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0007",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0008",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0009",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    },
+    {
+      "id": "q-0010",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "retencion",
+      "seccion": ""
+    }
+  ],
+  "relaciones": [],
+  "menciones_entidades": {
+    "SIES": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de Retención de 1er año"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en misma institución"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en Educación Superior"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Retención de 1er año"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en misma institución"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en Educación Superior"
+      }
+    ],
+    "ENTIDAD": [
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      }
+    ],
+    "Universidades": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en Educación Superior"
+      },
+      {
+        "seccion": "",
+        "contexto": "Retención de 1er año en universidades"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT en 2016"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en UCT 2016"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en UCT 2017"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en UCT 2018"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en UCT 2019"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en UCT 2020"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año hombres en UCT 2016"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año hombres en UCT 2017"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año hombres en UCT 2018"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Retención de 1er año con beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Retención de 1er año sin beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Retención de 1er año total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en la misma institución con beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en la misma institución sin beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en la misma institución total"
+      }
+    ],
+    "Institutos Profesionales (IP)": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en Educación Superior"
+      },
+      {
+        "seccion": "",
+        "contexto": "Retención de 1er año en IP"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total IP en 2016"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en IP 2016"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en IP 2017"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en IP 2018"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en IP 2019"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en IP 2020"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Retención de 1er año con beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Retención de 1er año sin beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Retención de 1er año total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en la misma institución con beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en la misma institución sin beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en la misma institución total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año"
+      }
+    ],
+    "Centros de Formación Técnica (CFT)": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en Educación Superior"
+      },
+      {
+        "seccion": "",
+        "contexto": "Retención de 1er año en CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total CFT en 2016"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en CFT 2016"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en CFT 2017"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en CFT 2018"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en CFT 2019"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en CFT 2020"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Retención de 1er año con beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Retención de 1er año sin beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Retención de 1er año total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en la misma institución con beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en la misma institución sin beneficios"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de Persistencia en la misma institución total"
+      }
+    ],
+    "Total general": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de persistencia en Educación Superior"
+      },
+      {
+        "seccion": "",
+        "contexto": "Retención de 1er año total"
+      }
+    ],
+    "Universidad Católica de Temuco": [
+      {
+        "seccion": "",
+        "contexto": "Medicina"
+      },
+      {
+        "seccion": "",
+        "contexto": "Obstetricia y Puericultura"
+      },
+      {
+        "seccion": "",
+        "contexto": "Química y Farmacia"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tecnología Médica"
+      },
+      {
+        "seccion": "",
+        "contexto": "Odontología"
+      },
+      {
+        "seccion": "",
+        "contexto": "Terapia Ocupacional"
+      },
+      {
+        "seccion": "",
+        "contexto": "Pedagogía en Educación Diferencial"
+      },
+      {
+        "seccion": "",
+        "contexto": "Pedagogía en Educación Básica"
+      },
+      {
+        "seccion": "",
+        "contexto": "Pedagogía en Educación Parvularia"
+      },
+      {
+        "seccion": "",
+        "contexto": "Ingeniería Civil plan común"
+      },
+      {
+        "seccion": "",
+        "contexto": "Ingeniería Civil Industrial"
+      },
+      {
+        "seccion": "",
+        "contexto": "Periodismo"
+      },
+      {
+        "seccion": "",
+        "contexto": "Ingeniería en Computación e Informática"
+      },
+      {
+        "seccion": "",
+        "contexto": "Técnico en Administración de Empresas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Bachillerato y/o Licenciatura en Ciencias"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT en 2016"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en UCT 2016"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en UCT 2017"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en UCT 2019"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en UCT 2020"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año hombres en UCT 2016"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año hombres en UCT 2017"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año hombres en UCT 2019"
+      }
+    ],
+    "Pontificia Universidad Católica de Chile": [
+      {
+        "seccion": "",
+        "contexto": "Enfermería"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año mujeres en UCT 2018"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año hombres en UCT 2018"
+      },
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año hombres en UCT 2020"
+      }
+    ],
+    "Particular Subvencionado": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año"
+      }
+    ],
+    "Administración Delegada": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año"
+      }
+    ],
+    "Carreras Profesionales": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año"
+      }
+    ],
+    "Particular Pagado": [
+      {
+        "seccion": "",
+        "contexto": "Tasa de retención al primer año"
+      }
+    ]
+  },
+  "secciones_detectadas": [
+    "AGOSTO 2021 DE PREGRADO INFORME 2021 COHORTES 2016 - 2020",
+    "ANTECEDENTES",
+    "PRINCIPALES RESULTADOS",
+    "RETENCIÓN DE 1 ER AÑO",
+    "Retención de 1 er año - Principales carreras",
+    "Retención de 1 er año por sexo",
+    "Retención de 1 er año por tipo de establecimiento educacional de origen",
+    "Beneficios Estudiantiles y su relación con tasas de Retención de 1 er  año y Persistencia",
+    "GLOSARIO",
+    "Tasa de Persistencia de 1 er  año en Educación"
+  ],
+  "_metadata": {
+    "v": "v2",
+    "modelo": "llama3.2:3b",
+    "chunks": 10,
+    "lineas_raw": 90,
+    "procesado": "2026-07-08 12:50:15"
+  }
+}

@@ -1,0 +1,791 @@
+{
+  "archivo": "Informe_Titulacion_2023_SIES.md",
+  "categoria": "titulacion",
+  "año": null,
+  "resumen_ejecutivo": "Informe de titulacion SIES ",
+  "entidades": {
+    "instituciones": [
+      {
+        "nombre": "Región Metropolitana",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidad Católica de Temuco",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Centros de Formación Técnica (CFT)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidades",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Institutos Profesionales (IP)",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidades",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidades",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidades",
+        "tipo": "desconocido"
+      },
+      {
+        "nombre": "Universidades",
+        "tipo": "desconocido"
+      }
+    ],
+    "regiones": [],
+    "areas_conocimiento": [
+      {
+        "nombre": "Educación"
+      },
+      {
+        "nombre": "Ciencias Sociales"
+      },
+      {
+        "nombre": "Agropecuaria"
+      },
+      {
+        "nombre": "Tecnología"
+      },
+      {
+        "nombre": "Salud"
+      },
+      {
+        "nombre": "Administración y Comercio"
+      },
+      {
+        "nombre": "Arte y Arquitectura"
+      },
+      {
+        "nombre": "Ciencias Básicas"
+      }
+    ],
+    "niveles_formacion": [],
+    "tipos_ies": []
+  },
+  "hechos_numericos": [
+    {
+      "id": "h-001",
+      "entidad": "SIES",
+      "valor": 297177,
+      "unidad": "estudiantes",
+      "contexto": "Titulación Total educación superior Chile 2023",
+      "categoria": "titulacion",
+      "año": 2023
+    },
+    {
+      "id": "h-002",
+      "entidad": "Retención 1er Año",
+      "valor": 229353,
+      "unidad": "estudiantes",
+      "contexto": "Titulaciones de Pregrado en 2023",
+      "categoria": "titulacion",
+      "año": 2023
+    },
+    {
+      "id": "h-003",
+      "entidad": "Posgrado",
+      "valor": 21938,
+      "unidad": "estudiantes",
+      "contexto": "Titulaciones de Posgrado en 2023",
+      "categoria": "titulacion",
+      "año": 2023
+    },
+    {
+      "id": "h-004",
+      "entidad": "Postítulo",
+      "valor": 45886,
+      "unidad": "estudiantes",
+      "contexto": "Titulaciones de Postítulo en 2023",
+      "categoria": "titulacion",
+      "año": 2023
+    },
+    {
+      "id": "h-005",
+      "entidad": "Matrícula Total",
+      "valor": 297177,
+      "unidad": "estudiantes",
+      "contexto": "Titulación Total 2023",
+      "categoria": "titulacion",
+      "año": 2023
+    },
+    {
+      "id": "h-006",
+      "entidad": "Matrícula Total",
+      "valor": 280593,
+      "unidad": "estudiantes",
+      "contexto": "Titulación Total 2021",
+      "categoria": "titulacion",
+      "año": 2021
+    },
+    {
+      "id": "h-007",
+      "entidad": "Matrícula Total",
+      "valor": 290921,
+      "unidad": "estudiantes",
+      "contexto": "Titulación Total 2022",
+      "categoria": "titulacion",
+      "año": 2022
+    }
+  ],
+  "hechos_cualitativos": [
+    {
+      "id": "q-001",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-002",
+      "entidad": "Región Metropolitana",
+      "afirmacion": "728168",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-003",
+      "entidad": "Universidad de Chile",
+      "afirmacion": "1385828",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-004",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "56755",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-005",
+      "entidad": "Ciencias Sociales",
+      "afirmacion": "4449",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-006",
+      "entidad": "Agropecuaria",
+      "afirmacion": "17451",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-007",
+      "entidad": "Tecnología",
+      "afirmacion": "13441",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-008",
+      "entidad": "Salud",
+      "afirmacion": "3848",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-009",
+      "entidad": "Administración y Comercio",
+      "afirmacion": "3421",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-010",
+      "entidad": "Arte y Arquitectura",
+      "afirmacion": "2619",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-011",
+      "entidad": "Ciencias Básicas",
+      "afirmacion": "2341",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-012",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "229.353 estudiantes",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-013",
+      "entidad": "Retención 1er Año",
+      "afirmacion": "200.736",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-014",
+      "entidad": "Posgrado",
+      "afirmacion": "16.184",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-015",
+      "entidad": "Postítulo",
+      "afirmacion": "29.223",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-016",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "229.353 estudiantes",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-017",
+      "entidad": "Retención 1er Año",
+      "afirmacion": "227.903",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-018",
+      "entidad": "Posgrado",
+      "afirmacion": "19.296",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-019",
+      "entidad": "Postítulo",
+      "afirmacion": "33.394",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-020",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "229.353 estudiantes",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-021",
+      "entidad": "Retención 1er Año",
+      "afirmacion": "225.519",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-022",
+      "entidad": "Posgrado",
+      "afirmacion": "19.377",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-023",
+      "entidad": "Postítulo",
+      "afirmacion": "46.025",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-024",
+      "entidad": "Universidad Católica de Temuco",
+      "afirmacion": "229.353 estudiantes",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-025",
+      "entidad": "Retención 1er Año",
+      "afirmacion": "229.353",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-026",
+      "entidad": "Posgrado",
+      "afirmacion": "21.938",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-027",
+      "entidad": "Postítulo",
+      "afirmacion": "45.886",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-028",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "40.635 estudiantes",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-029",
+      "entidad": "Universidades",
+      "afirmacion": "110.434 estudiantes",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-030",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "78.284 estudiantes",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-031",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "12 instituciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-032",
+      "entidad": "Universidades",
+      "afirmacion": "4,4% aumento",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-033",
+      "entidad": "Institutos Profesionales (IP)",
+      "afirmacion": "34.1% participación",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-034",
+      "entidad": "Centros de Formación Técnica (CFT)",
+      "afirmacion": "17.7% participación",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-035",
+      "entidad": "Universidades",
+      "afirmacion": "48.2% participación",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-036",
+      "entidad": "Matrícula Diurna",
+      "afirmacion": "65% de titulaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-037",
+      "entidad": "Matrícula A Distancia",
+      "afirmacion": "9,6% de titulaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-038",
+      "entidad": "ENTIDAD",
+      "afirmacion": "valor",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-039",
+      "entidad": "Universidades",
+      "afirmacion": "26.000 graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-040",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "43,3% de las graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-041",
+      "entidad": "Universidades",
+      "afirmacion": "56,7% de las graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-042",
+      "entidad": "Universidades",
+      "afirmacion": "1.048 graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-043",
+      "entidad": "Universidades",
+      "afirmacion": "20.890 graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-044",
+      "entidad": "Ciencias Sociales",
+      "afirmacion": "12% de las graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-045",
+      "entidad": "Pontificia Universidad Católica de Chile",
+      "afirmacion": "20,7% de las graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-046",
+      "entidad": "Administración y Comercio",
+      "afirmacion": "36,6% de las graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-047",
+      "entidad": "Tecnología",
+      "afirmacion": "19,8% de las graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-048",
+      "entidad": "Ciencias Básicas",
+      "afirmacion": "28,2% de las graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-049",
+      "entidad": "Magíster",
+      "afirmacion": "95,2% de las graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    },
+    {
+      "id": "q-050",
+      "entidad": "Doctorado",
+      "afirmacion": "4,8% de las graduaciones",
+      "categoria": "titulacion",
+      "seccion": ""
+    }
+  ],
+  "relaciones": [],
+  "menciones_entidades": {
+    "ENTIDAD": [
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      },
+      {
+        "seccion": "",
+        "contexto": "contexto"
+      }
+    ],
+    "SIES": [
+      {
+        "seccion": "",
+        "contexto": "Titulación Total educación superior Chile 2023"
+      }
+    ],
+    "Retención 1er Año": [
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Pregrado en 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Pregrado 2019"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Pregrado 2021"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Pregrado 2022"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT"
+      }
+    ],
+    "Posgrado": [
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Posgrado en 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Posgrado 2019"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Posgrado 2021"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Posgrado 2022"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Posgrado 2023"
+      }
+    ],
+    "Postítulo": [
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Postítulo en 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Postítulo 2019"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Postítulo 2021"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Postítulo 2022"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Postítulo 2023"
+      }
+    ],
+    "Región Metropolitana": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula RM 2024"
+      }
+    ],
+    "Universidad de Chile": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total educación superior Chile 2024"
+      }
+    ],
+    "Pontificia Universidad Católica de Chile": [
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Educación en 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Distribución de las graduaciones de Posgrado según área del conocimiento"
+      },
+      {
+        "seccion": "",
+        "contexto": "Distribución de las graduaciones de Posgrado según universidad"
+      }
+    ],
+    "Ciencias Sociales": [
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Ciencias Sociales en 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Distribución de las graduaciones de Posgrado según área del conocimiento"
+      }
+    ],
+    "Agropecuaria": [
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Agropecuaria en 2023"
+      }
+    ],
+    "Tecnología": [
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Tecnología en 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Distribución de las graduaciones de Posgrado según área del conocimiento"
+      }
+    ],
+    "Salud": [
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Salud en 2023"
+      }
+    ],
+    "Administración y Comercio": [
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Administración y Comercio en 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Distribución de las graduaciones de Posgrado según área del conocimiento"
+      }
+    ],
+    "Arte y Arquitectura": [
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Arte y Arquitectura en 2023"
+      }
+    ],
+    "Ciencias Básicas": [
+      {
+        "seccion": "",
+        "contexto": "Titulaciones de Ciencias Básicas en 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Distribución de las graduaciones de Posgrado según área del conocimiento"
+      }
+    ],
+    "Universidad Católica de Temuco": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Matrícula total UCT"
+      }
+    ],
+    "Matrícula Total": [
+      {
+        "seccion": "",
+        "contexto": "Titulación Total 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulación Total 2021"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulación Total 2022"
+      },
+      {
+        "seccion": "",
+        "contexto": "Titulación Total 2023"
+      }
+    ],
+    "Centros de Formación Técnica (CFT)": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total CFT"
+      },
+      {
+        "seccion": "",
+        "contexto": "Participación CFT en titulación total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Número de CFT estatales que otorgan titulaciones"
+      }
+    ],
+    "Universidades": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total universidades"
+      },
+      {
+        "seccion": "",
+        "contexto": "Participación universidades en titulación total"
+      },
+      {
+        "seccion": "",
+        "contexto": "Aumento en titulaciones universidades privadas"
+      },
+      {
+        "seccion": "",
+        "contexto": "Distribución de las graduaciones de Posgrado según universidad"
+      },
+      {
+        "seccion": "",
+        "contexto": "Recuperación en el número de graduaciones de Posgrado"
+      },
+      {
+        "seccion": "",
+        "contexto": "Número de graduaciones de Doctorados en 2023"
+      },
+      {
+        "seccion": "",
+        "contexto": "Número de graduaciones de Magíster en 2023"
+      }
+    ],
+    "Institutos Profesionales (IP)": [
+      {
+        "seccion": "",
+        "contexto": "Matrícula total IP"
+      },
+      {
+        "seccion": "",
+        "contexto": "Participación IP en titulación total"
+      }
+    ],
+    "Matrícula Diurna": [
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de titulaciones diurnas"
+      }
+    ],
+    "Matrícula A Distancia": [
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de titulaciones a distancia"
+      }
+    ],
+    "Magíster": [
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de graduaciones en Magíster"
+      }
+    ],
+    "Doctorado": [
+      {
+        "seccion": "",
+        "contexto": "Porcentaje de graduaciones en Doctorado"
+      }
+    ]
+  },
+  "secciones_detectadas": [
+    "INFORME 2023 TITULACIÓN EN EDUCACIÓN SUPERIOR EN CHILE",
+    "Informe de Titulación en Educación Superior 2023",
+    "ANTECEDENTES",
+    "PRINCIPALES RESULTADOS",
+    "TITULACIÓN TOTAL",
+    "TITULACIÓN DE PREGRADO",
+    "GRADUACIÓN DE POSGRADO Y POSTÍTULO",
+    "GLOSARIO"
+  ],
+  "_metadata": {
+    "modelo": "llama3.2:3b",
+    "chunks": 8,
+    "lineas_extraidas": 58,
+    "procesado": "2026-07-08 12:21:01"
+  }
+}

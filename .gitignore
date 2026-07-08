@@ -32,3 +32,9 @@ duracion-real/
 extranjera/
 infraestructura/
 retencion/
+
+# Scripts exploratorios (no parte del proyecto)
+etl_build_db.py
+explore_columns.py
+explore_kpis.py
+test_app.py
