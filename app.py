@@ -220,6 +220,26 @@ st.markdown(f"""
     height: 100%; border-radius: 2px; background: {P['accent']};
   }}
 
+  /* Navbar */
+  .navbar {{
+    display: flex; gap: 6px; margin: 0 0 12px 0; padding: 8px 0;
+    border-bottom: 1px solid {P['border']};
+    position: sticky; top: 0; z-index: 50;
+    background: {P['bg']};
+  }}
+  .navbar-btn {{
+    padding: 8px 16px; border-radius: 8px; border: 1px solid {P['border']};
+    background: {P['surface']}; color: {P['muted']}; font-size: 13px;
+    font-weight: 500; cursor: pointer; transition: all 0.15s;
+    font-family: inherit; white-space: nowrap;
+  }}
+  .navbar-btn:hover {{
+    border-color: {P['accent_soft']}; color: {P['accent']};
+  }}
+  .navbar-btn.active {{
+    background: {P['accent']}; border-color: {P['accent']}; color: #FFF;
+  }}
+
   /* Page header */
   .page-header {{ margin-bottom: 8px; }}
   .page-header h1 {{
@@ -253,15 +273,6 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="nav-section">Principal</div>', unsafe_allow_html=True)
-    st.session_state.page = st.radio("nav", ["💬 Chat IA", "🧠 Grafo", "📊 Dashboard"],
-                                      index=["💬 Chat IA", "🧠 Grafo", "📊 Dashboard"].index(st.session_state.page),
-                                      label_visibility="collapsed")
-
-    st.markdown('<div class="nav-section">Sistema</div>', unsafe_allow_html=True)
-    if st.button("🔧 Diagnóstico", use_container_width=True, type="secondary"):
-        st.session_state.page = "🔧 Diagnóstico"
-
     # Perfil
     st.markdown(f"""
     <div class="sidebar-profile">
@@ -269,6 +280,23 @@ with st.sidebar:
       <div><div class="name">Sebastián V.</div><div class="role">Consultor Datos</div></div>
     </div>
     """, unsafe_allow_html=True)
+
+# ── Navbar superior ────────────────────────────────────────────────────────
+nav_items = [
+    ("💬 Chat IA", "💬 Chat IA"),
+    ("🧠 Grafo", "🧠 Grafo"),
+    ("📊 Dashboard", "📊 Dashboard"),
+    ("🔧 Diagnóstico", "🔧 Diagnóstico"),
+]
+cols = st.columns([1, 1, 1, 1, 6])
+current = st.session_state.page
+for i, (label, key) in enumerate(nav_items):
+    with cols[i]:
+        active = "active" if current == key else ""
+        if st.button(label, key=f"nav_{key}", use_container_width=True,
+                     type="primary" if current == key else "secondary"):
+            st.session_state.page = key
+            st.rerun()
 
 # ── Helper: KPIs ───────────────────────────────────────────────────────────
 def show_kpis():
