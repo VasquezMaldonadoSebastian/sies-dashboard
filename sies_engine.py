@@ -214,6 +214,10 @@ class SIESEngine:
             if entidades_encontradas:
                 es_semantico = True
 
+        # Preguntas sobre capacidades → guiado siempre
+        if any(re.search(pat, p) for pat in [r"^qué puedes", r"^que puedes", r"^qué hace", r"^que hace", r"^cómo funciona", r"^como funciona"]):
+            return "guiado"
+
         # Clasificación final
         if es_numerico and es_semantico:
             return "mixto"
@@ -375,19 +379,23 @@ class SIESEngine:
                 return "\n".join(lines)
 
             if "institución" in p or "institucion" in p or "universidad" in p or "top" in p:
-                where = f"WHERE año IN ({','.join(map(str, años))})" if años else "WHERE año = 2025"
+                año_cond = f"m.AÑO = 'MAT_{años[0]}'" if años else "m.AÑO = 'MAT_2025'"
                 rows = con.execute(f"""
-                    SELECT "NOMBRE INSTITUCIÓN" AS inst, "CLASIFICACIÓN INSTITUCIÓN NIVEL 1" AS tipo,
-                           SUM(total::BIGINT) AS tot
-                    FROM evolucion e JOIN sies.matricula m ON e.año = CAST(REPLACE(m.AÑO::VARCHAR, 'MAT_', '') AS INTEGER)
-                    {where} AND m."NOMBRE INSTITUCIÓN" IS NOT NULL
-                    GROUP BY inst, tipo ORDER BY tot DESC LIMIT 10
+                    SELECT m."NOMBRE INSTITUCIÓN" AS inst,
+                           SUM(CAST(NULLIF(m."TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT)) AS tot
+                    FROM sies.matricula m
+                    WHERE {año_cond}
+                      AND m."NOMBRE INSTITUCIÓN" IS NOT NULL
+                      AND m."NOMBRE INSTITUCIÓN" != ''
+                      AND m."TOTAL MATRÍCULA" IS NOT NULL
+                      AND m."TOTAL MATRÍCULA"::VARCHAR != ''
+                    GROUP BY m."NOMBRE INSTITUCIÓN"
+                    ORDER BY tot DESC LIMIT 10
                 """).fetchall()
-                lines = ["## 🏫 Top 10 Instituciones\n", "| Institución | Tipo | Matrícula |", "|-------------|------|----------:|"]
+                lines = ["## 🏫 Top 10 Instituciones\n", "| Institución | Matrícula |", "|-------------|----------:|"]
                 for r in rows:
-                    inst = r[0] if isinstance(r[0], str) else str(r[0])
-                    tipo = r[1] if isinstance(r[1], str) else str(r[1])
-                    lines.append(f"| {inst[:45]} | {tipo} | {r[2]:,} |")
+                    inst = r[0].decode() if isinstance(r[0], bytes) else str(r[0])
+                    lines.append(f"| {inst[:50]} | {r[1]:,} |")
                 return "\n".join(lines)
 
             # Default: total general
