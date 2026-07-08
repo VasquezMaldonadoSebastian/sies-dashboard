@@ -24,6 +24,7 @@ st.set_page_config(
 )
 
 DB = Path(__file__).parent / "mifuturo_sies.db"
+DB_EXISTS = DB.exists()
 
 # ── Session state ────────────────────────────────────────────────────────
 if "dark_mode" not in st.session_state:
@@ -34,6 +35,8 @@ if "messages" not in st.session_state:
     ]
 if "kb" not in st.session_state:
     st.session_state.kb = None
+if "kb_ready" not in st.session_state:
+    st.session_state.kb_ready = True
 
 # ── Paletas ──────────────────────────────────────────────────────────────
 def palette(dark=False):
@@ -133,6 +136,8 @@ tab_dash, tab_chat, tab_graph = st.tabs(["📊 Dashboard", "💬 Chat IA", "🧠
 with tab_dash:
     @st.cache_data(ttl=3600, show_spinner="Cargando datos...")
     def load_data():
+        if not DB_EXISTS:
+            return None
         conn = sqlite3.connect(str(DB))
         df_mat = pd.read_sql("""
             SELECT "AÑO" as año, SUM("TOTAL MATRÍCULA") as total_matricula,
@@ -170,6 +175,21 @@ with tab_dash:
                 "mat_region": df_mat_region, "tit": df_tit, "ret": df_ret}
 
     data = load_data()
+    if data is None:
+        st.info("""
+        ### 🗄️ Base de datos no disponible
+
+        La base SQLite (563 MB) no está incluida en esta versión desplegada.
+        
+        **Para ver los datos completos:**
+        1. Clona el repo y descarga la DB desde tu máquina local
+        2. O ejecuta `etl_build_db.py` para reconstruirla desde los CSVs
+        3. O visita el [repositorio](https://github.com/VasquezMaldonadoSebastian/sies-dashboard) para instrucciones
+
+        Mientras tanto, puedes explorar **Chat IA** y **Grafo** que funcionan con la base vectorial.
+        """)
+        st.stop()
+
     df_mat = data["mat"]; df_tit = data["tit"]; df_ret = data["ret"]
     df_mat_tipo = data["mat_tipo"]; df_mat_area = data["mat_area"]; df_mat_region = data["mat_region"]
 
@@ -292,8 +312,17 @@ with tab_chat:
     # Inicializar KB perezosamente
     if st.session_state.kb is None:
         with st.spinner("Inicializando base de conocimiento SIES..."):
-            from glue import SIESKnowledgeBase
-            st.session_state.kb = SIESKnowledgeBase()
+            try:
+                from glue import SIESKnowledgeBase
+                st.session_state.kb = SIESKnowledgeBase()
+                st.session_state.kb_ready = True
+            except Exception as e:
+                st.session_state.kb_ready = False
+                st.warning(f"No se pudo cargar la base de datos completa. El chat funcionará con el grafo semántico pero sin datos numéricos actualizados. Detalle: {e}")
+
+    if not st.session_state.get("kb_ready", True):
+        st.info("💡 Puedes explorar el **Grafo del Conocimiento** (tercer tab) mientras tanto.")
+        st.stop()
 
     kb = st.session_state.kb
 
