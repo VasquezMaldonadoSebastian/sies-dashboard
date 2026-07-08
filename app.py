@@ -72,6 +72,9 @@ st.markdown(f"""
   section[data-testid="stSidebar"] {{
     width: 264px !important; min-width: 264px !important;
   }}
+  section[data-testid="stSidebar"] > div:first-child {{
+    display: flex; flex-direction: column; height: 100vh;
+  }}
   .sidebar-brand {{
     padding: 24px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.06);
   }}
@@ -100,33 +103,32 @@ st.markdown(f"""
   .sidebar-profile .name {{ font-size: 13px; font-weight: 500; color: #FFF !important; }}
   .sidebar-profile .role {{ font-size: 11px; color: {P['muted']} !important; }}
 
-  /* Nav items */
-  .nav-section {{
-    font-size: 10px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 1px; color: rgba(255,255,255,0.3) !important;
-    padding: 20px 20px 8px;
+  /* Navbar con Streamlit buttons */
+  div[data-testid="column"] + div[data-testid="column"] {{
+    margin-left: 6px;
   }}
-  .nav-item {{
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 20px; margin: 1px 8px; border-radius: 8px;
-    font-size: 13px; font-weight: 500; cursor: pointer;
-    transition: background 0.15s; text-decoration: none;
-    color: {P['sidebar_fg']} !important;
+  div[data-testid="column"] .stButton button {{
+    padding: 8px 16px; border-radius: 8px; font-size: 13px;
+    font-weight: 500; font-family: inherit; white-space: nowrap;
+    transition: all 0.15s; border: 1px solid {P['border']};
   }}
-  .nav-item:hover {{ background: {P['sidebar_hover']}; }}
-  .nav-item.active {{
-    background: rgba(200,99,61,0.15); color: {P['sidebar_active']} !important;
+  div[data-testid="column"] .stButton button[kind="secondary"] {{
+    background: {P['surface']}; color: {P['muted']}; border: 1px solid {P['border']};
   }}
-  .nav-item .badge {{
-    margin-left: auto; font-size: 10px; font-weight: 500;
-    background: rgba(255,255,255,0.08); padding: 1px 7px;
-    border-radius: 999px; color: rgba(255,255,255,0.4) !important;
+  div[data-testid="column"] .stButton button[kind="secondary"]:hover {{
+    border-color: {P['accent_soft']}; color: {P['accent']}; background: {P['surface']};
   }}
-  .nav-item.active .badge {{
-    background: rgba(200,99,61,0.25); color: {P['sidebar_active']} !important;
+  div[data-testid="column"] .stButton button[kind="primary"] {{
+    background: {P['accent']}; color: #FFF; border: 1px solid {P['accent']};
+  }}
+  div[data-testid="column"] .stButton button[kind="primary"]:hover {{
+    background: {P['accent_soft']}; border-color: {P['accent_soft']};
   }}
 
-  /* KPI cards */
+  /* Separador bajo navbar */
+  .navbar-divider {{
+    height: 1px; background: {P['border']}; margin: 0 0 16px 0;
+  }}
   .kpi-row {{ display: flex; gap: 12px; margin: 24px 0; }}
   .kpi-card {{
     flex: 1; background: {P['surface']}; border: 1px solid {P['border']};
@@ -179,23 +181,6 @@ st.markdown(f"""
     box-shadow: 0 0 0 2px {P['accent_bg']} !important;
   }}
 
-  /* Botones radio sidebar */
-  .stRadio [role="radiogroup"] {{
-    background: transparent !important; gap: 2px !important;
-  }}
-  .stRadio label {{
-    background: transparent !important; border: none !important;
-    padding: 8px 20px !important; border-radius: 8px !important;
-    font-size: 13px !important; font-weight: 500 !important;
-    color: {P['sidebar_fg']} !important; transition: background 0.15s;
-    display: flex !important; align-items: center; gap: 10px;
-  }}
-  .stRadio label:hover {{ background: {P['sidebar_hover']} !important; }}
-  .stRadio label[data-selected="true"] {{
-    background: rgba(200,99,61,0.15) !important;
-    color: {P['sidebar_active']} !important;
-  }}
-
   /* Entity cards */
   .entity-grid {{
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px;
@@ -218,26 +203,6 @@ st.markdown(f"""
   }}
   .entity-card .bar .fill {{
     height: 100%; border-radius: 2px; background: {P['accent']};
-  }}
-
-  /* Navbar */
-  .navbar {{
-    display: flex; gap: 6px; margin: 0 0 12px 0; padding: 8px 0;
-    border-bottom: 1px solid {P['border']};
-    position: sticky; top: 0; z-index: 50;
-    background: {P['bg']};
-  }}
-  .navbar-btn {{
-    padding: 8px 16px; border-radius: 8px; border: 1px solid {P['border']};
-    background: {P['surface']}; color: {P['muted']}; font-size: 13px;
-    font-weight: 500; cursor: pointer; transition: all 0.15s;
-    font-family: inherit; white-space: nowrap;
-  }}
-  .navbar-btn:hover {{
-    border-color: {P['accent_soft']}; color: {P['accent']};
-  }}
-  .navbar-btn.active {{
-    background: {P['accent']}; border-color: {P['accent']}; color: #FFF;
   }}
 
   /* Page header */
@@ -288,15 +253,16 @@ nav_items = [
     ("📊 Dashboard", "📊 Dashboard"),
     ("🔧 Diagnóstico", "🔧 Diagnóstico"),
 ]
-cols = st.columns([1, 1, 1, 1, 6])
 current = st.session_state.page
+cols = st.columns(len(nav_items))
 for i, (label, key) in enumerate(nav_items):
     with cols[i]:
-        active = "active" if current == key else ""
+        is_active = current == key
         if st.button(label, key=f"nav_{key}", use_container_width=True,
-                     type="primary" if current == key else "secondary"):
+                     type="primary" if is_active else "secondary"):
             st.session_state.page = key
-            st.rerun()
+
+st.markdown('<div class="navbar-divider"></div>', unsafe_allow_html=True)
 
 # ── Helper: KPIs ───────────────────────────────────────────────────────────
 def show_kpis():
@@ -427,7 +393,7 @@ elif st.session_state.page == "🔧 Diagnóstico":
             d.append(f"**KB DB:** {'✅' if kb.db_disponible else '❌'}")
         except Exception as e:
             d.append(f"**KB ERROR:** {str(e)[:200]}")
-        st.markdown("\\n".join(d))
+        st.markdown("\n".join(d))
 
         st.subheader("Test de consulta")
         try:
