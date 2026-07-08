@@ -326,7 +326,11 @@ if st.session_state.page == "💬 Chat IA":
             with st.chat_message("assistant"):
                 with st.spinner("Consultando..."):
                     try:
-                        r = engine.consultar(prompt)
+                        # Pasar la consulta anterior para follow-ups
+                        r = engine.consultar(
+                            prompt,
+                            consulta_anterior=st.session_state.get("ultima_consulta", ""),
+                        )
                         st.markdown(r["respuesta"])
                         if r.get("fuentes"):
                             st.caption(f"📎 {', '.join(r['fuentes'][:3])}")
@@ -335,10 +339,11 @@ if st.session_state.page == "💬 Chat IA":
                             cols = st.columns(len(sugerencias))
                             for i, sug in enumerate(sugerencias):
                                 if cols[i].button(sug[:25], key=f"sug_{i}_{len(st.session_state.messages)}"):
-                                    # Reinicia con la sugerencia como prompt
                                     st.session_state.messages.append({"role": "user", "content": sug})
                                     st.rerun()
                         st.session_state.messages.append({"role": "assistant", "content": r["respuesta"]})
+                        # Guardar para próxima consulta (follow-ups)
+                        st.session_state.ultima_consulta = prompt
                     except Exception as e:
                         st.error(f"⚠️ {traceback.format_exc()}")
     except Exception as e:

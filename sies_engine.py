@@ -37,7 +37,11 @@ GRAFO_PATH = BASE / "grafo" / "grafo_sies.json"
 DB_PATH = BASE / "mifuturo_sies.db"
 STATIC_PATH = BASE / "dashboard_data.json"
 
-# ── Config OpenCode API ──────────────────────────────────────────────────
+# ── Patrones de clasificación de turnos (inspirados en agente-kimn) ─────
+SALUDO_REGEX = re.compile(r"\b(hola|buenas|buenos días|buenas tardes|buenas noches|hey|saludos|qué tal|que tal|buen día|buena tarde)\b", re.IGNORECASE)
+CAPACIDADES_REGEX = re.compile(r"\b(qué puedes|que puedes|qué sabes|que sabes|qué haces|que haces|cómo funcionas|como funcionas|para qué sirves|para que sirves|capacidades|qué hago|que hago|quién eres|quien eres)\b", re.IGNORECASE)
+SEGUIMIENTO_REGEX = re.compile(r"\b(y eso|y qué|y que|eso mismo|lo anterior|cuéntame|cuentame|explícame|explicame|amplía|amplia|sobre eso|dime más|y también|además|y los|más sobre)\b", re.IGNORECASE)
+DESPEDIDA_REGEX = re.compile(r"\b(adios|adiós|chao|hasta luego|hasta pronto|nos vemos|bye|cuidate|cuídate|gracias|muchas gracias)\b", re.IGNORECASE)
 # Orden de resolución: environment variable → st.secrets (Streamlit Cloud)
 _api_key = os.environ.get("OPENCODE_API_KEY", os.environ.get("OPENAI_API_KEY", ""))
 if not _api_key:
@@ -153,30 +157,46 @@ class SIESEngine:
 
     # ── Consulta principal ────────────────────────────────────────────────
 
-    def consultar(self, pregunta: str) -> dict:
+    def consultar(self, pregunta: str, consulta_anterior: str = "") -> dict:
         """
         Responde una pregunta en lenguaje natural.
 
+        Args:
+            pregunta: Texto de la pregunta actual.
+            consulta_anterior: Última pregunta del usuario (para resolver follow-ups).
+
         Returns:
-            dict con:
-            - "respuesta": str (markdown listo para mostrar)
-            - "fuentes": list[str]
-            - "modo_usado": str
-            - "sugerencias": list[str]
+            dict con respuesta, fuentes, modo_usado, sugerencias
         """
         pregunta_clean = pregunta.strip()
         if not pregunta_clean:
-            return self._respuesta_guiada(pregunta_clean)
+            return self._respuesta_saludo()
 
-        intencion = self._clasificar_intencion(pregunta_clean)
-        print(f"🔍 Intención detectada: {intencion}")
+        # 1. Detectar intenciones conversacionales primero
+        if SALUDO_REGEX.search(pregunta_clean) and not SEGUIMIENTO_REGEX.search(pregunta_clean):
+            return self._respuesta_saludo()
+        if DESPEDIDA_REGEX.search(pregunta_clean):
+            return self._respuesta_despedida()
+        if CAPACIDADES_REGEX.search(pregunta_clean):
+            return self._respuesta_saludo()  # Misma respuesta con capacidades
+
+        # 2. Resolver follow-ups con contexto anterior
+        if SEGUIMIENTO_REGEX.search(pregunta_clean) and consulta_anterior:
+            pregunta_resuelta = f"{consulta_anterior} — {pregunta_clean}"
+            print(f"🔗 Follow-up detectado, resuelto como: {pregunta_resuelta[:80]}")
+        else:
+            pregunta_resuelta = pregunta_clean
+
+        # 3. Clasificar y responder
+        intencion = self._clasificar_intencion(pregunta_resuelta)
+        print(f"🔍 Intención: {intencion}")
 
         if intencion == "numerico":
-            return self._responder_numerico(pregunta_clean)
+            return self._responder_numerico(pregunta_resuelta)
         elif intencion == "semantico":
-            return self._responder_semantico(pregunta_clean)
+            return self._responder_semantico(pregunta_resuelta)
         elif intencion == "mixto":
-            return self._responder_mixto(pregunta_clean)
+            return self._responder_mixto(pregunta_resuelta)
         else:
             return self._respuesta_guiada(pregunta_clean)
 
@@ -214,10 +234,7 @@ class SIESEngine:
             if entidades_encontradas:
                 es_semantico = True
 
-        # Preguntas sobre capacidades → guiado siempre
-        if any(re.search(pat, p) for pat in [r"^qué puedes", r"^que puedes", r"^qué hace", r"^que hace", r"^cómo funciona", r"^como funciona"]):
-            return "guiado"
-
+        # Preguntas sobre capacidades → guiado siempre (ya capturadas arriba en consultar)
         # Clasificación final
         if es_numerico and es_semantico:
             return "mixto"
@@ -235,11 +252,17 @@ class SIESEngine:
     # ── Buscar entidades en el grafo ──────────────────────────────────────
 
     def _buscar_entidades(self, pregunta: str) -> list:
-        """Busca entidades en el grafo que coincidan con la pregunta."""
+        """Busca entidades en el grafo que coincidan con la pregunta.
+        
+        Prioriza coincidencias por alias (búsqueda exacta) sobre substring.
+        Si hay al menos un match fuerte por alias, descarta matches débiles
+        por substring. Esto evita que "que" en "que sabemos de la uct"
+        encuentre "Quechua" cuando lo relevante es UCT.
+        """
         if not self.grafo_cargado:
             return []
 
-        # Stopwords que nunca deberían buscar entidades (3+ letras)
+        # Stopwords a ignorar
         stopwords = {
             "que", "las", "los", "del", "para", "con", "por", "como",
             "mas", "pero", "esta", "este", "entre", "todo", "esa", "eso",
@@ -248,27 +271,47 @@ class SIESEngine:
             "dice", "hace", "puede", "tiene", "sobre", "saber",
             "sus", "asi", "año", "ver", "dar", "fue", "hea", "sea",
         }
-        # Extraer palabras de 3+ caracteres sin stopwords
         palabras = [
             p for p in re.findall(r'\b\w{3,}\b', pregunta.lower())
             if p not in stopwords
         ]
-        todas_entidades = []
+
+        alias_encontradas = []   # Match fuerte (vía alias_map)
+        substring_encontradas = []  # Match débil (substring genérico)
 
         for palabra in palabras:
             resultados = self.grafo.buscar_con_aliases(palabra)
-            todas_entidades.extend(resultados)
+            for r in resultados:
+                # Si buscar_con_aliases encontró algo, puede ser alias o substring
+                # Revisamos si la palabra original está en el alias_map (match fuerte)
+                from normalizar_entidades import ALIAS_MAP
+                es_match_fuerte = False
+                # match fuerte si: la palabra es un alias conocido, o es exactamente el nombre
+                if palabra in ALIAS_MAP:
+                    es_match_fuerte = True
+                # también es fuerte si el nombre contiene la palabra como token completo
+                nombre_normalizado = r["nombre"].lower()
+                if palabra in nombre_normalizado.split():
+                    es_match_fuerte = True
 
-        # Quitar duplicados y ordenar por relevancia (más hechos primero)
-        vistos = set()
-        unicas = []
-        for e in todas_entidades:
-            if e["nombre"] not in vistos:
-                vistos.add(e["nombre"])
-                unicas.append(e)
-        unicas.sort(key=lambda x: x["n_hechos"], reverse=True)
+                ent_dup = r["nombre"] not in [e["nombre"] for e in alias_encontradas]
+                if es_match_fuerte:
+                    if ent_dup:
+                        alias_encontradas.append(r)
+                else:
+                    if ent_dup and r["nombre"] not in [e["nombre"] for e in alias_encontradas]:
+                        substring_encontradas.append(r)
 
-        return unicas[:3]  # Máximo 3 entidades
+        # Decidir qué retornar: si hay matches fuertes, solo ellos
+        if alias_encontradas:
+            entidades = alias_encontradas
+            print(f"   Match fuerte: {[e['nombre'] for e in alias_encontradas]}")
+        else:
+            entidades = substring_encontradas
+
+        # Ordenar por relevancia y limitar
+        entidades.sort(key=lambda x: x["n_hechos"], reverse=True)
+        return entidades[:3]
 
     # ── Modo semántico (grafo + OpenCode API) ─────────────────────────────
 
@@ -515,6 +558,37 @@ class SIESEngine:
         }
 
     # ── Modo guiado (no entendió) ─────────────────────────────────────────
+
+    def _respuesta_saludo(self) -> dict:
+        """Responde a saludos y consultas sobre capacidades."""
+        texto = (
+            "¡Hola! 😊 Soy tu **Analista SIES**. Puedo consultar **506 datos** extraídos de **5 informes** oficiales del SIES.\n\n"
+            "📊 **Matrícula** — totales, evolución, por región\n"
+            "👤 **Brechas de Género** — participación femenina\n"
+            "🎓 **Titulación** — titulados por año\n"
+            "📈 **Retención** — permanencia 1er año\n\n"
+            "💡 *Prueba preguntando: \"¿Cuántos estudiantes en 2025?\" o \"¿Qué sabemos de la UCT?\"*"
+        )
+        return {
+            "respuesta": texto,
+            "fuentes": [],
+            "modo_usado": "saludo",
+            "sugerencias": [
+                "¿Cuántos estudiantes en 2025?",
+                "¿Qué sabemos de la UCT?",
+                "¿Cómo ha evolucionado la matrícula?",
+                "¿Qué instituciones tienen más estudiantes?",
+            ],
+        }
+
+    def _respuesta_despedida(self) -> dict:
+        """Responde a despedidas y agradecimientos."""
+        return {
+            "respuesta": "¡De nada! 😊 Si necesitas algo más sobre educación superior chilena, aquí estaré. ¡Que tengas un excelente día!",
+            "fuentes": [],
+            "modo_usado": "despedida",
+            "sugerencias": [],
+        }
 
     def _respuesta_guiada(self, pregunta: str = "") -> dict:
         """Guía al usuario cuando no se entiende la pregunta."""
