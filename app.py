@@ -13,8 +13,9 @@ import sys
 import os
 
 # ── Añadir glue al path ─────────────────────────────────────────────────
-GLUE_DIR = Path(r"C:\Users\Sebastian\proyectos\sies\informes-sies\prototipo-matricula")
-sys.path.insert(0, str(GLUE_DIR))
+APP_DIR = Path(__file__).resolve().parent
+CHROMA_DIR = APP_DIR / "chromadb"
+sys.path.insert(0, str(APP_DIR))
 
 # ── Configuración ────────────────────────────────────────────────────────
 st.set_page_config(
@@ -314,11 +315,15 @@ with tab_chat:
         with st.spinner("Inicializando base de conocimiento SIES..."):
             try:
                 from glue import SIESKnowledgeBase
-                st.session_state.kb = SIESKnowledgeBase()
-                st.session_state.kb_ready = True
-            except Exception as e:
+                try:
+                    st.session_state.kb = SIESKnowledgeBase()
+                    st.session_state.kb_ready = True
+                except Exception as e:
+                    st.session_state.kb_ready = False
+                    st.warning(f"No se pudo cargar la base de conocimiento completa. El modelo de embeddings puede estar descargándose aún. Detalle: {str(e)[:200]}")
+            except ImportError as e:
                 st.session_state.kb_ready = False
-                st.warning(f"No se pudo cargar la base de datos completa. El chat funcionará con el grafo semántico pero sin datos numéricos actualizados. Detalle: {e}")
+                st.warning(f"Error de importación: {e}")
 
     if not st.session_state.get("kb_ready", True):
         st.info("💡 Puedes explorar el **Grafo del Conocimiento** (tercer tab) mientras tanto.")
@@ -380,7 +385,7 @@ with tab_graph:
     Las conexiones representan similitud semántica. Arrastra, zoom, y haz clic en nodos.</p>
     """, unsafe_allow_html=True)
 
-    graph_html = Path(GLUE_DIR / "chromadb" / "grafo_conocimiento.html")
+    graph_html = CHROMA_DIR / "grafo_conocimiento.html"
 
     if not graph_html.exists() or st.button("🔄 Regenerar grafo", use_container_width=True):
         with st.spinner("Construyendo grafo de conocimiento desde ChromaDB..."):
@@ -389,8 +394,13 @@ with tab_graph:
                 from pyvis.network import Network
                 import json
 
-                client = chromadb.PersistentClient(path=str(GLUE_DIR / "chromadb"))
-                collection = client.get_collection("sies-matricula")
+                client = chromadb.PersistentClient(path=str(CHROMA_DIR))
+                # La primera carga puede demorar (descarga modelo ONNX ~79 MB)
+                try:
+                    collection = client.get_collection("sies-matricula")
+                except Exception as e:
+                    st.error(f"No se pudo cargar ChromaDB. En el primer inicio puede demorar ~1 minuto descargando el modelo de embeddings. Intenta regenerar en unos minutos. Detalle: {str(e)[:200]}")
+                    st.stop()
 
                 # Obtener todos los documentos
                 all_docs = collection.get()
