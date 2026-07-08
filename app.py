@@ -252,14 +252,24 @@ def show_kpis(docs=5, hechos=506, entidades=89, categorias=4):
     """, unsafe_allow_html=True)
 
 def query_df(sql):
-    """Ejecuta SQL y retorna DataFrame."""
-    if not DB_EXISTS: return None
-    try:
-        conn = sqlite3.connect(str(DB))
-        df = pd.read_sql(sql, conn)
-        conn.close()
-        return df
-    except: return None
+    """Ejecuta SQL y retorna DataFrame. Si no hay DB, usa datos estáticos."""
+    if DB_EXISTS:
+        try:
+            conn = sqlite3.connect(str(DB))
+            df = pd.read_sql(sql, conn)
+            conn.close()
+            return df
+        except:
+            return None
+    return None
+
+# ── Datos estáticos precargados ────────────────────────────────────────────
+STATIC_PATH = APP_DIR / "dashboard_data.json"
+if STATIC_PATH.exists():
+    with open(STATIC_PATH, "r", encoding="utf-8") as f:
+        STATIC = json.load(f)
+else:
+    STATIC = {}
 
 def plot_line(df, x, y, title, color="#B8552E"):
     fig = go.Figure()
@@ -354,126 +364,102 @@ elif st.session_state.page == "🧠 Grafo":
 elif st.session_state.page == "📊 Dashboard":
     st.markdown('<div class="page-header"><h1>📊 Dashboard SIES</h1><p>Indicadores clave de educación superior chilena</p></div>', unsafe_allow_html=True)
 
+    def kpi_static():
+        evo = STATIC.get("matricula_evolucion", [])
+        if evo:
+            ult = evo[-1]
+            ant = evo[-2] if len(evo) > 1 else ult
+            crec = f"+{((ult['total_millones']-ant['total_millones'])/ant['total_millones']*100):.1f}% vs {ant['año']}" if ant['total_millones'] else "—"
+            show_kpis(docs=f"{ult['año']}", hechos=f"{ult['total_millones']:.2f}M",
+                      entidades=f"{ult['pct_mujeres']:.1f}%", categorias=crec)
+        else:
+            show_kpis()
+
+    def df_from_static(key):
+        return pd.DataFrame(STATIC.get(key, []))
+
+    # KPIs
     if DB_EXISTS:
-        # KPIs principales desde la DB
         df_evo = query_df("""
-            SELECT "AÑO" as año,
+            SELECT CAST(REPLACE("AÑO", 'MAT_', '') AS INTEGER) as año,
                    ROUND(SUM("TOTAL MATRÍCULA")/1000000.0, 2) as total_millones,
                    ROUND(100.0 * SUM("TOTAL MATRÍCULA MUJERES") / SUM("TOTAL MATRÍCULA"), 1) as pct_mujeres
-            FROM matricula GROUP BY "AÑO" ORDER BY "AÑO"
+            FROM matricula GROUP BY año ORDER BY año
         """)
         if df_evo is not None and len(df_evo) > 0:
             ult = df_evo.iloc[-1]
             ant = df_evo.iloc[-2] if len(df_evo) > 1 else ult
-            show_kpis(
-                docs=f"{ult['año']:.0f}",
-                hechos=f"{ult['total_millones']:.2f}M",
-                entidades=f"{ult['pct_mujeres']:.1f}%",
-                categorias=f"+{((ult['total_millones']-ant['total_millones'])/ant['total_millones']*100):.1f}% vs {ant['año']:.0f}"
-            )
+            show_kpis(docs=f"{ult['año']:.0f}", hechos=f"{ult['total_millones']:.2f}M",
+                      entidades=f"{ult['pct_mujeres']:.1f}%",
+                      categorias=f"+{((ult['total_millones']-ant['total_millones'])/ant['total_millones']*100):.1f}% vs {ant['año']:.0f}")
         else:
-            show_kpis(docs="—", hechos="—", entidades="—", categorias="—")
+            kpi_static()
+    else:
+        kpi_static()
 
-        tab1, tab2, tab3, tab4 = st.tabs(["📈 Matrícula", "🎓 Titulación", "🏫 Por Tipo IES", "📚 Áreas"])
-        
-        with tab1:
-            c1, c2 = st.columns(2)
-            with c1:
-                df = query_df("""
-                    SELECT "AÑO" as año, ROUND(SUM("TOTAL MATRÍCULA")/1000000.0, 2) as total_millones
-                    FROM matricula GROUP BY "AÑO" ORDER BY "AÑO"
-                """)
-                if df is not None: st.plotly_chart(plot_line(df, "año", "total_millones", "Matrícula Total (millones)"), use_container_width=True)
-            with c2:
-                df = query_df("""
-                    SELECT "AÑO" as año, ROUND(100.0 * SUM("TOTAL MATRÍCULA MUJERES") / SUM("TOTAL MATRÍCULA"), 1) as pct_mujeres
-                    FROM matricula GROUP BY "AÑO" ORDER BY "AÑO"
-                """)
-                if df is not None: st.plotly_chart(plot_line(df, "año", "pct_mujeres", "% Mujeres en Matrícula", color="#C8933C"), use_container_width=True)
-            
-            c1, c2 = st.columns(2)
-            with c1:
-                df = query_df("""
-                    SELECT "AÑO" as año, ROUND(SUM("TOTAL MATRÍCULA PRIMER AÑO")/1000000.0, 2) as primer_anio
-                    FROM matricula WHERE "TOTAL MATRÍCULA PRIMER AÑO" IS NOT NULL GROUP BY "AÑO" ORDER BY "AÑO"
-                """)
-                if df is not None: st.plotly_chart(plot_line(df, "año", "primer_anio", "Matrícula 1er Año (millones)", color="#D47A5A"), use_container_width=True)
-            with c2:
-                st.markdown("##### Matrícula por Nivel (2024)")
-                df = query_df("""
-                    SELECT "NIVEL GLOBAL" as nivel, SUM("TOTAL MATRÍCULA") as total
-                    FROM matricula WHERE "AÑO"=2024 AND "NIVEL GLOBAL" IS NOT NULL
-                    GROUP BY nivel ORDER BY total DESC
-                """)
-                if df is not None: st.plotly_chart(plot_pie(df, "nivel", "total", ""), use_container_width=True)
+    tab1, tab2, tab3, tab4 = st.tabs(["📈 Matrícula", "🎓 Titulación", "🏫 Por Tipo IES", "📚 Áreas"])
 
-        with tab2:
-            df = query_df("""
-                SELECT "AÑO" as año, ROUND(SUM("TOTAL TITULACIONES")/1000.0, 1) as total_miles
-                FROM titulacion GROUP BY "AÑO" ORDER BY "AÑO"
-            """)
-            if df is not None: st.plotly_chart(plot_line(df, "año", "total_miles", "Titulación Total (miles)"), use_container_width=True)
+    with tab1:
+        c1, c2 = st.columns(2)
+        with c1:
+            df = query_df("SELECT CAST(REPLACE(\"AÑO\", 'MAT_', '') AS INTEGER) as año, ROUND(SUM(\"TOTAL MATRÍCULA\")/1000000.0, 2) as total_millones FROM matricula GROUP BY año ORDER BY año") if DB_EXISTS else df_from_static("matricula_evolucion")[["año","total_millones"]]
+            if df is not None and len(df): st.plotly_chart(plot_line(df, "año", "total_millones", "Matrícula Total (millones)"), use_container_width=True)
+        with c2:
+            df = query_df("SELECT CAST(REPLACE(\"AÑO\", 'MAT_', '') AS INTEGER) as año, ROUND(100.0*SUM(\"TOTAL MATRÍCULA MUJERES\")/SUM(\"TOTAL MATRÍCULA\"),1) as pct_mujeres FROM matricula GROUP BY año ORDER BY año") if DB_EXISTS else df_from_static("matricula_evolucion")[["año","pct_mujeres"]]
+            if df is not None and len(df): st.plotly_chart(plot_line(df, "año", "pct_mujeres", "% Mujeres en Matrícula", color="#C8933C"), use_container_width=True)
+        c1, c2 = st.columns(2)
+        with c1:
+            df = query_df("SELECT CAST(REPLACE(\"AÑO\", 'MAT_', '') AS INTEGER) as año, ROUND(SUM(\"TOTAL MATRÍCULA PRIMER AÑO\")/1000000.0,2) as primer_anio FROM matricula WHERE \"TOTAL MATRÍCULA PRIMER AÑO\" IS NOT NULL AND \"TOTAL MATRÍCULA PRIMER AÑO\" != '' GROUP BY año ORDER BY año") if DB_EXISTS else df_from_static("matricula_evolucion")[["año","primer_anio_millones"]].rename(columns={"primer_anio_millones":"primer_anio"})
+            if df is not None and len(df): st.plotly_chart(plot_line(df, "año", "primer_anio", "Matrícula 1er Año (millones)", color="#D47A5A"), use_container_width=True)
+        with c2:
+            st.markdown("##### Matrícula por Nivel (2024)")
+            df = query_df("""SELECT "NIVEL GLOBAL" as nivel, ROUND(SUM("TOTAL MATRÍCULA")/1000000.0,2) as total_millones FROM matricula WHERE CAST(REPLACE("AÑO",'MAT_','') AS INTEGER)=2024 AND "NIVEL GLOBAL" IS NOT NULL AND "NIVEL GLOBAL" != '' GROUP BY nivel ORDER BY SUM("TOTAL MATRÍCULA") DESC""") if DB_EXISTS else df_from_static("matricula_por_nivel_2024")
+            if df is not None and len(df): st.plotly_chart(plot_pie(df, "nivel", "total_millones", ""), use_container_width=True)
 
-            c1, c2 = st.columns(2)
-            with c1:
-                df2 = query_df("""
-                    SELECT "AÑO" as año, ROUND(100.0 * SUM("TITULACIONES MUJERES POR PROGRAMA") / SUM("TOTAL TITULACIONES"), 1) as pct_mujeres
-                    FROM titulacion GROUP BY "AÑO" ORDER BY "AÑO"
-                """)
-                if df2 is not None: st.plotly_chart(plot_line(df2, "año", "pct_mujeres", "% Mujeres Tituladas", color="#C8933C"), use_container_width=True)
-            with c2:
-                st.markdown("##### Titulación por Nivel (2023)")
-                df3 = query_df("""
-                    SELECT "NIVEL GLOBAL" as nivel, SUM("TOTAL TITULACIONES") as total
-                    FROM titulacion WHERE "AÑO"=2023 AND "NIVEL GLOBAL" IS NOT NULL
-                    GROUP BY nivel ORDER BY total DESC
-                """)
-                if df3 is not None: st.plotly_chart(plot_pie(df3, "nivel", "total", ""), use_container_width=True)
+    with tab2:
+        c1, c2 = st.columns(2)
+        with c1:
+            df = query_df("""SELECT CAST(REPLACE("AÑO",'TIT_','') AS INTEGER) as año, ROUND(SUM("TOTAL TITULACIONES")/1000.0,1) as total_miles FROM titulacion GROUP BY año ORDER BY año""") if DB_EXISTS else df_from_static("titulacion_evolucion")[["año","total_miles"]]
+            if df is not None and len(df): st.plotly_chart(plot_line(df, "año", "total_miles", "Titulación Total (miles)"), use_container_width=True)
+        with c2:
+            df = query_df("""SELECT CAST(REPLACE("AÑO",'TIT_','') AS INTEGER) as año, ROUND(100.0*SUM("TITULACIONES MUJERES POR PROGRAMA")/SUM("TOTAL TITULACIONES"),1) as pct_mujeres FROM titulacion GROUP BY año ORDER BY año""") if DB_EXISTS else df_from_static("titulacion_evolucion")[["año","pct_mujeres"]]
+            if df is not None and len(df): st.plotly_chart(plot_line(df, "año", "pct_mujeres", "% Mujeres Tituladas", color="#C8933C"), use_container_width=True)
 
-        with tab3:
-            df = query_df("""
-                SELECT "CLASIFICACIÓN INSTITUCIÓN NIVEL 1" as tipo,
-                       ROUND(SUM("TOTAL MATRÍCULA")/1000000.0, 2) as total_millones
-                FROM matricula WHERE "AÑO"=2025 GROUP BY tipo ORDER BY total DESC
-            """)
-            if df is not None: st.plotly_chart(plot_bar(df, "tipo", "total_millones", "Matrícula 2025 por Tipo de IES (millones)"), use_container_width=True)
+    with tab3:
+        c1, c2 = st.columns(2)
+        with c1:
+            df = query_df("""SELECT "CLASIFICACIÓN INSTITUCIÓN NIVEL 1" as tipo, ROUND(SUM("TOTAL MATRÍCULA")/1000000.0,2) as total_millones FROM matricula WHERE CAST(REPLACE("AÑO",'MAT_','') AS INTEGER)=2025 GROUP BY tipo ORDER BY SUM("TOTAL MATRÍCULA") DESC""") if DB_EXISTS else df_from_static("matricula_por_tipo_2025")
+            if df is not None and len(df): st.plotly_chart(plot_bar(df, "tipo", "total_millones", "Matrícula 2025 por Tipo IES (millones)"), use_container_width=True)
+        with c2:
+            st.markdown("##### Distribución por Nivel y Tipo (2024)")
+            df = query_df("""SELECT "CLASIFICACIÓN INSTITUCIÓN NIVEL 1" as tipo, "NIVEL GLOBAL" as nivel, ROUND(SUM("TOTAL MATRÍCULA")/1000.0,0) as total_miles FROM matricula WHERE CAST(REPLACE("AÑO",'MAT_','') AS INTEGER)=2024 AND "NIVEL GLOBAL" IS NOT NULL AND "NIVEL GLOBAL" != '' GROUP BY tipo, nivel ORDER BY tipo, nivel""") if DB_EXISTS else df_from_static("matricula_tipo_nivel_2024")
+            if df is not None and len(df):
+                fig = go.Figure()
+                for nivel in df["nivel"].unique():
+                    subset = df[df["nivel"]==nivel]
+                    fig.add_trace(go.Bar(name=nivel, x=subset["tipo"], y=subset["total_miles"]))
+                fig.update_layout(barmode="group", paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+                                  font=dict(family="DM Sans", size=12, color="#2B2520"),
+                                  margin=dict(l=20, r=20, t=10, b=20), height=400, legend=dict(orientation="h", y=1.1))
+                st.plotly_chart(fig, use_container_width=True)
 
+    with tab4:
+        col_a, col_b = st.columns(2)
+        with col_a:
+            df = query_df("""SELECT "ÁREA DEL CONOCIMIENTO" as area, ROUND(SUM("TOTAL MATRÍCULA")/1000.0,0) as total_miles FROM matricula WHERE CAST(REPLACE("AÑO",'MAT_','') AS INTEGER)=2025 AND "ÁREA DEL CONOCIMIENTO" IS NOT NULL AND "ÁREA DEL CONOCIMIENTO" != '' GROUP BY area ORDER BY SUM("TOTAL MATRÍCULA") DESC LIMIT 8""") if DB_EXISTS else df_from_static("matricula_por_area_2025")
+            if df is not None and len(df): st.plotly_chart(plot_bar(df, "area", "total_miles", "Matrícula 2025 por Área (miles)"), use_container_width=True)
+        with col_b:
             st.markdown("##### Top 10 Instituciones (2024)")
-            df = query_df("""
-                SELECT "NOMBRE INSTITUCIÓN" as inst, ROUND(SUM("TOTAL MATRÍCULA")/1000.0, 0) as total_miles
-                FROM matricula WHERE "AÑO"=2024 AND "NOMBRE INSTITUCIÓN" IS NOT NULL
-                GROUP BY inst ORDER BY SUM("TOTAL MATRÍCULA") DESC LIMIT 10
-            """)
-            if df is not None:
+            df = query_df("""SELECT "NOMBRE INSTITUCIÓN" as inst, ROUND(SUM("TOTAL MATRÍCULA")/1000.0,0) as total_miles FROM matricula WHERE CAST(REPLACE("AÑO",'MAT_','') AS INTEGER)=2024 AND "NOMBRE INSTITUCIÓN" IS NOT NULL AND "NOMBRE INSTITUCIÓN" != '' GROUP BY inst ORDER BY SUM("TOTAL MATRÍCULA") DESC LIMIT 10""") if DB_EXISTS else df_from_static("top_instituciones_2024")
+            if df is not None and len(df):
                 fig = go.Figure()
                 fig.add_trace(go.Bar(x=df["total_miles"], y=df["inst"], orientation="h", marker_color="#B8552E",
                                      text=df["total_miles"].apply(lambda v: f"{v:,.0f}K"), textposition="outside"))
                 fig.update_layout(title="", paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
                                   font=dict(family="DM Sans", size=12, color="#2B2520"),
-                                  xaxis=dict(gridcolor="#D9D4CF"), yaxis=dict(gridcolor="#D9D4CF"),
+                                  xaxis=dict(gridcolor="#D9D4CF"),
                                   margin=dict(l=20, r=80, t=10, b=20), height=400)
                 st.plotly_chart(fig, use_container_width=True)
-
-        with tab4:
-            col_a, col_b = st.columns(2)
-            with col_a:
-                df = query_df("""
-                    SELECT "ÁREA DEL CONOCIMIENTO" as area, ROUND(SUM("TOTAL MATRÍCULA")/1000.0, 0) as total_miles
-                    FROM matricula WHERE "AÑO"=2025 AND "ÁREA DEL CONOCIMIENTO" IS NOT NULL
-                    GROUP BY area ORDER BY SUM("TOTAL MATRÍCULA") DESC LIMIT 8
-                """)
-                if df is not None: st.plotly_chart(plot_bar(df, "area", "total_miles", "Matrícula 2025 por Área (miles)"), use_container_width=True)
-            with col_b:
-                st.markdown("##### Retención 1er Año por Tipo IES")
-                df = query_df("""
-                    SELECT "CLASIFICACIÓN INSTITUCIÓN NIVEL 1" as tipo,
-                           ROUND(AVG(CAST(NULLIF("TOTAL MATRÍCULA PRIMER AÑO", '') AS REAL)), 0) as prom_primer_anio
-                    FROM matricula WHERE "AÑO"=2024 AND "TOTAL MATRÍCULA PRIMER AÑO" IS NOT NULL AND "TOTAL MATRÍCULA PRIMER AÑO" != ''
-                    GROUP BY tipo ORDER BY prom_primer_anio DESC
-                """)
-                if df is not None: st.plotly_chart(plot_bar(df, "tipo", "prom_primer_anio", "Promedio Estudiantes 1er Año por Tipo IES", color="#C8933C"), use_container_width=True)
-    else:
-        st.info("Base de datos no disponible en este despliegue.")
 
 # 🔧 DIAGNÓSTICO
 elif st.session_state.page == "🔧 Diagnóstico":
