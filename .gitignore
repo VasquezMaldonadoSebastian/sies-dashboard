@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Chroma cache (se descarga en deploy)
+.chroma/
+
+# Datos grandes (no subir a git, la DB se descarga aparte)
+*.db
+*.duckdb
+*.csv
+*.zip
+*.xlsx
+matricula/
+titulacion/
+personal-academico/
+oferta-academica/
+buscadores/
+acceso/
+avance-curricular/
+duracion-real/
+extranjera/
+infraestructura/
+retencion/

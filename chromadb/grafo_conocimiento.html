@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #0F172A;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#60A5FA", "font": {"color": "#F1F5F9"}, "id": "wiki/brecha-genero-matricula", "label": "Brecha Genero Matricula", "shape": "box", "size": 20, "title": "\u003cb\u003eBrecha Genero Matricula\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewiki-sies\\concepts\\brecha-genero-matricula.md\u003c/small\u003e"}, {"color": "#60A5FA", "font": {"color": "#F1F5F9"}, "id": "wiki/evolucion-matricula", "label": "Evolucion Matricula", "shape": "box", "size": 20, "title": "\u003cb\u003eEvolucion Matricula\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewiki-sies\\concepts\\evolucion-matricula.md\u003c/small\u003e"}, {"color": "#60A5FA", "font": {"color": "#F1F5F9"}, "id": "wiki/matricula-2024", "label": "Matricula 2024", "shape": "box", "size": 20, "title": "\u003cb\u003eMatricula 2024\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewiki-sies\\concepts\\matricula-2024.md\u003c/small\u003e"}, {"color": "#60A5FA", "font": {"color": "#F1F5F9"}, "id": "wiki/matricula-2025", "label": "Matricula 2025", "shape": "box", "size": 20, "title": "\u003cb\u003eMatricula 2025\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewiki-sies\\concepts\\matricula-2025.md\u003c/small\u003e"}, {"color": "#60A5FA", "font": {"color": "#F1F5F9"}, "id": "wiki/matricula-por-region", "label": "Matricula Por Region", "shape": "box", "size": 20, "title": "\u003cb\u003eMatricula Por Region\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewiki-sies\\concepts\\matricula-por-region.md\u003c/small\u003e"}, {"color": "#FBBF24", "font": {"color": "#F1F5F9"}, "id": "wiki/uct", "label": "Uct", "shape": "star", "size": 20, "title": "\u003cb\u003eUct\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewiki-sies\\entities\\uct.md\u003c/small\u003e"}, {"color": "#94A3B8", "font": {"color": "#F1F5F9"}, "id": "wiki/index", "label": "Index", "shape": "ellipse", "size": 10, "title": "\u003cb\u003eIndex\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewiki-sies\\index.md\u003c/small\u003e"}, {"color": "#94A3B8", "font": {"color": "#F1F5F9"}, "id": "wiki/log", "label": "Log", "shape": "ellipse", "size": 10, "title": "\u003cb\u003eLog\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewiki-sies\\log.md\u003c/small\u003e"}, {"color": "#94A3B8", "font": {"color": "#F1F5F9"}, "id": "wiki/SCHEMA", "label": "Schema", "shape": "ellipse", "size": 10, "title": "\u003cb\u003eSchema\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewiki-sies\\SCHEMA.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/informe de matricula 2016_sies", "label": "Informe De Matricula 2016 Si\u2026", "shape": "dot", "size": 10, "title": "\u003cb\u003eInforme De Matricula 2016 Si\u2026\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\informe de matricula 2016_sies.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/informe matricula 2017_sies", "label": "Informe Matricula 2017 Sies", "shape": "dot", "size": 10, "title": "\u003cb\u003eInforme Matricula 2017 Sies\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\informe matricula 2017_sies.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/informe matricula 2018_sies", "label": "Informe Matricula 2018 Sies", "shape": "dot", "size": 10, "title": "\u003cb\u003eInforme Matricula 2018 Sies\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\informe matricula 2018_sies.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/Informe-Matricula-2019_SIES", "label": "Informe Matricula 2019 Sies", "shape": "dot", "size": 10, "title": "\u003cb\u003eInforme Matricula 2019 Sies\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\Informe-Matricula-2019_SIES.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/Informe-matricula_2020_SIES", "label": "Informe Matricula 2020 Sies", "shape": "dot", "size": 10, "title": "\u003cb\u003eInforme Matricula 2020 Sies\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\Informe-matricula_2020_SIES.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/Informe_-Matricula_Educacion_Superior_SIES_2025", "label": "Informe  Matricula Educacion\u2026", "shape": "dot", "size": 10, "title": "\u003cb\u003eInforme  Matricula Educacion\u2026\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\Informe_-Matricula_Educacion_Superior_SIES_2025.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/informe_matricula2012", "label": "Informe Matricula2012", "shape": "dot", "size": 10, "title": "\u003cb\u003eInforme Matricula2012\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\informe_matricula2012.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/informe_matricula_2013", "label": "Informe Matricula 2013", "shape": "dot", "size": 10, "title": "\u003cb\u003eInforme Matricula 2013\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\informe_matricula_2013.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/Informe_matricula_2024_SIES_", "label": "Informe Matricula 2024 Sies ", "shape": "dot", "size": 10, "title": "\u003cb\u003eInforme Matricula 2024 Sies \u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\Informe_matricula_2024_SIES_.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/mat_postgrado_2008_sies2008", "label": "Mat Postgrado 2008 Sies2008", "shape": "dot", "size": 10, "title": "\u003cb\u003eMat Postgrado 2008 Sies2008\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\mat_postgrado_2008_sies2008.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/mat_postgrado_2009_sies2009", "label": "Mat Postgrado 2009 Sies2009", "shape": "dot", "size": 10, "title": "\u003cb\u003eMat Postgrado 2009 Sies2009\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\mat_postgrado_2009_sies2009.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/mat_postgrado_2010_sies2010", "label": "Mat Postgrado 2010 Sies2010", "shape": "dot", "size": 10, "title": "\u003cb\u003eMat Postgrado 2010 Sies2010\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\mat_postgrado_2010_sies2010.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/mat_pregrado_2008_sies2008", "label": "Mat Pregrado 2008 Sies2008", "shape": "dot", "size": 10, "title": "\u003cb\u003eMat Pregrado 2008 Sies2008\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\mat_pregrado_2008_sies2008.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/mat_pregrado_2009_sies2009", "label": "Mat Pregrado 2009 Sies2009", "shape": "dot", "size": 10, "title": "\u003cb\u003eMat Pregrado 2009 Sies2009\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\mat_pregrado_2009_sies2009.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/mat_pregrado_2010_sies2010", "label": "Mat Pregrado 2010 Sies2010", "shape": "dot", "size": 10, "title": "\u003cb\u003eMat Pregrado 2010 Sies2010\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\mat_pregrado_2010_sies2010.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/mat_total_2008_sies2008", "label": "Mat Total 2008 Sies2008", "shape": "dot", "size": 10, "title": "\u003cb\u003eMat Total 2008 Sies2008\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\mat_total_2008_sies2008.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/mat_total_2009_sies2009", "label": "Mat Total 2009 Sies2009", "shape": "dot", "size": 10, "title": "\u003cb\u003eMat Total 2009 Sies2009\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\mat_total_2009_sies2009.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/mat_total_2010_sies2010", "label": "Mat Total 2010 Sies2010", "shape": "dot", "size": 10, "title": "\u003cb\u003eMat Total 2010 Sies2010\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\mat_total_2010_sies2010.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/Matricula-_en_Educacion_Superior_2023_SIES", "label": "Matricula  En Educacion Supe\u2026", "shape": "dot", "size": 10, "title": "\u003cb\u003eMatricula  En Educacion Supe\u2026\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\Matricula-_en_Educacion_Superior_2023_SIES.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/matricula2014_principales_resultados_sies", "label": "Matricula2014 Principales Re\u2026", "shape": "dot", "size": 10, "title": "\u003cb\u003eMatricula2014 Principales Re\u2026\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\matricula2014_principales_resultados_sies.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/matricula_2015_principales_resultados", "label": "Matricula 2015 Principales R\u2026", "shape": "dot", "size": 10, "title": "\u003cb\u003eMatricula 2015 Principales R\u2026\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\matricula_2015_principales_resultados.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/Matricula_Educacion_Superior_2021_SIES", "label": "Matricula Educacion Superior\u2026", "shape": "dot", "size": 10, "title": "\u003cb\u003eMatricula Educacion Superior\u2026\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\Matricula_Educacion_Superior_2021_SIES.md\u003c/small\u003e"}, {"color": "#34D399", "font": {"color": "#F1F5F9"}, "id": "raw/Matricula_Educacion_Superior_2022_SIES_", "label": "Matricula Educacion Superior\u2026", "shape": "dot", "size": 10, "title": "\u003cb\u003eMatricula Educacion Superior\u2026\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprototipo-matricula\\raw\\Matricula_Educacion_Superior_2022_SIES_.md\u003c/small\u003e"}]);
+                  edges = new vis.DataSet([{"from": "wiki/brecha-genero-matricula", "title": "similitud: 0.45", "to": "raw/informe_matricula2012", "value": 1}, {"from": "wiki/brecha-genero-matricula", "title": "similitud: 0.40", "to": "wiki/index", "value": 1}, {"from": "wiki/brecha-genero-matricula", "title": "similitud: 0.40", "to": "raw/informe_matricula_2013", "value": 1}, {"from": "wiki/evolucion-matricula", "title": "similitud: 0.58", "to": "raw/informe_matricula_2013", "value": 2}, {"from": "wiki/evolucion-matricula", "title": "similitud: 0.41", "to": "raw/informe de matricula 2016_sies", "value": 1}, {"from": "wiki/evolucion-matricula", "title": "similitud: 0.41", "to": "raw/informe matricula 2018_sies", "value": 1}, {"from": "wiki/matricula-2024", "title": "similitud: 0.51", "to": "raw/informe matricula 2018_sies", "value": 2}, {"from": "wiki/matricula-2024", "title": "similitud: 0.47", "to": "wiki/matricula-2025", "value": 1}, {"from": "wiki/matricula-2024", "title": "similitud: 0.46", "to": "raw/Informe-Matricula-2019_SIES", "value": 1}, {"from": "wiki/matricula-2024", "title": "similitud: 0.46", "to": "raw/informe matricula 2017_sies", "value": 1}, {"from": "wiki/matricula-2025", "title": "similitud: 0.51", "to": "raw/informe matricula 2018_sies", "value": 2}, {"from": "wiki/matricula-2025", "title": "similitud: 0.47", "to": "raw/informe_matricula_2013", "value": 1}, {"from": "wiki/matricula-2025", "title": "similitud: 0.47", "to": "raw/Informe-Matricula-2019_SIES", "value": 1}, {"from": "wiki/matricula-por-region", "title": "similitud: 0.64", "to": "raw/informe_matricula2012", "value": 2}, {"from": "wiki/matricula-por-region", "title": "similitud: 0.49", "to": "raw/informe_matricula_2013", "value": 1}, {"from": "wiki/matricula-por-region", "title": "similitud: 0.48", "to": "wiki/index", "value": 1}, {"from": "wiki/SCHEMA", "title": "similitud: 0.47", "to": "wiki/log", "value": 1}, {"from": "raw/informe de matricula 2016_sies", "title": "similitud: 0.62", "to": "raw/informe matricula 2018_sies", "value": 2}, {"from": "raw/informe de matricula 2016_sies", "title": "similitud: 0.60", "to": "raw/informe matricula 2017_sies", "value": 2}, {"from": "raw/informe de matricula 2016_sies", "title": "similitud: 0.60", "to": "raw/Informe-Matricula-2019_SIES", "value": 2}, {"from": "raw/informe matricula 2017_sies", "title": "similitud: 0.58", "to": "raw/informe matricula 2018_sies", "value": 2}, {"from": "raw/informe matricula 2017_sies", "title": "similitud: 0.56", "to": "raw/Informe-Matricula-2019_SIES", "value": 2}, {"from": "raw/informe matricula 2017_sies", "title": "similitud: 0.56", "to": "raw/Informe_-Matricula_Educacion_Superior_SIES_2025", "value": 2}, {"from": "raw/informe matricula 2018_sies", "title": "similitud: 0.58", "to": "raw/Informe-Matricula-2019_SIES", "value": 2}, {"from": "raw/informe matricula 2018_sies", "title": "similitud: 0.57", "to": "raw/Informe_-Matricula_Educacion_Superior_SIES_2025", "value": 2}, {"from": "raw/Informe-Matricula-2019_SIES", "title": "similitud: 0.50", "to": "raw/Informe_-Matricula_Educacion_Superior_SIES_2025", "value": 2}, {"from": "raw/Informe-Matricula-2019_SIES", "title": "similitud: 0.50", "to": "raw/Informe_matricula_2024_SIES_", "value": 1}, {"from": "raw/Informe-Matricula-2019_SIES", "title": "similitud: 0.48", "to": "raw/matricula2014_principales_resultados_sies", "value": 1}, {"from": "raw/Informe-matricula_2020_SIES", "title": "similitud: 0.52", "to": "raw/Informe_-Matricula_Educacion_Superior_SIES_2025", "value": 2}, {"from": "raw/Informe-matricula_2020_SIES", "title": "similitud: 0.52", "to": "raw/Informe_matricula_2024_SIES_", "value": 2}, {"from": "raw/Informe-matricula_2020_SIES", "title": "similitud: 0.50", "to": "raw/matricula2014_principales_resultados_sies", "value": 1}, {"from": "raw/Informe_-Matricula_Educacion_Superior_SIES_2025", "title": "similitud: 0.71", "to": "raw/Informe_matricula_2024_SIES_", "value": 2}, {"from": "raw/Informe_-Matricula_Educacion_Superior_SIES_2025", "title": "similitud: 0.65", "to": "raw/matricula2014_principales_resultados_sies", "value": 2}, {"from": "raw/informe_matricula2012", "title": "similitud: 0.56", "to": "raw/informe_matricula_2013", "value": 2}, {"from": "raw/informe_matricula2012", "title": "similitud: 0.52", "to": "raw/Informe_-Matricula_Educacion_Superior_SIES_2025", "value": 2}, {"from": "raw/informe_matricula2012", "title": "similitud: 0.51", "to": "raw/informe de matricula 2016_sies", "value": 2}, {"from": "raw/informe_matricula2012", "title": "similitud: 0.50", "to": "raw/Informe_matricula_2024_SIES_", "value": 2}, {"from": "raw/informe_matricula_2013", "title": "similitud: 0.54", "to": "raw/Informe_-Matricula_Educacion_Superior_SIES_2025", "value": 2}, {"from": "raw/informe_matricula_2013", "title": "similitud: 0.54", "to": "raw/informe de matricula 2016_sies", "value": 2}, {"from": "raw/informe_matricula_2013", "title": "similitud: 0.53", "to": "raw/Informe_matricula_2024_SIES_", "value": 2}, {"from": "raw/Informe_matricula_2024_SIES_", "title": "similitud: 0.56", "to": "raw/informe matricula 2018_sies", "value": 2}, {"from": "raw/Informe_matricula_2024_SIES_", "title": "similitud: 0.56", "to": "raw/matricula2014_principales_resultados_sies", "value": 2}, {"from": "raw/mat_postgrado_2008_sies2008", "title": "similitud: 0.43", "to": "raw/matricula2014_principales_resultados_sies", "value": 1}, {"from": "raw/mat_postgrado_2008_sies2008", "title": "similitud: 0.43", "to": "raw/matricula_2015_principales_resultados", "value": 1}, {"from": "raw/mat_postgrado_2009_sies2009", "title": "similitud: 0.49", "to": "raw/matricula2014_principales_resultados_sies", "value": 1}, {"from": "raw/mat_postgrado_2009_sies2009", "title": "similitud: 0.49", "to": "raw/matricula_2015_principales_resultados", "value": 1}, {"from": "raw/mat_postgrado_2009_sies2009", "title": "similitud: 0.45", "to": "raw/informe de matricula 2016_sies", "value": 1}, {"from": "raw/mat_postgrado_2009_sies2009", "title": "similitud: 0.44", "to": "raw/Informe-Matricula-2019_SIES", "value": 1}, {"from": "raw/mat_postgrado_2010_sies2010", "title": "similitud: 0.43", "to": "raw/matricula2014_principales_resultados_sies", "value": 1}, {"from": "raw/mat_postgrado_2010_sies2010", "title": "similitud: 0.41", "to": "raw/matricula_2015_principales_resultados", "value": 1}, {"from": "raw/mat_pregrado_2008_sies2008", "title": "similitud: 0.41", "to": "raw/matricula2014_principales_resultados_sies", "value": 1}, {"from": "raw/mat_pregrado_2008_sies2008", "title": "similitud: 0.40", "to": "raw/matricula_2015_principales_resultados", "value": 1}, {"from": "raw/mat_pregrado_2009_sies2009", "title": "similitud: 0.47", "to": "raw/matricula2014_principales_resultados_sies", "value": 1}, {"from": "raw/mat_pregrado_2009_sies2009", "title": "similitud: 0.46", "to": "raw/matricula_2015_principales_resultados", "value": 1}, {"from": "raw/mat_pregrado_2009_sies2009", "title": "similitud: 0.42", "to": "raw/informe de matricula 2016_sies", "value": 1}, {"from": "raw/mat_pregrado_2009_sies2009", "title": "similitud: 0.41", "to": "raw/Informe-matricula_2020_SIES", "value": 1}, {"from": "raw/mat_pregrado_2010_sies2010", "title": "similitud: 0.41", "to": "raw/matricula2014_principales_resultados_sies", "value": 1}, {"from": "raw/mat_total_2009_sies2009", "title": "similitud: 0.40", "to": "raw/matricula2014_principales_resultados_sies", "value": 1}, {"from": "raw/mat_total_2009_sies2009", "title": "similitud: 0.40", "to": "raw/informe_matricula_2013", "value": 1}, {"from": "raw/mat_total_2009_sies2009", "title": "similitud: 0.40", "to": "raw/matricula_2015_principales_resultados", "value": 1}, {"from": "raw/Matricula-_en_Educacion_Superior_2023_SIES", "title": "similitud: 0.65", "to": "raw/matricula2014_principales_resultados_sies", "value": 2}, {"from": "raw/Matricula-_en_Educacion_Superior_2023_SIES", "title": "similitud: 0.63", "to": "raw/Matricula_Educacion_Superior_2022_SIES_", "value": 2}, {"from": "raw/Matricula-_en_Educacion_Superior_2023_SIES", "title": "similitud: 0.61", "to": "raw/matricula_2015_principales_resultados", "value": 2}, {"from": "raw/matricula2014_principales_resultados_sies", "title": "similitud: 0.56", "to": "raw/informe de matricula 2016_sies", "value": 2}, {"from": "raw/matricula2014_principales_resultados_sies", "title": "similitud: 0.56", "to": "raw/matricula_2015_principales_resultados", "value": 2}, {"from": "raw/matricula2014_principales_resultados_sies", "title": "similitud: 0.55", "to": "raw/informe matricula 2018_sies", "value": 2}, {"from": "raw/matricula_2015_principales_resultados", "title": "similitud: 0.62", "to": "raw/informe de matricula 2016_sies", "value": 2}, {"from": "raw/matricula_2015_principales_resultados", "title": "similitud: 0.60", "to": "raw/informe matricula 2017_sies", "value": 2}, {"from": "raw/matricula_2015_principales_resultados", "title": "similitud: 0.59", "to": "raw/informe matricula 2018_sies", "value": 2}, {"from": "raw/Matricula_Educacion_Superior_2021_SIES", "title": "similitud: 0.68", "to": "raw/matricula2014_principales_resultados_sies", "value": 2}, {"from": "raw/Matricula_Educacion_Superior_2021_SIES", "title": "similitud: 0.66", "to": "raw/Informe_matricula_2024_SIES_", "value": 2}, {"from": "raw/Matricula_Educacion_Superior_2021_SIES", "title": "similitud: 0.66", "to": "raw/Informe_-Matricula_Educacion_Superior_SIES_2025", "value": 2}, {"from": "raw/Matricula_Educacion_Superior_2021_SIES", "title": "similitud: 0.66", "to": "raw/matricula_2015_principales_resultados", "value": 2}, {"from": "raw/Matricula_Educacion_Superior_2022_SIES_", "title": "similitud: 0.63", "to": "raw/matricula2014_principales_resultados_sies", "value": 2}, {"from": "raw/Matricula_Educacion_Superior_2022_SIES_", "title": "similitud: 0.61", "to": "raw/Informe_matricula_2024_SIES_", "value": 2}, {"from": "raw/Matricula_Educacion_Superior_2022_SIES_", "title": "similitud: 0.61", "to": "raw/Informe_-Matricula_Educacion_Superior_SIES_2025", "value": 2}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"stabilization": {"iterations": 100}, "barnesHut": {"gravitationalConstant": -3000, "springConstant": 0.04, "centralGravity": 0.5}}, "edges": {"color": {"color": "#64748B", "opacity": 0.4}, "width": 1}, "nodes": {"borderWidth": 1, "size": 15, "font": {"size": 11, "color": "#F1F5F9"}}, "interaction": {"hover": true, "tooltipDelay": 200}, "configure": {"enabled": false}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
