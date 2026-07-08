@@ -27,12 +27,15 @@ class SIESKnowledgeBase:
 
     DuckDB es opcional: si el archivo SQLite no existe, responde solo
     con el contexto semántico de ChromaDB (informes PDF + wiki).
+
+    Si ChromaDB falla (modelo no disponible), usa fallback TF-IDF.
     """
 
     def __init__(self, sqlite_path=None, chroma_dir=None):
         self.sqlite_path = Path(sqlite_path or SQLITE_DB)
         self.chroma_dir = Path(chroma_dir or CHROMA_DIR)
         self.db_disponible = self.sqlite_path.exists()
+        self.chroma_activo = False
 
         # ── DuckDB (opcional) ─────────────────────────────────────────────
         if self.db_disponible:
@@ -41,9 +44,75 @@ class SIESKnowledgeBase:
             self.duckdb.execute(f"ATTACH '{self.sqlite_path}' AS sies (TYPE SQLITE)")
             self._crear_vistas()
 
-        # ── ChromaDB (siempre) ────────────────────────────────────────────
-        self.chroma = chromadb.PersistentClient(path=str(self.chroma_dir))
-        self.collection = self.chroma.get_collection("sies-matricula")
+        # ── ChromaDB (intentar, con fallback) ─────────────────────────────
+        self.documents = []  # para fallback
+        self.doc_metadatas = []
+        self.doc_ids_list = []
+        self.tfidf_vectorizer = None
+        self.tfidf_matrix = None
+
+        try:
+            self.chroma = chromadb.PersistentClient(path=str(self.chroma_dir))
+            self.collection = self.chroma.get_collection("sies-matricula")
+            self.chroma_activo = True
+            # Precargar documentos para fallback
+            all_docs = self.collection.get()
+            self.documents = all_docs["documents"]
+            self.doc_metadatas = all_docs["metadatas"]
+            self.doc_ids_list = all_docs["ids"]
+        except Exception as e:
+            # Fallback: cargar documentos directamente + TF-IDF
+            self._iniciar_fallback()
+            print(f"ChromaDB no disponible, usando fallback TF-IDF: {e}")
+
+    def _iniciar_fallback(self):
+        """Carga documentos desde archivos markdown y prepara TF-IDF."""
+        from sklearn.feature_extraction.text import TfidfVectorizer
+        from pathlib import Path
+
+        docs = []
+        metas = []
+        ids_list = []
+
+        # Buscar en chromadb (los textos ya están en sqlite)
+        import sqlite3
+        chroma_sqlite = list(self.chroma_dir.glob("chroma.sqlite3"))
+        if chroma_sqlite:
+            try:
+                conn = sqlite3.connect(str(chroma_sqlite[0]))
+                rows = conn.execute(
+                    "SELECT id, document FROM embeddings ORDER BY id"
+                ).fetchall()
+                for row in rows:
+                    ids_list.append(row[0])
+                    docs.append(row[1] if row[1] else "")
+                    metas.append({"source": row[0], "type": "fallback"})
+                conn.close()
+            except Exception:
+                pass
+
+        if not docs:
+            # Último recurso: cargar desde los archivos .md en chromadb
+            for f in sorted(self.chroma_dir.parent.rglob("*.md")):
+                try:
+                    text = f.read_text(encoding="utf-8", errors="ignore")
+                    if len(text) > 50:
+                        docs.append(text)
+                        ids_list.append(str(f.relative_to(self.chroma_dir.parent)))
+                        metas.append({"source": str(f), "type": "wiki" if "wiki" in str(f) else "raw_pdf"})
+                except Exception:
+                    pass
+
+        self.documents = docs
+        self.doc_metadatas = metas
+        self.doc_ids_list = ids_list
+
+        if docs:
+            self.tfidf_vectorizer = TfidfVectorizer(
+                max_features=5000, stop_words=["de", "la", "el", "en", "y", "a", "los", "las", "del", "por", "con", "para", "un", "una", "que", "es"]
+            )
+            self.tfidf_matrix = self.tfidf_vectorizer.fit_transform(docs)
+            print(f"Fallback TF-IDF listo: {len(docs)} documentos")
 
     def _crear_vistas(self):
         """Crea las vistas analíticas sobre la SQLite adjunta."""
@@ -95,21 +164,40 @@ class SIESKnowledgeBase:
         respuesta_partes = []
         fuentes = []
 
-        # 1. Buscar contexto semántico en ChromaDB (siempre disponible)
-        docs = self.collection.query(
-            query_texts=[pregunta],
-            n_results=5
-        )
-        if docs["documents"] and docs["documents"][0]:
-            # Unir los fragmentos más relevantes
+        # 1. Buscar contexto semántico (ChromaDB o fallback TF-IDF)
+        if self.chroma_activo:
+            docs = self.collection.query(
+                query_texts=[pregunta],
+                n_results=5
+            )
+            resultados = list(zip(
+                docs["documents"][0] if docs["documents"] else [],
+                docs["metadatas"][0] if docs["metadatas"] else [],
+                docs["distances"][0] if docs["distances"] else []
+            ))
+        elif self.tfidf_vectorizer is not None and self.documents:
+            # Fallback TF-IDF
+            query_vec = self.tfidf_vectorizer.transform([pregunta])
+            from sklearn.metrics.pairwise import cosine_similarity
+            sims = cosine_similarity(query_vec, self.tfidf_matrix).flatten()
+            top_indices = sims.argsort()[-5:][::-1]
+            resultados = []
+            for idx in top_indices:
+                if sims[idx] > 0.05:
+                    resultados.append((
+                        self.documents[idx][:2000],
+                        self.doc_metadatas[idx],
+                        1.0 - sims[idx]
+                    ))
+        else:
+            resultados = []
+
+        if resultados:
             ctx_parts = []
-            for i, (doc, meta, dist) in enumerate(zip(
-                docs["documents"][0], docs["metadatas"][0], docs["distances"][0]
-            )):
-                if dist < 0.6:  # Solo resultados relevantes
+            for doc, meta, dist in resultados:
+                if dist < 0.6:
                     src = meta.get("source", "desconocido")
                     fuentes.append(src)
-                    # Extraer texto limpio (primeros ~800 chars)
                     clean = doc.strip()[:800]
                     ctx_parts.append(f"📄 **{src}**\n{clean}")
 
