@@ -1,0 +1,1445 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Analista SIES — Dashboard Educación Superior</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       SIES Dashboard — Design System
+       Paleta cálida: terracota, crema, ámbar, tierra
+       ============================================================ */
+    :root {
+      /* Neutrales cálidos */
+      --bg:           oklch(96.8% 0.010 65);
+      --surface:      oklch(99.2% 0.004 60);
+      --fg:           oklch(16% 0.022 50);
+      --muted:        oklch(46% 0.018 50);
+      --border:       oklch(87% 0.010 60);
+
+      /* Sidebar */
+      --sidebar:      oklch(14% 0.028 48);
+      --sidebar-hover: oklch(22% 0.04 48);
+      --sidebar-fg:   oklch(78% 0.018 52);
+      --sidebar-active: oklch(62% 0.16 42);
+
+      /* Acento principal — terracota */
+      --accent:       oklch(56% 0.185 42);
+      --accent-soft:  oklch(68% 0.13 42);
+      --accent-bg:    oklch(91% 0.035 45);
+      --accent-glow:  oklch(56% 0.185 42 / 0.15);
+
+      /* Acento secundario — ámbar */
+      --amber:        oklch(63% 0.14 78);
+      --amber-bg:     oklch(93% 0.04 80);
+
+      /* Colores semánticos */
+      --success:      oklch(53% 0.11 145);
+      --success-bg:   oklch(93% 0.03 145);
+      --warn:         oklch(62% 0.14 82);
+      --warn-bg:      oklch(93% 0.04 82);
+
+      /* Tipografía */
+      --font-display: 'DM Sans', 'Söhne', 'Avenir Next', -apple-system, system-ui, sans-serif;
+      --font-body:    'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+      /* Espaciado */
+      --sidebar-w: 264px;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow-sm: 0 1px 3px oklch(0% 0 0 / 0.06), 0 1px 2px oklch(0% 0 0 / 0.04);
+      --shadow-md: 0 4px 12px oklch(0% 0 0 / 0.06), 0 2px 4px oklch(0% 0 0 / 0.04);
+      --shadow-lg: 0 12px 32px oklch(0% 0 0 / 0.08);
+      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--fg);
+      font: 400 15px/1.5 var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ============================================================
+       Layout base — sidebar + main
+       ============================================================ */
+    .app-shell {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ---- Sidebar ---- */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      height: 100vh;
+      background: var(--sidebar);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      position: sticky;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      border-right: 1px solid oklch(100% 0 0 / 0.06);
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid oklch(100% 0 0 / 0.06);
+    }
+
+    .sidebar-brand-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar-brand-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .sidebar-brand-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sidebar-brand-name {
+      font: 600 15px/1.2 var(--font-display);
+      color: oklch(92% 0.01 55);
+      letter-spacing: -0.01em;
+    }
+
+    .sidebar-brand-sub {
+      font: 400 11px/1.3 var(--font-body);
+      color: oklch(60% 0.02 50);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .sidebar-nav {
+      padding: 12px 10px;
+      flex: 1;
+    }
+
+    .sidebar-nav-label {
+      font: 500 10px/1 var(--font-body);
+      color: oklch(50% 0.02 50);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 16px 10px 8px;
+    }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      color: var(--sidebar-fg);
+      font: 500 14px/1 var(--font-body);
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      margin-bottom: 2px;
+    }
+
+    .sidebar-nav-item:hover {
+      background: var(--sidebar-hover);
+      color: oklch(90% 0.01 50);
+    }
+
+    .sidebar-nav-item.active {
+      background: oklch(100% 0 0 / 0.08);
+      color: oklch(90% 0.02 50);
+      box-shadow: inset 3px 0 0 var(--sidebar-active);
+    }
+
+    .sidebar-nav-item svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .sidebar-nav-item.active svg {
+      opacity: 1;
+    }
+
+    .sidebar-nav-item .badge {
+      margin-left: auto;
+      background: oklch(100% 0 0 / 0.1);
+      color: oklch(70% 0.02 50);
+      font: 500 10px/1 var(--font-mono);
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    .sidebar-nav-item.active .badge {
+      background: oklch(100% 0 0 / 0.14);
+      color: oklch(80% 0.02 50);
+    }
+
+    .sidebar-footer {
+      padding: 16px 16px 20px;
+      border-top: 1px solid oklch(100% 0 0 / 0.05);
+    }
+
+    .sidebar-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 6px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+
+    .sidebar-user:hover {
+      background: var(--sidebar-hover);
+    }
+
+    .sidebar-user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--accent-bg);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      font: 600 13px/1 var(--font-display);
+      flex-shrink: 0;
+    }
+
+    .sidebar-user-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sidebar-user-name {
+      font: 500 13px/1.2 var(--font-body);
+      color: oklch(88% 0.01 55);
+    }
+
+    .sidebar-user-role {
+      font: 400 11px/1.2 var(--font-body);
+      color: oklch(55% 0.02 50);
+    }
+
+    /* ---- Main ---- */
+    .main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 0;
+    }
+
+    /* ---- Top bar ---- */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--border);
+      background: oklch(99% 0.003 60 / 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .topbar-title {
+      font: 600 18px/1 var(--font-display);
+      color: var(--fg);
+      letter-spacing: -0.02em;
+    }
+
+    .topbar-title span {
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .topbar-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font: 400 13px/1 var(--font-body);
+      color: var(--muted);
+    }
+
+    .topbar-breadcrumb svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .topbar-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .topbar-btn:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+
+    .topbar-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .topbar-date {
+      font: 400 13px/1 var(--font-body);
+      color: var(--muted);
+      letter-spacing: -0.01em;
+    }
+
+    /* ---- Content ---- */
+    .content {
+      flex: 1;
+      padding: 24px 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 1400px;
+    }
+
+    /* ---- KPI Cards ---- */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition), transform var(--transition);
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .kpi-card:nth-child(1)::before { background: var(--accent); }
+    .kpi-card:nth-child(2)::before { background: var(--amber); }
+    .kpi-card:nth-child(3)::before { background: var(--success); }
+    .kpi-card:nth-child(4)::before { background: oklch(55% 0.14 260); }
+
+    .kpi-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .kpi-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .kpi-label {
+      font: 500 12px/1 var(--font-body);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .kpi-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+    }
+
+    .kpi-icon svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .kpi-card:nth-child(1) .kpi-icon { background: var(--accent-bg); color: var(--accent); }
+    .kpi-card:nth-child(2) .kpi-icon { background: var(--amber-bg); color: var(--amber); }
+    .kpi-card:nth-child(3) .kpi-icon { background: var(--success-bg); color: var(--success); }
+    .kpi-card:nth-child(4) .kpi-icon { background: oklch(91% 0.04 260); color: oklch(45% 0.14 260); }
+
+    .kpi-value {
+      font: 700 32px/1 var(--font-display);
+      letter-spacing: -0.03em;
+      color: var(--fg);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kpi-detail {
+      font: 400 13px/1.3 var(--font-body);
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ---- Panel grid (chat + graph) ---- */
+    .panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .panel {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 380px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-header h2 {
+      font: 600 15px/1 var(--font-display);
+      letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+
+    .panel-header-status {
+      font: 400 11px/1 var(--font-body);
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .panel-header-status::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .panel-header-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 13px;
+      font: 500 12px/1 var(--font-body);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .panel-header-btn:hover {
+      background: var(--accent-bg);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .panel-header-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ---- Chat Area ---- */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .chat-msg {
+      display: flex;
+      gap: 10px;
+      max-width: 85%;
+      animation: msg-in 0.3s ease-out;
+    }
+
+    @keyframes msg-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .chat-msg.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .chat-msg.assistant {
+      align-self: flex-start;
+    }
+
+    .chat-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      font: 600 12px/1 var(--font-display);
+    }
+
+    .chat-msg.assistant .chat-avatar {
+      background: oklch(93% 0.008 55);
+      color: oklch(55% 0.02 50);
+    }
+
+    .chat-msg.user .chat-avatar {
+      background: oklch(92% 0.03 50);
+      color: var(--fg);
+    }
+
+    .chat-msg.assistant .chat-avatar svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .chat-bubble {
+      padding: 10px 15px;
+      border-radius: 12px;
+      font: 400 14px/1.5 var(--font-body);
+      letter-spacing: -0.005em;
+    }
+
+    .chat-msg.assistant .chat-bubble {
+      background: oklch(96% 0.008 55);
+      border-bottom-left-radius: 4px;
+      color: var(--fg);
+    }
+
+    .chat-msg.user .chat-bubble {
+      background: var(--accent);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-msg.user .chat-bubble a {
+      color: oklch(90% 0.06 55);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .chat-bubble .highlight {
+      background: oklch(90% 0.04 50 / 0.5);
+      padding: 0 4px;
+      border-radius: 3px;
+    }
+
+    .chat-bubble .stat {
+      font-weight: 600;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chat-time {
+      font: 400 11px/1 var(--font-body);
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .chat-input-area {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      background: oklch(98% 0.004 55);
+    }
+
+    .chat-input {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font: 400 14px/1.4 var(--font-body);
+      background: var(--surface);
+      color: var(--fg);
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .chat-input::placeholder {
+      color: oklch(70% 0.01 50);
+    }
+
+    .chat-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .chat-send-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: all var(--transition);
+      flex-shrink: 0;
+    }
+
+    .chat-send-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .chat-send-btn:active {
+      transform: scale(0.95);
+    }
+
+    .chat-send-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .chat-suggestions {
+      display: flex;
+      gap: 6px;
+      padding: 10px 16px 0;
+      flex-wrap: wrap;
+    }
+
+    .chat-suggestion-chip {
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font: 400 12px/1 var(--font-body);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .chat-suggestion-chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-bg);
+    }
+
+    /* ---- Knowledge Graph Entities ---- */
+    .graph-entities {
+      padding: 16px 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .entity-category {
+      margin-bottom: 18px;
+    }
+
+    .entity-category:last-child {
+      margin-bottom: 0;
+    }
+
+    .entity-category-header {
+      font: 600 11px/1 var(--font-body);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .entity-category-header .count {
+      font: 500 11px/1 var(--font-mono);
+      color: oklch(65% 0.02 50);
+      background: oklch(94% 0.005 55);
+      padding: 1px 7px;
+      border-radius: 999px;
+    }
+
+    .entity-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .entity-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font: 400 13px/1 var(--font-body);
+      letter-spacing: -0.01em;
+      border: 1px solid oklch(88% 0.015 55);
+      background: oklch(97% 0.006 55);
+      color: var(--fg);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .entity-chip:hover {
+      background: var(--accent-bg);
+      border-color: var(--accent-soft);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px oklch(0% 0 0 / 0.06);
+    }
+
+    .entity-chip .type-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .entity-chip .entity-count {
+      font: 500 10px/1 var(--font-mono);
+      color: var(--muted);
+      background: oklch(90% 0.005 50);
+      padding: 1px 6px;
+      border-radius: 999px;
+      margin-left: 2px;
+    }
+
+    .entity-chip .entity-icon {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    .entity-chip.institution .type-dot { background: var(--accent); }
+    .entity-chip.region .type-dot { background: var(--amber); }
+    .entity-chip.area .type-dot { background: var(--success); }
+    .entity-chip.level .type-dot { background: oklch(55% 0.14 260); }
+    .entity-chip.type-ies .type-dot { background: oklch(60% 0.12 320); }
+
+    /* ---- Scrollbar ---- */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: oklch(82% 0.008 55);
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: oklch(72% 0.012 55);
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 1100px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .panel-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: -280px;
+        transition: left 0.3s ease;
+        z-index: 200;
+        box-shadow: var(--shadow-lg);
+      }
+      .sidebar.open {
+        left: 0;
+      }
+      .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: oklch(0% 0 0 / 0.3);
+        z-index: 199;
+        display: none;
+      }
+      .sidebar-overlay.open {
+        display: block;
+      }
+      .content {
+        padding: 16px;
+      }
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+      .topbar {
+        padding: 12px 16px;
+      }
+      .mobile-menu-btn {
+        display: grid !important;
+      }
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--fg);
+      cursor: pointer;
+      place-items: center;
+    }
+
+    .mobile-menu-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ---- Visual flourishes ---- */
+    .glow-dot {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(80px);
+      opacity: 0.08;
+    }
+
+    /* ---- Loading shimmer for entity chips ---- */
+    @keyframes shimmer {
+      0% { background-position: -200px 0; }
+      100% { background-position: calc(200px + 100%) 0; }
+    }
+
+    /* ---- Subtle pulsing on the assistant avatar ---- */
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .online-dot {
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    /* ---- Stat highlight in chat ---- */
+    .stat-highlight {
+      background: oklch(93% 0.04 80);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+      color: oklch(50% 0.12 78);
+    }
+
+    /* ---- Empty state / placeholder ---- */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      stroke: oklch(82% 0.008 55);
+      fill: none;
+      stroke-width: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .empty-state p {
+      font: 400 14px/1.5 var(--font-body);
+      max-width: 280px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ====== Sidebar Overlay (mobile) ====== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ====== SIDEBAR ====== -->
+    <aside class="sidebar" id="sidebar" data-od-id="sidebar">
+      <div class="sidebar-brand" data-od-id="sidebar-brand">
+        <div class="sidebar-brand-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="sidebar-brand-text">
+          <div class="sidebar-brand-name">Analista SIES</div>
+          <div class="sidebar-brand-sub">Educación Superior</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" data-od-id="sidebar-nav">
+        <div class="sidebar-nav-label" data-od-id="nav-label-main">Principal</div>
+
+        <a class="sidebar-nav-item active" data-od-id="nav-dashboard">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="4" rx="1"/><rect x="14" y="10" width="7" height="11" rx="1"/><rect x="3" y="13" width="7" height="8" rx="1"/></svg>
+          Dashboard
+        </a>
+
+        <a class="sidebar-nav-item" data-od-id="nav-explorador">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Explorador
+          <span class="badge">3</span>
+        </a>
+
+        <a class="sidebar-nav-item" data-od-id="nav-informes">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Informes
+          <span class="badge">12</span>
+        </a>
+
+        <a class="sidebar-nav-item" data-od-id="nav-grafo">
+          <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/><line x1="15.5" y1="8.5" x2="8.5" y2="15.5"/></svg>
+          Grafo de Conocimiento
+          <span class="badge">89</span>
+        </a>
+
+        <div class="sidebar-nav-label" data-od-id="nav-label-config">Configuración</div>
+
+        <a class="sidebar-nav-item" data-od-id="nav-datos">
+          <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          Fuentes de Datos
+        </a>
+
+        <a class="sidebar-nav-item" data-od-id="nav-ayuda">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Ayuda
+        </a>
+      </nav>
+
+      <div class="sidebar-footer" data-od-id="sidebar-footer">
+        <div class="sidebar-user" data-od-id="sidebar-user">
+          <div class="sidebar-user-avatar">SV</div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name">Sebastián V.</div>
+            <div class="sidebar-user-role">Consultor Datos</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====== MAIN ====== -->
+    <main class="main" data-od-id="main-content">
+
+      <!-- Top Bar -->
+      <header class="topbar" data-od-id="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" data-od-id="mobile-menu-btn">
+            <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="topbar-title">Dashboard <span>/ Resumen</span></div>
+        </div>
+        <div class="topbar-right">
+          <span class="topbar-date" data-od-id="current-date">julio 2026</span>
+          <button class="topbar-btn" data-od-id="btn-notifications">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+          <button class="topbar-btn" data-od-id="btn-settings">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="content" data-od-id="content">
+
+        <!-- KPIs -->
+        <section class="kpi-grid" data-od-id="kpi-grid">
+          <div class="kpi-card" data-od-id="kpi-documentos">
+            <div class="kpi-header">
+              <span class="kpi-label">Documentos</span>
+              <div class="kpi-icon">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value">5</div>
+            <div class="kpi-detail">informes SIES procesados</div>
+          </div>
+
+          <div class="kpi-card" data-od-id="kpi-hechos">
+            <div class="kpi-header">
+              <span class="kpi-label">Hechos</span>
+              <div class="kpi-icon">
+                <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value">506</div>
+            <div class="kpi-detail">afirmaciones extraídas</div>
+          </div>
+
+          <div class="kpi-card" data-od-id="kpi-entidades">
+            <div class="kpi-header">
+              <span class="kpi-label">Entidades</span>
+              <div class="kpi-icon">
+                <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/><line x1="15.5" y1="8.5" x2="8.5" y2="15.5"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value">89</div>
+            <div class="kpi-detail">instituciones, regiones, áreas</div>
+          </div>
+
+          <div class="kpi-card" data-od-id="kpi-categorias">
+            <div class="kpi-header">
+              <span class="kpi-label">Categorías</span>
+              <div class="kpi-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value">4</div>
+            <div class="kpi-detail">matrícula, retención, género, titulación</div>
+          </div>
+        </section>
+
+        <!-- Panels: Chat + Graph -->
+        <div class="panel-grid" data-od-id="panel-grid">
+
+          <!-- Chat Panel -->
+          <section class="panel" data-od-id="panel-chat">
+            <div class="panel-header">
+              <div class="panel-header-left">
+                <h2>Analista SIES</h2>
+                <span class="panel-header-status">En línea</span>
+              </div>
+              <button class="panel-header-btn" data-od-id="btn-chat-clear">
+                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                Limpiar
+              </button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages" data-od-id="chat-messages">
+              <!-- Assistant -->
+              <div class="chat-msg assistant" data-od-id="msg-assistant-1">
+                <div class="chat-avatar">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                </div>
+                <div>
+                  <div class="chat-bubble">
+                    ¡Hola! Soy tu analista de datos SIES. Puedo consultar <span class="stat-highlight">506 hechos</span> extraídos de <span class="stat-highlight">5 informes</span> oficiales. ¿Qué te gustaría saber sobre la educación superior chilena?
+                  </div>
+                  <div class="chat-time">Ahora</div>
+                </div>
+              </div>
+
+              <!-- User -->
+              <div class="chat-msg user" data-od-id="msg-user-1">
+                <div class="chat-avatar">SV</div>
+                <div>
+                  <div class="chat-bubble">
+                    ¿Cuál es la tasa de retención promedio en universidades de la Araucanía?
+                  </div>
+                  <div class="chat-time" style="text-align:right">Hace un momento</div>
+                </div>
+              </div>
+
+              <!-- Assistant response -->
+              <div class="chat-msg assistant" data-od-id="msg-assistant-2">
+                <div class="chat-avatar">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                </div>
+                <div>
+                  <div class="chat-bubble">
+                        Consultando <em>Informe de Retención SIES 2021</em>… la retención de <strong>primer año</strong> en universidades de la <strong>Región de La Araucanía</strong> es del <strong>74.3 %</strong> en pregrado, <strong>3.2 pp</strong> bajo el promedio nacional (77.5 %). Las instituciones con mejor retención en la región son la <strong>UCT</strong> (78.1 %) y la <strong>UFRO</strong> (76.8 %).<br/><br/>
+                        <span style="background:oklch(93% 0.04 80);padding:1px 6px;border-radius:4px;font-size:13px;color:oklch(50% 0.12 78)">💡 Estos datos son ilustrativos — reemplázalos con valores reales de tu base</span>
+                  </div>
+                  <div class="chat-time">Hace un momento</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-suggestions" data-od-id="chat-suggestions">
+              <span class="chat-suggestion-chip">Matrícula 2024 por región</span>
+              <span class="chat-suggestion-chip">Brechas de género en STEM</span>
+              <span class="chat-suggestion-chip">Titulación por área</span>
+              <span class="chat-suggestion-chip">Evolución retención</span>
+            </div>
+
+            <div class="chat-input-area" data-od-id="chat-input-area">
+              <input class="chat-input" type="text" placeholder="Pregunta al analista SIES..." data-od-id="chat-input" />
+              <button class="chat-send-btn" data-od-id="btn-chat-send">
+                <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </div>
+          </section>
+
+          <!-- Knowledge Graph Panel -->
+          <section class="panel" data-od-id="panel-graph">
+            <div class="panel-header">
+              <div class="panel-header-left">
+                <h2>Grafo de Conocimiento</h2>
+              </div>
+              <button class="panel-header-btn" data-od-id="btn-graph-explore">
+                <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/><line x1="15.5" y1="8.5" x2="8.5" y2="15.5"/></svg>
+                Explorar grafo
+              </button>
+            </div>
+
+            <div class="graph-entities" data-od-id="graph-entities">
+              <!-- Institutions -->
+              <div class="entity-category" data-od-id="entity-cat-instituciones">
+                <div class="entity-category-header">
+                  Instituciones
+                  <span class="count">24</span>
+                </div>
+                <div class="entity-chips">
+                  <span class="entity-chip institution" data-od-id="entity-uct">
+                    <span class="type-dot"></span>
+                    UCT
+                    <span class="entity-count">47</span>
+                  </span>
+                  <span class="entity-chip institution" data-od-id="entity-ufro">
+                    <span class="type-dot"></span>
+                    UFRO
+                    <span class="entity-count">38</span>
+                  </span>
+                  <span class="entity-chip institution" data-od-id="entity-uc">
+                    <span class="type-dot"></span>
+                    UC
+                    <span class="entity-count">52</span>
+                  </span>
+                  <span class="entity-chip institution" data-od-id="entity-uchile">
+                    <span class="type-dot"></span>
+                    UChile
+                    <span class="entity-count">44</span>
+                  </span>
+                  <span class="entity-chip institution" data-od-id="entity-usach">
+                    <span class="type-dot"></span>
+                    USACH
+                    <span class="entity-count">31</span>
+                  </span>
+                  <span class="entity-chip institution" data-od-id="entity-pucv">
+                    <span class="type-dot"></span>
+                    PUCV
+                    <span class="entity-count">26</span>
+                  </span>
+                  <span class="entity-chip institution" data-od-id="entity-udec">
+                    <span class="type-dot"></span>
+                    UdeC
+                    <span class="entity-count">29</span>
+                  </span>
+                  <span class="entity-chip institution" data-od-id="entity-more-inst">
+                    <span class="type-dot"></span>
+                    +17 más
+                  </span>
+                </div>
+              </div>
+
+              <!-- Regions -->
+              <div class="entity-category" data-od-id="entity-cat-regiones">
+                <div class="entity-category-header">
+                  Regiones
+                  <span class="count">16</span>
+                </div>
+                <div class="entity-chips">
+                  <span class="entity-chip region" data-od-id="entity-rm">
+                    <span class="type-dot"></span>
+                    Metropolitana
+                    <span class="entity-count">89</span>
+                  </span>
+                  <span class="entity-chip region" data-od-id="entity-araucania">
+                    <span class="type-dot"></span>
+                    La Araucanía
+                    <span class="entity-count">56</span>
+                  </span>
+                  <span class="entity-chip region" data-od-id="entity-biobio">
+                    <span class="type-dot"></span>
+                    Biobío
+                    <span class="entity-count">47</span>
+                  </span>
+                  <span class="entity-chip region" data-od-id="entity-valparaiso">
+                    <span class="type-dot"></span>
+                    Valparaíso
+                    <span class="entity-count">41</span>
+                  </span>
+                  <span class="entity-chip region" data-od-id="entity-more-regions">
+                    <span class="type-dot"></span>
+                    +12 más
+                  </span>
+                </div>
+              </div>
+
+              <!-- Knowledge Areas -->
+              <div class="entity-category" data-od-id="entity-cat-areas">
+                <div class="entity-category-header">
+                  Áreas de Conocimiento
+                  <span class="count">9</span>
+                </div>
+                <div class="entity-chips">
+                  <span class="entity-chip area" data-od-id="entity-area-tecnologia">
+                    <span class="type-dot"></span>
+                    Tecnología
+                    <span class="entity-count">72</span>
+                  </span>
+                  <span class="entity-chip area" data-od-id="entity-area-salud">
+                    <span class="type-dot"></span>
+                    Salud
+                    <span class="entity-count">64</span>
+                  </span>
+                  <span class="entity-chip area" data-od-id="entity-area-admin">
+                    <span class="type-dot"></span>
+                    Adm. y Comercio
+                    <span class="entity-count">58</span>
+                  </span>
+                  <span class="entity-chip area" data-od-id="entity-area-educacion">
+                    <span class="type-dot"></span>
+                    Educación
+                    <span class="entity-count">43</span>
+                  </span>
+                  <span class="entity-chip area" data-od-id="entity-area-more">
+                    <span class="type-dot"></span>
+                    +5 más
+                  </span>
+                </div>
+              </div>
+
+              <!-- Levels -->
+              <div class="entity-category" data-od-id="entity-cat-niveles">
+                <div class="entity-category-header">
+                  Niveles de Formación
+                  <span class="count">5</span>
+                </div>
+                <div class="entity-chips">
+                  <span class="entity-chip level" data-od-id="entity-pregrado">
+                    <span class="type-dot"></span>
+                    Pregrado
+                    <span class="entity-count">203</span>
+                  </span>
+                  <span class="entity-chip level" data-od-id="entity-posgrado">
+                    <span class="type-dot"></span>
+                    Magíster
+                    <span class="entity-count">87</span>
+                  </span>
+                  <span class="entity-chip level" data-od-id="entity-doctorado">
+                    <span class="type-dot"></span>
+                    Doctorado
+                    <span class="entity-count">42</span>
+                  </span>
+                  <span class="entity-chip level" data-od-id="entity-postitulo">
+                    <span class="type-dot"></span>
+                    Postítulo
+                    <span class="entity-count">31</span>
+                  </span>
+                  <span class="entity-chip level" data-od-id="entity-formacion-tecnica">
+                    <span class="type-dot"></span>
+                    Técnico Superior
+                    <span class="entity-count">56</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div><!-- /panel-grid -->
+      </div><!-- /content -->
+    </main>
+  </div>
+
+  <script>
+    (function() {
+      // ---- Mobile sidebar toggle ----
+      var sidebar = document.getElementById('sidebar');
+      var overlay = document.getElementById('sidebarOverlay');
+      var menuBtn = document.getElementById('mobileMenuBtn');
+
+      function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('open');
+      }
+
+      if (menuBtn) menuBtn.addEventListener('click', toggleSidebar);
+      if (overlay) overlay.addEventListener('click', toggleSidebar);
+
+      // ---- Current date ----
+      var dateEl = document.getElementById('current-date') || document.querySelector('[data-od-id="current-date"]');
+      if (dateEl) {
+        var now = new Date();
+        var meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+        dateEl.textContent = meses[now.getMonth()] + ' ' + now.getFullYear();
+      }
+
+      // ---- Chat input behavior ----
+      var chatInput = document.querySelector('.chat-input');
+      var sendBtn = document.querySelector('.chat-send-btn');
+
+      function handleSend() {
+        if (!chatInput || !chatInput.value.trim()) return;
+        var msg = chatInput.value.trim();
+        chatInput.value = '';
+      }
+
+      if (sendBtn) sendBtn.addEventListener('click', handleSend);
+      if (chatInput) {
+        chatInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') handleSend();
+        });
+      }
+
+      // ---- Suggestion chips ----
+      var chips = document.querySelectorAll('.chat-suggestion-chip');
+      chips.forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          if (chatInput) {
+            chatInput.value = this.textContent.trim();
+            chatInput.focus();
+          }
+        });
+      });
+
+      // ---- Entity chip click (simple feedback) ----
+      var entityChips = document.querySelectorAll('.entity-chip');
+      entityChips.forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          this.style.borderColor = 'var(--accent)';
+          this.style.background = 'var(--accent-bg)';
+          setTimeout(function(el) {
+            el.style.borderColor = '';
+            el.style.background = '';
+          }, 600, this);
+        });
+      });
+
+      // ---- Nav item active ----
+      var navItems = document.querySelectorAll('.sidebar-nav-item');
+      navItems.forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          navItems.forEach(function(i) { i.classList.remove('active'); });
+          this.classList.add('active');
+          // Close sidebar on mobile after nav
+          if (window.innerWidth <= 768) {
+            toggleSidebar();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
