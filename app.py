@@ -51,9 +51,21 @@ P = {
 st.markdown(f"""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap');
-  * {{ font-family: 'DM Sans', -apple-system, system-ui, sans-serif !important; }}
+  
   .stApp, .main, .block-container {{ background: {P['bg']} !important; }}
   #MainMenu, footer, header, .stAppToolbar, [data-testid="stToolbar"] {{ display: none !important; }}
+  
+  /* No sobreescribir font-family en todo — respetar Material Icons */
+  body, .stMarkdown, p, li, h1, h2, h3, h4, h5, h6, .stButton, .stSelectbox, .stRadio, .stTextInput {{
+    font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+  }}
+  code, pre, .stCodeBlock {{
+    font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  }}
+  /* Restaurar Material Icons para avatares de Streamlit */
+  .material-icons, .material-symbols-outlined, [class*="material"] {{
+    font-family: 'Material Icons' !important;
+  }}
 
   /* Brand header */
   .top-brand {{
