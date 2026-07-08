@@ -23,21 +23,25 @@ CHROMA_DIR = BASE / "chromadb"
 
 
 class SIESKnowledgeBase:
-    """Capa glue que conecta ChromaDB (wiki semántico) + DuckDB (datos numéricos)."""
+    """Capa glue que conecta ChromaDB (wiki semántico) + DuckDB (datos numéricos).
+
+    DuckDB es opcional: si el archivo SQLite no existe, responde solo
+    con el contexto semántico de ChromaDB (informes PDF + wiki).
+    """
 
     def __init__(self, sqlite_path=None, chroma_dir=None):
         self.sqlite_path = Path(sqlite_path or SQLITE_DB)
         self.chroma_dir = Path(chroma_dir or CHROMA_DIR)
+        self.db_disponible = self.sqlite_path.exists()
 
-        # ── DuckDB ───────────────────────────────────────────────────────
-        self.duckdb = duckdb.connect(":memory:")
-        self.duckdb.execute("INSTALL sqlite; LOAD sqlite;")
-        self.duckdb.execute(f"ATTACH '{self.sqlite_path}' AS sies (TYPE SQLITE)")
+        # ── DuckDB (opcional) ─────────────────────────────────────────────
+        if self.db_disponible:
+            self.duckdb = duckdb.connect(":memory:")
+            self.duckdb.execute("INSTALL sqlite; LOAD sqlite;")
+            self.duckdb.execute(f"ATTACH '{self.sqlite_path}' AS sies (TYPE SQLITE)")
+            self._crear_vistas()
 
-        # Crear vista base con cast correcto
-        self._crear_vistas()
-
-        # ── ChromaDB ─────────────────────────────────────────────────────
+        # ── ChromaDB (siempre) ────────────────────────────────────────────
         self.chroma = chromadb.PersistentClient(path=str(self.chroma_dir))
         self.collection = self.chroma.get_collection("sies-matricula")
 
@@ -78,42 +82,67 @@ class SIESKnowledgeBase:
         """
         Responde una pregunta combinando contexto semántico + datos numéricos.
 
+        Cuando la base SQLite no está disponible, responde solo con el
+        contexto de los documentos (informes PDF + wiki) desde ChromaDB.
+
         Args:
             pregunta: Texto libre en español.
 
         Returns:
-            dict con "respuesta" (str), "fuentes" (list), "datos" (str opcional)
+            dict con "respuesta" (str), "fuentes" (list)
         """
         años = self._extraer_años(pregunta)
         respuesta_partes = []
         fuentes = []
 
-        # 1. Buscar contexto semántico en ChromaDB
+        # 1. Buscar contexto semántico en ChromaDB (siempre disponible)
         docs = self.collection.query(
             query_texts=[pregunta],
-            n_results=3
+            n_results=5
         )
         if docs["documents"] and docs["documents"][0]:
-            ctx = docs["documents"][0][0]
-            fuentes.append(docs["metadatas"][0][0]["source"])
-            respuesta_partes.append(f"📖 {ctx[:500]}")
+            # Unir los fragmentos más relevantes
+            ctx_parts = []
+            for i, (doc, meta, dist) in enumerate(zip(
+                docs["documents"][0], docs["metadatas"][0], docs["distances"][0]
+            )):
+                if dist < 0.6:  # Solo resultados relevantes
+                    src = meta.get("source", "desconocido")
+                    fuentes.append(src)
+                    # Extraer texto limpio (primeros ~800 chars)
+                    clean = doc.strip()[:800]
+                    ctx_parts.append(f"📄 **{src}**\n{clean}")
 
-        # 2. Si la pregunta pide datos numéricos, consultar DuckDB
-        if any(p in pregunta.lower() for p in
+            if ctx_parts:
+                respuesta_partes.append(
+                    "**Contexto de los informes SIES:**\n\n" +
+                    "\n\n---\n\n".join(ctx_parts[:3])
+                )
+
+        # 2. Si la DB está disponible y la pregunta pide datos numéricos
+        if self.db_disponible and any(p in pregunta.lower() for p in
                ["cuántos", "cuántas", "total", "matrícula", "porcentaje",
                 "mujeres", "hombres", "evolución", "crecimiento", "región"]):
             datos = self._consultar_datos(años, pregunta)
             if datos:
-                respuesta_partes.append(f"\n📊 **Datos:**\n{datos}")
+                respuesta_partes.append(f"\n📊 **Datos (SQLite):**\n{datos}")
+
+        if not respuesta_partes:
+            respuesta_partes.append(
+                "No encontré información específica en los documentos disponibles. "
+                "Intenta reformular tu pregunta sobre matrícula, instituciones o "
+                "educación superior en Chile."
+            )
 
         return {
             "respuesta": "\n\n".join(respuesta_partes),
             "fuentes": list(set(fuentes)),
-            "datos": datos if 'datos' in dir() else None
         }
 
     def evolucion_anual(self) -> list:
         """Retorna la serie histórica completa como lista de dicts."""
+        if not self.db_disponible:
+            return []
         rows = self.duckdb.execute(
             "SELECT * FROM evolucion ORDER BY año"
         ).fetchall()
@@ -122,6 +151,8 @@ class SIESKnowledgeBase:
 
     def top_instituciones(self, año: int = 2025, limite: int = 10) -> list:
         """Retorna el top N de instituciones por año."""
+        if not self.db_disponible:
+            return []
         rows = self.duckdb.execute(f"""
             SELECT institucion, tipo_ies, SUM(total) AS total
             FROM matricula_base
@@ -134,6 +165,8 @@ class SIESKnowledgeBase:
 
     def por_region(self, año: int = 2025) -> list:
         """Matrícula por región para un año."""
+        if not self.db_disponible:
+            return []
         rows = self.duckdb.execute(f"""
             SELECT region, SUM(total) AS total,
                    ROUND(SUM(mujeres) * 100.0 / SUM(total), 2) AS pct_mujeres
