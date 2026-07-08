@@ -101,32 +101,76 @@ st.markdown(f"""
     color: {P['fg']}; line-height: 1.1; }}
   .kpi-footnote {{ font-size: 11px; color: {P['muted']}; margin-top: 3px; }}
 
-  /* Chat */
   .stChatMessage {{ background: transparent !important; }}
   .stChatMessage [data-testid="chatMessageContent"] {{
     background: {P['surface']} !important; border: 1px solid {P['border']} !important;
     border-radius: 14px !important; padding: 14px 18px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    color: {P['fg']} !important;
   }}
   .stChatMessage [data-testid="chatMessageAvatar"] {{
     background: {P['accent_bg']} !important; color: {P['accent']} !important;
     border-radius: 50%; width: 32px; height: 32px;
     display: flex; align-items: center; justify-content: center;
   }}
-  .stChatMessage[data-testid="userChatMessage"] [data-testid="chatMessageContent"] {{
-    background: {P['accent']} !important; border-color: {P['accent']} !important; color: white !important;
+  .stChatMessage [data-testid="chatMessageContent"] strong, 
+  .stChatMessage [data-testid="chatMessageContent"] em,
+  .stChatMessage [data-testid="chatMessageContent"] p,
+  .stChatMessage [data-testid="chatMessageContent"] li,
+  .stChatMessage [data-testid="chatMessageContent"] span {{
+    color: {P['fg']} !important;
   }}
-  .stChatMessage[data-testid="userChatMessage"] [data-testid="chatMessageAvatar"] {{
+  .stChatMessage [data-testid="chatMessageContent"] table th,
+  .stChatMessage [data-testid="chatMessageContent"] table td {{
+    color: {P['fg']} !important;
+  }}
+  div[data-testid="stChatMessage"][aria-label*="user"] [data-testid="chatMessageContent"],
+  div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarCol"]:has(div[data-testid="userAvatar"])) [data-testid="chatMessageContent"] {{
+    background: {P['accent']} !important; border-color: {P['accent']} !important;
+  }}
+  div[data-testid="stChatMessage"][aria-label*="user"] [data-testid="chatMessageContent"],
+  div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarCol"]:has(div[data-testid="userAvatar"])) [data-testid="chatMessageContent"],
+  div[data-testid="stChatMessage"][aria-label*="user"] [data-testid="chatMessageContent"] strong,
+  div[data-testid="stChatMessage"][aria-label*="user"] [data-testid="chatMessageContent"] em,
+  div[data-testid="stChatMessage"][aria-label*="user"] [data-testid="chatMessageContent"] p,
+  div[data-testid="stChatMessage"][aria-label*="user"] [data-testid="chatMessageContent"] span,
+  div[data-testid="stChatMessage"][aria-label*="user"] [data-testid="chatMessageContent"] td {{
+    color: #FFFFFF !important;
+  }}
+  div[data-testid="stChatMessage"][aria-label*="user"] [data-testid="chatMessageAvatar"],
+  div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarCol"]:has(div[data-testid="userAvatar"])) [data-testid="chatMessageAvatar"] {{
     background: {P['sidebar']} !important; color: white !important;
   }}
+
+  /* Chat input */
   .stChatInputContainer {{
     border: 1px solid {P['border']} !important; border-radius: 999px !important; background: {P['surface']} !important;
   }}
   .stChatInputContainer:focus-within {{
     border-color: {P['accent']} !important; box-shadow: 0 0 0 2px {P['accent_bg']} !important;
   }}
+  .stChatInputContainer input, .stChatInputContainer textarea {{
+    color: {P['fg']} !important;
+  }}
+  .stChatInputContainer input::placeholder, .stChatInputContainer textarea::placeholder {{
+    color: {P['muted']} !important;
+  }}
+
+  /* Spinner */
+  .stSpinner > div > div {{ color: {P['fg']} !important; }}
+
+  /* Captions, info, warning, error */
+  .stCaption {{ color: {P['muted']} !important; }}
+  .stInfo, .stAlert {{
+    background: {P['accent_bg']} !important; color: {P['fg']} !important; border: 1px solid {P['accent_soft']} !important;
+  }}
+  .stWarning {{ background: {P['amber_bg']} !important; color: {P['fg']} !important; border: 1px solid {P['amber']} !important; }}
+  .stError {{ background: #FDE8E8 !important; color: #991B1B !important; }}
+  .stSuccess {{ background: {P['success_bg']} !important; color: {P['success']} !important; }}
+
+  /* Tablas en chat */
   .stChatMessage table {{ width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13px; }}
   .stChatMessage th {{ background: {P['accent_bg']}; padding: 6px 10px; text-align: left; font-weight: 500; font-size: 12px; color: {P['fg']}; }}
-  .stChatMessage td {{ padding: 5px 10px; border-bottom: 1px solid {P['border']}; }}
+  .stChatMessage td {{ padding: 5px 10px; border-bottom: 1px solid {P['border']}; color: {P['fg']}; }}
   .stChatMessage td:last-child {{ text-align: right; font-weight: 500; }}
 
   /* Entity cards */
