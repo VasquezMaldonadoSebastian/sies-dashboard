@@ -130,6 +130,64 @@ python grafo_conocimiento.py
 
 ---
 
+## 🧪 Casos de prueba — Chat IA
+
+### Consultas semánticas (grafo + OpenCode API)
+
+| # | Consulta | Comportamiento esperado | Modo |
+|:-:|----------|------------------------|:----:|
+| 1 | `uct` | "Universidad Católica de Temuco" con datos de matrícula, retención, género. Sin mención a "Quechua". | `semantico_api` |
+| 2 | `¿Qué sabemos de la UCT?` | Respuesta integrada: matrícula, retención, género, titulación. | `semantico_api` |
+| 3 | `¿qué dice el informe de retención 2021?` | Hechos de retención + fuente: "Informe_Retencion_SIES_2021.md" | `semantico_api` |
+| 4 | `quechua` | "Quechua — 1.654" (pueblos originarios, matrícula 2024) | `semantico_api` |
+| 5 | `pueblos originarios` | Entidades de pueblos originarios con datos de matrícula | `semantico_api` |
+| 6 | `duoc` | Respuesta guiada (DUOC no está en grafo, solo en DB) | `guiado` |
+
+### Consultas numéricas (DuckDB / datos estáticos)
+
+| # | Consulta | Comportamiento esperado | Modo |
+|:-:|----------|------------------------|:----:|
+| 7 | `¿Cuántos estudiantes en 2025?` | "1.455.639 estudiantes" + tabla año/total/mujeres/% | `numerico` |
+| 8 | `¿Cómo ha evolucionado la matrícula?` | Tabla evolución 2007–2025 con % crecimiento | `numerico` |
+| 9 | `¿Qué instituciones tienen más estudiantes?` | Top 10: DUOC UC (108.955), AIEP (81.655), UNAB (72.385)... | `numerico` |
+| 10 | `matrícula 2024` | Total 2024: 1.386.099, mujeres: 738.799 (53,3%) | `numerico` |
+
+### Consultas mixtas (grafo + DB + API)
+
+| # | Consulta | Comportamiento esperado | Modo |
+|:-:|----------|------------------------|:----:|
+| 11 | `¿cómo le fue a la UCT en 2024?` | Datos UCT del grafo + totales nacionales de DB | `mixto_api` |
+| 12 | `¿qué dice el informe de retención?` | Hechos del grafo + tasas numéricas de DB | `mixto_api` |
+
+### Conversación y navegación
+
+| # | Consulta | Comportamiento esperado | Modo |
+|:-:|----------|------------------------|:----:|
+| 13 | `hola` | Saludo con categorías y ejemplos | `saludo` |
+| 14 | `¿qué sabes hacer?` | Muestra capacidades (matrícula, género, titulación, retención) | `saludo` |
+| 15 | `gracias` | Despedida amistosa | `despedida` |
+| 16 | `¿Qué puedes responder?` | Menú guiado con categorías + ejemplos | `guiado` |
+| 17 | `sobre matricula` | Respuesta con datos numéricos (no volcado de wiki) | `numerico` o `mixto_api` |
+
+### Follow-ups
+
+| # | Consulta | Contexto previo | Comportamiento esperado |
+|:-:|----------|:---------------:|------------------------|
+| 18 | `¿y qué más?` | "¿Qué sabemos de la UCT?" | Sigue hablando de UCT |
+| 19 | `¿y las mujeres?` | "¿cómo le fue a la UCT?" | Matrícula femenina de UCT |
+| 20 | `cuéntame más` | "matrícula 2025" | Más detalle sobre matrícula |
+
+### Anti-vómito (regresiones que nunca deben fallar)
+
+| # | Consulta | ❌ **NUNCA debe:** |
+|:-:|----------|-------------------|
+| 21 | `sobre matricula` | Devolver el índice del wiki (wiki-sies/index.md) |
+| 22 | `que sabemos de la uct` | Mencionar "Quechua" en la respuesta |
+| 23 | `¿qué dice el informe 2024?` | Incluir bloques de código ``` o raw document text |
+| 24 | (cualquier consulta) | Exponer estructura interna del wiki (wikilinks [[...]]) |
+
+---
+
 ## 📎 Licencia
 
 Datos públicos del Estado de Chile. Consulta términos en [mifuturo.cl](https://www.mifuturo.cl).
