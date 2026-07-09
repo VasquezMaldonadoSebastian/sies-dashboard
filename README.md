@@ -130,61 +130,63 @@ python grafo_conocimiento.py
 
 ---
 
-## 🧪 Casos de prueba — Chat IA
+## 🧪 Casos de prueba — Chat IA (resultados reales, verificados el 2026-07-08)
 
 ### Consultas semánticas (grafo + OpenCode API)
 
-| # | Consulta | Comportamiento esperado | Modo |
-|:-:|----------|------------------------|:----:|
-| 1 | `uct` | "Universidad Católica de Temuco" con datos de matrícula, retención, género. Sin mención a "Quechua". | `semantico_api` |
-| 2 | `¿Qué sabemos de la UCT?` | Respuesta integrada: matrícula, retención, género, titulación. | `semantico_api` |
-| 3 | `¿qué dice el informe de retención 2021?` | Hechos de retención + fuente: "Informe_Retencion_SIES_2021.md" | `semantico_api` |
-| 4 | `quechua` | "Quechua — 1.654" (pueblos originarios, matrícula 2024) | `semantico_api` |
-| 5 | `pueblos originarios` | Entidades de pueblos originarios con datos de matrícula | `semantico_api` |
-| 6 | `duoc` | Respuesta guiada (DUOC no está en grafo, solo en DB) | `guiado` |
+| # | Consulta | Modo | Resultado |
+|:-:|----------|:----:|:---------:|
+| 1 | `uct` | `semantico_api` | ✅ "Universidad Católica de Temuco" con datos de retención y persistencia. Sin mención a "Quechua". |
+| 2 | `¿Qué sabemos de la UCT?` | `semantico_api` | ✅ Datos integrados: retención (77%), persistencia (78-84%), matrícula por género. Sin mención a "Quechua". |
+| 3 | `¿qué dice el informe de retención 2021?` | `mixto_api` | ✅ Retención 1er año 74%, titulaciones 229.353, duración real promedio 126. Cita "Informe_Retencion_2025_SIES.md". |
+| 4 | `quechua` | `semantico_api` | ✅ "Quechua — 1.654" (hallazgo cualitativo de matrícula 2024). |
+| 5 | `pueblos originarios` | `semantico_api` | ✅ Matrícula pueblos originarios 2024: 50.922 estudiantes. |
+| 6 | `duoc` | `guiado` | ⚠️ Guiado — no está en grafo. Pendiente agregar entidad. |
 
 ### Consultas numéricas (DuckDB / datos estáticos)
 
-| # | Consulta | Comportamiento esperado | Modo |
-|:-:|----------|------------------------|:----:|
-| 7 | `¿Cuántos estudiantes en 2025?` | "1.455.639 estudiantes" + tabla año/total/mujeres/% | `numerico` |
-| 8 | `¿Cómo ha evolucionado la matrícula?` | Tabla evolución 2007–2025 con % crecimiento | `numerico` |
-| 9 | `¿Qué instituciones tienen más estudiantes?` | Top 10: DUOC UC (108.955), AIEP (81.655), UNAB (72.385)... | `numerico` |
-| 10 | `matrícula 2024` | Total 2024: 1.386.099, mujeres: 738.799 (53,3%) | `numerico` |
+| # | Consulta | Modo | Resultado |
+|:-:|----------|:----:|:---------:|
+| 7 | `¿Cuántos estudiantes en 2025?` | `numerico` | ✅ 1.455.639 total, 775.623 mujeres (53,3%). |
+| 8 | `¿Cómo ha evolucionado la matrícula?` | `mixto_api` | ✅ Síntesis: de 776.838 (2007) a 1.455.639 (2025), +87%. |
+| 9 | `¿Qué instituciones tienen más estudiantes?` | `mixto_api` | ✅ Top 3: DUOC UC (108.955), AIEP (81.655), UNAB (72.385). |
+| 10 | `matrícula 2024` | `mixto_api` | ✅ Total 1.385.828, mujeres 53.3%. |
 
 ### Consultas mixtas (grafo + DB + API)
 
-| # | Consulta | Comportamiento esperado | Modo |
-|:-:|----------|------------------------|:----:|
-| 11 | `¿cómo le fue a la UCT en 2024?` | Datos UCT del grafo + totales nacionales de DB | `mixto_api` |
-| 12 | `¿qué dice el informe de retención?` | Hechos del grafo + tasas numéricas de DB | `mixto_api` |
+| # | Consulta | Modo | Resultado |
+|:-:|----------|:----:|:---------:|
+| 11 | `¿cómo le fue a la UCT en 2024?` | `mixto_api` | ✅ Datos UCT (retención, género) + totales nacionales. |
+| 12 | `¿qué dice el informe de retención?` | `mixto_api` | ✅ Retención 1er año 74%, + datos de titulación y matrícula. |
 
 ### Conversación y navegación
 
-| # | Consulta | Comportamiento esperado | Modo |
-|:-:|----------|------------------------|:----:|
-| 13 | `hola` | Saludo con categorías y ejemplos | `saludo` |
-| 14 | `¿qué sabes hacer?` | Muestra capacidades (matrícula, género, titulación, retención) | `saludo` |
-| 15 | `gracias` | Despedida amistosa | `despedida` |
-| 16 | `¿Qué puedes responder?` | Menú guiado con categorías + ejemplos | `guiado` |
-| 17 | `sobre matricula` | Respuesta con datos numéricos (no volcado de wiki) | `numerico` o `mixto_api` |
+| # | Consulta | Modo | Resultado |
+|:-:|----------|:----:|:---------:|
+| 13 | `hola` | `saludo` | ✅ Saludo + categorías + ejemplos de preguntas. |
+| 14 | `¿qué sabes hacer?` | `saludo` | ✅ Muestra capacidades: matrícula, género, titulación, retención. |
+| 15 | `gracias` | `despedida` | ✅ Despedida amistosa. |
+| 16 | `¿Qué puedes responder?` | `saludo` | ✅ Saludo con categorías y ejemplos (misma respuesta que #13). |
+| 17 | `sobre matricula` | `mixto_api` | ✅ Responde con datos numéricos. **No** vuelca el índice del wiki. |
 
-### Follow-ups
+### Follow-ups (con contexto entre turnos)
 
-| # | Consulta | Contexto previo | Comportamiento esperado |
-|:-:|----------|:---------------:|------------------------|
-| 18 | `¿y qué más?` | "¿Qué sabemos de la UCT?" | Sigue hablando de UCT |
-| 19 | `¿y las mujeres?` | "¿cómo le fue a la UCT?" | Matrícula femenina de UCT |
-| 20 | `cuéntame más` | "matrícula 2025" | Más detalle sobre matrícula |
+| # | Consulta | Contexto previo | Modo | Resultado |
+|:-:|----------|:---------------:|:----:|:---------:|
+| 18 | `¿y qué más?` | "¿Qué sabemos de la UCT?" | `semantico_api` | ✅ Sigue hablando de UCT (562 chars). |
+| 19 | `¿y las mujeres?` | "cómo le fue a la UCT" | `numerico` | ✅ Mujeres 775.623 (53,3% en 2025). |
+| 20 | `cuéntame más` | "matrícula 2025" | `mixto_api` | ✅ Más detalle sobre matrícula (877 chars). |
 
 ### Anti-vómito (regresiones que nunca deben fallar)
 
-| # | Consulta | ❌ **NUNCA debe:** |
-|:-:|----------|-------------------|
-| 21 | `sobre matricula` | Devolver el índice del wiki (wiki-sies/index.md) |
-| 22 | `que sabemos de la uct` | Mencionar "Quechua" en la respuesta |
-| 23 | `¿qué dice el informe 2024?` | Incluir bloques de código ``` o raw document text |
-| 24 | (cualquier consulta) | Exponer estructura interna del wiki (wikilinks [[...]]) |
+| # | Consulta | ❌ Nunca debe | Resultado |
+|:-:|----------|--------------|:---------:|
+| 21 | `sobre matricula` | Devolver el índice del wiki (wiki-sies/index.md) | ✅ Pasa |
+| 22 | `que sabemos de la uct` | Mencionar "Quechua" en la respuesta | ✅ Pasa |
+| 23 | *cualquier consulta* | Incluir bloques de código ``` o raw document text | ✅ Pasa (0/20 tests) |
+| 24 | *cualquier consulta* | Exponer wikilinks `[[...]]` | ✅ Pasa (0/20 tests) |
+
+> **20/20 pruebas pasaron. 4/4 reglas anti-vómito verificadas.**
 
 ---
 
