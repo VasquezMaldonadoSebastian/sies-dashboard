@@ -84,9 +84,9 @@ if not _api_key:
 OPENCODE_API_KEY = _api_key
 OPENCODE_BASE_URL = "https://opencode.ai/zen/v1"
 OPENCODE_MODELS = [  # Modelos free — cadena de fallback
-    "deepseek-v4-flash-free",
-    "big-pickle",
-    "mimo-v2.5-free",
+    "hy3-free",
+    "north-mini-code-free",
+    "nemotron-3-ultra-free",
 ]
 OPENCODE_TIMEOUT = 30  # segundos por modelo
 
