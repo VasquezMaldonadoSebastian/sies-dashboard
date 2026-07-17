@@ -77,6 +77,9 @@ if not _api_key:
         _api_key = st.secrets.get("OPENCODE_API_KEY", "")
     except Exception:
         pass
+# ⚠️ FALLBACK TEMPORAL para demo — ELIMINAR después de la presentación
+if not _api_key:
+    _api_key = "sk-Cg4IlNQzTZu0KT6MBB02uHqh2PI2mOG9LSQAgMowIYE2nTrza2sGQM3slHdByu1t"
 
 OPENCODE_API_KEY = _api_key
 OPENCODE_BASE_URL = "https://opencode.ai/zen/v1"
