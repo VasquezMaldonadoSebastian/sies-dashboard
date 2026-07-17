@@ -29,7 +29,6 @@ except ImportError:
 
 # ── Módulos del proyecto ─────────────────────────────────────────────────
 from grafo_conocimiento import GrafoConocimientoSIES
-from analista import formatear_respuesta_entidad
 
 # ── Rutas ─────────────────────────────────────────────────────────────────
 BASE = Path(__file__).resolve().parent
@@ -57,7 +56,7 @@ OPENCODE_MODELS = [  # Cadena de fallback
     "big-pickle",
     "mimo-v2.5-free",
 ]
-OPENCODE_TIMEOUT = 20  # segundos por modelo
+OPENCODE_TIMEOUT = 30  # segundos por modelo
 
 # ── System prompt para el analista ───────────────────────────────────────
 SYSTEM_PROMPT = """Eres un analista experto en educación superior chilena, especializado en los datos del SIES (Servicio de Información de Educación Superior).
@@ -91,14 +90,30 @@ def _crear_cliente():
         return None
 
 
-def _sintetizar_con_api(datos_markdown: str, pregunta: str) -> Optional[str]:
+def _sintetizar_con_api(datos_markdown: str, pregunta: str, historial: list = None) -> Optional[str]:
     """
     Intenta sintetizar una respuesta usando la cadena de modelos OpenCode.
     Retorna None si todos los modelos fallan.
+
+    Args:
+        datos_markdown: Contexto de datos disponibles (grafo, DB, etc.)
+        pregunta: Pregunta actual del usuario
+        historial: Mensajes anteriores (conversación multi-turno)
     """
     cliente = _crear_cliente()
     if cliente is None:
         return None
+
+    # Construir mensajes con historial
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+
+    if historial:
+        # Pasar solo los últimos 6 intercambios (útil para contexto sin saturar)
+        for msg in historial[-6:]:
+            role = msg.get("role", "user")
+            content = msg.get("content", "")
+            if role in ("user", "assistant") and content:
+                messages.append({"role": role, "content": content[:2000]})
 
     user_prompt = (
         f"## DATOS DISPONIBLES\n\n"
@@ -106,15 +121,13 @@ def _sintetizar_con_api(datos_markdown: str, pregunta: str) -> Optional[str]:
         f"## PREGUNTA DEL USUARIO\n\n{pregunta}\n\n"
         f"Responde usando SOLO los datos entregados. Sé conciso."
     )
+    messages.append({"role": "user", "content": user_prompt})
 
     for modelo in OPENCODE_MODELS:
         try:
             resp = cliente.chat.completions.create(
                 model=modelo,
-                messages=[
-                    {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": user_prompt},
-                ],
+                messages=messages,
                 max_tokens=1024,
                 temperature=0.3,
                 timeout=OPENCODE_TIMEOUT,
@@ -157,7 +170,7 @@ class SIESEngine:
 
     # ── Consulta principal ────────────────────────────────────────────────
 
-    def consultar(self, pregunta: str, consulta_anterior: str = "") -> dict:
+    def consultar(self, pregunta: str, consulta_anterior: str = "", historial: list = None) -> dict:
         """
         Responde una pregunta en lenguaje natural.
 
@@ -194,9 +207,9 @@ class SIESEngine:
         if intencion == "numerico":
             return self._responder_numerico(pregunta_resuelta)
         elif intencion == "semantico":
-            return self._responder_semantico(pregunta_resuelta)
+            return self._responder_semantico(pregunta_resuelta, historial=historial)
         elif intencion == "mixto":
-            return self._responder_mixto(pregunta_resuelta)
+            return self._responder_mixto(pregunta_resuelta, historial=historial)
         else:
             return self._respuesta_guiada(pregunta_clean)
 
@@ -315,7 +328,7 @@ class SIESEngine:
 
     # ── Modo semántico (grafo + OpenCode API) ─────────────────────────────
 
-    def _responder_semantico(self, pregunta: str) -> dict:
+    def _responder_semantico(self, pregunta: str, historial: list = None) -> dict:
         """Responde usando el grafo de conocimiento + OpenCode API."""
         if not self.grafo_cargado:
             return self._respuesta_error("grafo_no_disponible")
@@ -328,7 +341,7 @@ class SIESEngine:
         datos_grafo = self._formatear_datos_grafo(entidades)
 
         # 2. Intentar síntesis con OpenCode API
-        respuesta_api = _sintetizar_con_api(datos_grafo, pregunta)
+        respuesta_api = _sintetizar_con_api(datos_grafo, pregunta, historial=historial)
 
         if respuesta_api:
             fuentes = self._extraer_fuentes(entidades)
@@ -344,36 +357,74 @@ class SIESEngine:
         return self._responder_semantico_sin_llm(entidades)
 
     def _responder_semantico_sin_llm(self, entidades: list) -> dict:
-        """Responde con datos estructurados del grafo (sin LLM)."""
+        """Responde con datos del grafo (fallback sin LLM) — formato conversacional."""
         if not entidades:
             return self._respuesta_guiada("")
 
         fuentes = set()
-
-        # Solo mostrar la entidad principal (la de más hechos)
         ent_principal = entidades[0]
         data = self.grafo.query_entidad(ent_principal["nombre"])
         if not data.get("encontrada"):
             return self._respuesta_guiada("")
 
-        respuesta = formatear_respuesta_entidad(ent_principal["nombre"], data)
+        nombre = ent_principal["nombre"]
+        tipo = ent_principal["tipo"]
+        partes = []
 
-        # Extraer fuentes
-        for e_name, e_info in data["entidades"].items():
-            for doc in e_info.get("documentos", []):
-                fuentes.add(doc.get("archivo", ""))
+        # Encabezado limpio
+        icono = {"institucion": "🏫", "region": "📍", "concepto": "📊"}.get(tipo, "🏷️")
+        partes.append(f"{icono} **{nombre}**")
 
-        # Mencionar otras entidades relacionadas
+        # Resumen breve
+        for ent_nombre, info in data["entidades"].items():
+            n_hechos = len([h for h in info.get("hechos", []) if isinstance(h.get("valor"), (int, float))])
+            n_cuali = len([h for h in info.get("hechos", []) if not isinstance(h.get("valor"), (int, float))])
+            partes.append(f"📄 {len(info['documentos'])} documentos · {n_hechos} datos numéricos · {n_cuali} hallazgos")
+
+            # Hechos numéricos más relevantes (top 5)
+            hechos_num = [h for h in info.get("hechos", []) if isinstance(h.get("valor"), (int, float))]
+            if hechos_num:
+                # Ordenar por año descendente y limitar
+                hechos_num.sort(key=lambda x: str(x.get("año", "")), reverse=True)
+                hechos_mostrar = hechos_num[:5]
+                for h in hechos_mostrar:
+                    valor = f"{h['valor']:,.0f}" if isinstance(h['valor'], float) else str(h['valor'])
+                    año = f" ({h['año']})" if h.get("año") else ""
+                    ctx = h.get("contexto", "")[:60]
+                    linea = f"  • {h['entidad']}: **{valor}**{año}"
+                    if ctx:
+                        linea += f" — {ctx}"
+                    partes.append(linea)
+
+            # Hallazgos cualitativos clave (top 2)
+            hechos_cuali = [h for h in info.get("hechos", []) if not isinstance(h.get("valor"), (int, float))]
+            if hechos_cuali:
+                for h in hechos_cuali[:2]:
+                    ctx = h.get("contexto", h.get("afirmacion", ""))[:100]
+                    if ctx:
+                        partes.append(f"  💡 {ctx}")
+
+            # Conexiones
+            if info.get("relaciones"):
+                rels = info["relaciones"][:3]
+                conexiones = ", ".join(f"{r['destino']}" for r in rels)
+                partes.append(f"  🔗 Relacionado con: {conexiones}")
+
+            # Fuentes
+            for doc in info.get("documentos", [])[:3]:
+                archivo = doc.get("archivo", "")
+                if archivo:
+                    fuentes.add(archivo.replace("Informe_", "").replace("_SIES.md", "").replace("_.md", ""))
+
+        respuesta = "\n".join(partes)
+
+        # Mencionar otras entidades relacionadas encontradas
         if len(entidades) > 1:
-            otras = ", ".join(e["nombre"] for e in entidades[1:4])
-            respuesta += f"\n\n💡 *También encontré información sobre: {otras}*"
+            otras = ", ".join(e["nombre"][:25] for e in entidades[1:4])
+            respuesta += f"\n\n💡 *También: {otras}*"
 
         if fuentes:
-            respuesta += f"\n\n📎 Fuentes: {', '.join(sorted(fuentes)[:5])}"
-
-        # Si la respuesta es muy larga, truncar con sugerencia
-        if len(respuesta) > 3000:
-            respuesta = respuesta[:2800] + "\n\n*💡 Demasiados datos? Pregunta por algo más específico.*"
+            respuesta += f"\n\n📎 *Fuentes: {', '.join(sorted(fuentes)[:3])}*"
 
         return {
             "respuesta": respuesta,
@@ -414,75 +465,143 @@ class SIESEngine:
             p = pregunta.lower()
             años = [int(m) for m in re.findall(r'\b(20[0-2]\d)\b', pregunta) if 2007 <= int(m) <= 2025]
 
-            # Vista evolucion
-            con.execute("""
-                CREATE OR REPLACE VIEW evolucion AS
-                SELECT
-                    CAST(REPLACE(AÑO::VARCHAR, 'MAT_', '') AS INTEGER) AS año,
-                    CAST(NULLIF("TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT) AS total,
-                    CAST(NULLIF("TOTAL MATRÍCULA MUJERES"::VARCHAR, '') AS BIGINT) AS mujeres,
-                    CAST(NULLIF("TOTAL MATRÍCULA PRIMER AÑO"::VARCHAR, '') AS BIGINT) AS primer_año
-                FROM sies.matricula
-                WHERE AÑO IS NOT NULL AND "TOTAL MATRÍCULA" IS NOT NULL
-            """)
+            # Crear vista evolucion (con manejo de errores en columnas)
+            try:
+                con.execute("""
+                    CREATE OR REPLACE VIEW evolucion AS
+                    SELECT
+                        CAST(REPLACE(AÑO::VARCHAR, 'MAT_', '') AS INTEGER) AS año,
+                        CAST(NULLIF("TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT) AS total,
+                        CAST(NULLIF("TOTAL MATRÍCULA MUJERES"::VARCHAR, '') AS BIGINT) AS mujeres,
+                        CAST(NULLIF("TOTAL MATRÍCULA PRIMER AÑO"::VARCHAR, '') AS BIGINT) AS primer_año
+                    FROM sies.matricula
+                    WHERE AÑO IS NOT NULL AND CAST(NULLIF("TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT) IS NOT NULL
+                """)
+            except Exception as e:
+                print(f"⚠️ No se pudo crear vista evolucion: {e}")
+                # Intentar enfoque alternativo: consulta directa con manejo de nulos
+                return self._responder_desde_sql_directo(con, p, años)
 
-            if any(w in p for w in ["evolución", "evolucion", "crecimiento", "histórica", "serie"]):
-                rows = con.execute("""
-                    SELECT año, SUM(total) AS total,
-                           ROUND(SUM(mujeres)*100.0/SUM(total), 1) AS pct_mujeres,
-                           ROUND((SUM(total)-LAG(SUM(total)) OVER(ORDER BY año))*100.0
-                                 /LAG(SUM(total)) OVER(ORDER BY año), 2) AS crecimiento
-                    FROM evolucion GROUP BY año ORDER BY año
-                """).fetchall()
-                lines = ["## 📈 Evolución Matrícula 2007–2025\n", "| Año | Total | % Mujeres | Crecimiento |", "|:---:|------:|:---------:|:-----------:|"]
-                for r in rows:
-                    crec = f"{r[3]:+.2f}%" if r[3] else "—"
-                    lines.append(f"| {r[0]} | {r[1]:,} | {r[2]:.1f}% | {crec} |")
-                return "\n".join(lines)
+            # Patrón 1: evolución histórica
+            if any(w in p for w in ["evolucion", "crecimiento", "histórica", "serie"]):
+                try:
+                    rows = con.execute("""
+                        SELECT año, SUM(total) AS total,
+                               ROUND(SUM(mujeres)*100.0/SUM(total), 1) AS pct_mujeres,
+                               ROUND((SUM(total)-LAG(SUM(total)) OVER(ORDER BY año))*100.0
+                                     /LAG(SUM(total)) OVER(ORDER BY año), 2) AS crecimiento
+                        FROM evolucion GROUP BY año ORDER BY año
+                    """).fetchall()
+                    if rows:
+                        lines = ["## 📈 Evolución Matrícula 2007–2025\n", "| Año | Total | % Mujeres | Crecimiento |", "|:---:|------:|:---------:|:-----------:|"]
+                        for r in rows:
+                            crec = f"{r[3]:+.2f}%" if r[3] else "—"
+                            lines.append(f"| {r[0]} | {r[1]:,} | {r[2]:.1f}% | {crec} |")
+                        return "\n".join(lines)
+                except Exception as e:
+                    print(f"⚠️ Error en consulta evolucion: {e}")
 
-            if "institución" in p or "institucion" in p or "universidad" in p or "top" in p:
-                año_cond = f"m.AÑO = 'MAT_{años[0]}'" if años else "m.AÑO = 'MAT_2025'"
+            # Patrón 2: instituciones/top
+            if "institución" in p or "institucion" in p or "universidad" in p or "top" in p or "mayores" in p:
+                try:
+                    año_cond = f"m.AÑO = 'MAT_{años[0]}'" if años else "m.AÑO = 'MAT_2025'"
+                    rows = con.execute(f"""
+                        SELECT m."NOMBRE INSTITUCIÓN" AS inst,
+                               SUM(CAST(NULLIF(m."TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT)) AS tot
+                        FROM sies.matricula m
+                        WHERE {año_cond}
+                          AND m."NOMBRE INSTITUCIÓN" IS NOT NULL
+                          AND m."NOMBRE INSTITUCIÓN" != ''
+                          AND m."TOTAL MATRÍCULA" IS NOT NULL
+                        GROUP BY m."NOMBRE INSTITUCIÓN"
+                        ORDER BY tot DESC LIMIT 10
+                    """).fetchall()
+                    if rows:
+                        lines = ["## 🏫 Top 10 Instituciones\n", "| Institución | Matrícula |", "|-------------|----------:|"]
+                        for r in rows:
+                            inst = r[0].decode() if isinstance(r[0], bytes) else str(r[0])
+                            lines.append(f"| {inst[:55]} | {int(r[1]):,} |")
+                        return "\n".join(lines)
+                except Exception as e:
+                    print(f"⚠️ Error en consulta instituciones: {e}")
+
+            # Patrón 3: consulta general por año(s)
+            try:
+                if años:
+                    rows = con.execute(f"""
+                        SELECT año, SUM(total) AS total, SUM(mujeres) AS mujeres,
+                               ROUND(SUM(mujeres)*100.0/SUM(total), 1) AS pct_mujeres
+                        FROM evolucion WHERE año IN ({','.join(map(str, años))})
+                        GROUP BY año ORDER BY año
+                    """).fetchall()
+                else:
+                    rows = con.execute("""
+                        SELECT año, SUM(total) AS total, SUM(mujeres) AS mujeres,
+                               ROUND(SUM(mujeres)*100.0/SUM(total), 1) AS pct_mujeres
+                        FROM evolucion GROUP BY año ORDER BY año DESC LIMIT 1
+                    """).fetchall()
+
+                if rows:
+                    lines = ["| Año | Total | Mujeres | % Mujeres |", "|:---:|------:|--------:|:---------:|"]
+                    for r in rows:
+                        total_val = int(r[1]) if r[1] is not None else 0
+                        mujeres_val = int(r[2]) if r[2] is not None else 0
+                        pct_val = float(r[3]) if r[3] is not None else 0.0
+                        lines.append(f"| {r[0]} | {total_val:,} | {mujeres_val:,} | {pct_val:.1f}% |")
+                    return "\n".join(lines)
+            except Exception as e:
+                print(f"⚠️ Error en consulta general: {e}")
+
+        except Exception as e:
+            print(f"⚠️ DB error general: {e}")
+        return None
+
+    def _responder_desde_sql_directo(self, con, pregunta: str, años: list) -> Optional[str]:
+        """Fallback: consulta SQL directa sin vista, cuando falla la creación de la vista evolucion."""
+        try:
+            p = pregunta.lower()
+            año_cond = ""
+            if años:
+                año_cond = f"AND CAST(REPLACE(AÑO::VARCHAR, 'MAT_', '') AS INTEGER) IN ({','.join(map(str, años))})"
+
+            if any(w in p for w in ["institución", "institucion", "universidad", "top", "mayores"]):
+                año_filtro = f"m.AÑO = 'MAT_{años[0]}'" if años else "m.AÑO = 'MAT_2025'"
                 rows = con.execute(f"""
                     SELECT m."NOMBRE INSTITUCIÓN" AS inst,
                            SUM(CAST(NULLIF(m."TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT)) AS tot
                     FROM sies.matricula m
-                    WHERE {año_cond}
+                    WHERE {año_filtro}
                       AND m."NOMBRE INSTITUCIÓN" IS NOT NULL
-                      AND m."NOMBRE INSTITUCIÓN" != ''
                       AND m."TOTAL MATRÍCULA" IS NOT NULL
-                      AND m."TOTAL MATRÍCULA"::VARCHAR != ''
                     GROUP BY m."NOMBRE INSTITUCIÓN"
-                    ORDER BY tot DESC LIMIT 10
+                    ORDER BY tot DESC LIMIT 5
                 """).fetchall()
-                lines = ["## 🏫 Top 10 Instituciones\n", "| Institución | Matrícula |", "|-------------|----------:|"]
-                for r in rows:
-                    inst = r[0].decode() if isinstance(r[0], bytes) else str(r[0])
-                    lines.append(f"| {inst[:50]} | {r[1]:,} |")
-                return "\n".join(lines)
+                if rows:
+                    lines = ["## 🏫 Top Instituciones\n", "| Institución | Matrícula |", "|-------------|----------:|"]
+                    for r in rows:
+                        inst = r[0].decode() if isinstance(r[0], bytes) else str(r[0])
+                        total_v = int(r[1]) if r[1] is not None else 0
+                        lines.append(f"| {inst[:55]} | {total_v:,} |")
+                    return "\n".join(lines)
 
-            # Default: total general
-            if años:
-                rows = con.execute(f"""
-                    SELECT año, SUM(total) AS total, SUM(mujeres) AS mujeres,
-                           ROUND(SUM(mujeres)*100.0/SUM(total), 1) AS pct_mujeres
-                    FROM evolucion WHERE año IN ({','.join(map(str, años))})
-                    GROUP BY año ORDER BY año
-                """).fetchall()
-            else:
-                rows = con.execute("""
-                    SELECT año, SUM(total) AS total, SUM(mujeres) AS mujeres,
-                           ROUND(SUM(mujeres)*100.0/SUM(total), 1) AS pct_mujeres
-                    FROM evolucion GROUP BY año ORDER BY año DESC LIMIT 1
-                """).fetchall()
-
+            # Query general directa
+            rows = con.execute(f"""
+                SELECT CAST(REPLACE(AÑO::VARCHAR, 'MAT_', '') AS INTEGER) AS año,
+                       SUM(CAST(NULLIF("TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT)) AS total,
+                       SUM(CAST(NULLIF("TOTAL MATRÍCULA MUJERES"::VARCHAR, '') AS BIGINT)) AS mujeres
+                FROM sies.matricula
+                WHERE CAST(NULLIF("TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT) IS NOT NULL {año_cond}
+                GROUP BY año ORDER BY año DESC LIMIT 5
+            """).fetchall()
             if rows:
-                lines = ["| Año | Total | Mujeres | % Mujeres |", "|:---:|------:|--------:|:---------:|"]
+                lines = ["| Año | Total | Mujeres |", "|:---:|------:|--------:|"]
                 for r in rows:
-                    lines.append(f"| {r[0]} | {r[1]:,} | {r[2]:,} | {r[3]:.1f}% |")
+                    total_v = int(r[1]) if r[1] is not None else 0
+                    mujeres_v = int(r[2]) if r[2] is not None else 0
+                    lines.append(f"| {r[0]} | {total_v:,} | {mujeres_v:,} |")
                 return "\n".join(lines)
-
         except Exception as e:
-            print(f"⚠️ DB error: {e}")
+            print(f"⚠️ Error en SQL directo: {e}")
         return None
 
     def _responder_desde_estaticos(self, pregunta: str) -> dict:
@@ -519,7 +638,7 @@ class SIESEngine:
 
     # ── Modo mixto (grafo + DuckDB + API) ─────────────────────────────────
 
-    def _responder_mixto(self, pregunta: str) -> dict:
+    def _responder_mixto(self, pregunta: str, historial: list = None) -> dict:
         """Combina datos del grafo y DuckDB con síntesis."""
         datos_partes = []
 
@@ -539,7 +658,7 @@ class SIESEngine:
         datos_combinados = "\n\n".join(datos_partes)
 
         # 3. Intentar síntesis con API
-        respuesta_api = _sintetizar_con_api(datos_combinados, pregunta)
+        respuesta_api = _sintetizar_con_api(datos_combinados, pregunta, historial=historial)
         if respuesta_api:
             fuentes = self._extraer_fuentes(entidades) if entidades else []
             return {

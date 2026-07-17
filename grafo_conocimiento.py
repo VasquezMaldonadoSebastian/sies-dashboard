@@ -325,27 +325,20 @@ class GrafoConocimientoSIES:
         return s
     
     def buscar_con_aliases(self, texto: str) -> list[dict]:
-        """Búsqueda que incluye alias de entidades."""
+        """Búsqueda que incluye alias de entidades (desde normalizar_entidades.py)."""
         resultados = self.buscar(texto)
         if resultados:
             return resultados
-        
-        # Si no encontró, probar con alias
-        alias_map = {
-            "uct": "Universidad Católica de Temuco",
-            "uc temuco": "Universidad Católica de Temuco",
-            "puc": "Pontificia Universidad Católica de Chile",
-            "uchile": "Universidad de Chile",
-            "usach": "Universidad de Santiago de Chile",
-            "unab": "Universidad Andrés Bello",
-            "duoc": "IP DUOC UC",
-            "iplacex": "IP Latinoamericano de Comercio Exterior",
-            "cft": "Centros de Formación Técnica (CFT)",
-            "ip": "Institutos Profesionales (IP)",
-        }
-        key = texto.lower().strip()
-        if key in alias_map:
-            return self.buscar(alias_map[key])
+
+        # Si no encontró, probar con alias desde el mapa centralizado
+        try:
+            from normalizar_entidades import ALIAS_MAP
+            key = texto.lower().strip()
+            for canonico, alias_list in ALIAS_MAP.items():
+                if key in [a.lower().strip() for a in alias_list]:
+                    return self.buscar(canonico)
+        except ImportError:
+            pass
         return []
 
 

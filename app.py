@@ -22,7 +22,7 @@ DB_EXISTS = DB.exists()
 
 # ── Sesión ─────────────────────────────────────────────────────────────────
 for key, default in [
-    ("page", "💬 Chat IA"),
+    ("page", "chat"),
     ("messages", [{"role": "assistant",
                    "content": "¡Hola! Soy tu **Analista SIES**. Puedo consultar **506 datos** extraídos de **5 informes** oficiales del SIES.\n\n"
                               "📊 **Matrícula** — totales, evolución, por región\n"
@@ -231,19 +231,28 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
+def _go_to_page(page: str):
+    st.session_state.page = page
+
 nav_items = [
-    ("💬 Chat IA", "💬 Chat IA"),
-    ("🧠 Grafo", "🧠 Grafo"),
-    ("📊 Dashboard", "📊 Dashboard"),
-    ("🔧 Diagnóstico", "🔧 Diagnóstico"),
+    ("💬 Chat IA", "chat"),
+    ("🧠 Grafo", "grafo"),
+    ("📊 Dashboard", "dashboard"),
+    ("🔧 Diagnóstico", "diagnostico"),
 ]
-current = st.session_state.page
+current = st.session_state.get("page", "chat")
 cols = st.columns(len(nav_items))
 for i, (label, key) in enumerate(nav_items):
     with cols[i]:
-        if st.button(label, key=f"nav_{key}", use_container_width=True,
-                     type="primary" if current == key else "secondary"):
-            st.session_state.page = key
+        is_active = current == key
+        st.button(
+            label,
+            key=f"nav_{key}",
+            use_container_width=True,
+            type="primary" if is_active else "secondary",
+            on_click=_go_to_page,
+            args=(key,),
+        )
 st.markdown('<div class="navbar-divider"></div>', unsafe_allow_html=True)
 
 # ── Helper: KPIs ───────────────────────────────────────────────────────────
@@ -307,7 +316,7 @@ def plot_pie(df, names, values, title):
 # ── PÁGINAS ────────────────────────────────────────────────────────────────
 
 # 💬 CHAT IA
-if st.session_state.page == "💬 Chat IA":
+if st.session_state.page == "chat":
     st.markdown('<div class="page-header"><h1>💬 Chat IA · SIES</h1><p>Consulta sobre educación superior chilena</p></div>', unsafe_allow_html=True)
     show_kpis()
     try:
@@ -330,6 +339,7 @@ if st.session_state.page == "💬 Chat IA":
                         r = engine.consultar(
                             prompt,
                             consulta_anterior=st.session_state.get("ultima_consulta", ""),
+                            historial=st.session_state.messages,
                         )
                         st.markdown(r["respuesta"])
                         if r.get("fuentes"):
@@ -350,37 +360,48 @@ if st.session_state.page == "💬 Chat IA":
         st.error(f"Error: {traceback.format_exc()}")
 
 # 🧠 GRAFO
-elif st.session_state.page == "🧠 Grafo":
-    st.markdown('<div class="page-header"><h1>🧠 Grafo de Conocimiento</h1><p>89 entidades conectadas por 506 hechos</p></div>', unsafe_allow_html=True)
+elif st.session_state.page == "grafo":
+    st.markdown('<div class="page-header"><h1>🧠 Grafo de Conocimiento</h1><p>89 entidades conectadas por 506 hechos extraídos de 5 informes SIES</p></div>', unsafe_allow_html=True)
     show_kpis()
-    cards = '<div class="entity-grid">'
-    for name, tipo, hechos, pct in [
-        ("📊 Matrícula Total", "concepto", "9 hechos", 100),
-        ("🏫 U. Católica de Temuco", "institución", "72 hechos", 80),
-        ("👤 Participación Femenina", "concepto", "12 hechos", 60),
-        ("🔄 Retención 1er Año", "concepto", "15 hechos", 70),
-    ]:
-        cards += f'<div class="entity-card"><div class="name">{name}</div><div class="meta"><span>{tipo}</span><span>{hechos}</span></div><div class="bar"><div class="fill" style="width:{pct}%"></div></div></div>'
-    cards += '</div>'
-    st.markdown(cards, unsafe_allow_html=True)
+
+    # Buscador de entidades
+    search_term = st.text_input("🔍 Buscar entidad en el grafo...", placeholder="Ej: UCT, Matrícula, Retención, DUOC", label_visibility="collapsed")
+    if search_term:
+        try:
+            from grafo_conocimiento import GrafoConocimientoSIES
+            g = GrafoConocimientoSIES()
+            g.cargar_desde_json(Path(APP_DIR / "grafo" / "grafo_sies.json"))
+            resultados = g.buscar_con_aliases(search_term)
+            if resultados:
+                st.markdown(f"**{len(resultados)} resultado(s):**")
+                for r in resultados[:5]:
+                    st.markdown(f"- **{r['nombre']}** ({r['tipo']}) — {r['n_hechos']} hechos, {r['n_documentos']} docs")
+            else:
+                st.info("No se encontraron entidades con ese término.")
+        except Exception:
+            pass
+
     try:
         graph_html = CHROMA_DIR / "grafo_conocimiento.html"
         if graph_html.exists():
             with open(graph_html, "r", encoding="utf-8") as f:
                 html = f.read()
-            html = html.replace('<div id="mynetwork"', '<div id="mynetwork" style="background:#FCFAFA;border-radius:12px;border:1px solid #D9D4CF;"')
             st.components.v1.html(html, height=620)
-            st.markdown("""<div style="display:flex;gap:1.5rem;font-size:0.8rem;color:#6B6560;">
-                <span>■ <span style="color:#B8552E;">Concepto</span></span>
-                <span>★ <span style="color:#C8933C;">Entidad</span></span>
-                <span>● <span style="color:#3A7D5C;">Informe PDF</span></span></div>""", unsafe_allow_html=True)
+            st.markdown(f"""<div style="display:flex;gap:1.5rem;font-size:0.8rem;color:#6B6560;margin-top:8px;">
+                <span>★ <span style="color:#B8552E;">Institución</span></span>
+                <span>◆ <span style="color:#3A7D5C;">Región</span></span>
+                <span>● <span style="color:#5B8FA8;">Concepto</span></span>
+                <span style="color:#D9D4CF;">|</span>
+                <span>🔗 <span style="color:#B8552E;">Relación directa</span></span>
+                <span>🔗 <span style="color:#94A3B8;">Co-ocurrencia</span></span>
+            </div>""", unsafe_allow_html=True)
         else:
-            st.warning("Grafo no disponible")
+            st.warning("Grafo no disponible. Ejecuta generar_grafo_html.py")
     except Exception as e:
         st.error(traceback.format_exc())
 
 # 📊 DASHBOARD
-elif st.session_state.page == "📊 Dashboard":
+elif st.session_state.page == "dashboard":
     st.markdown('<div class="page-header"><h1>📊 Dashboard SIES</h1><p>Indicadores clave de educación superior chilena</p></div>', unsafe_allow_html=True)
 
     def kpi_static():
@@ -481,7 +502,7 @@ elif st.session_state.page == "📊 Dashboard":
                 st.plotly_chart(fig, use_container_width=True)
 
 # 🔧 DIAGNÓSTICO
-elif st.session_state.page == "🔧 Diagnóstico":
+elif st.session_state.page == "diagnostico":
     st.markdown('<div class="page-header"><h1>🔧 Diagnóstico</h1></div>', unsafe_allow_html=True)
     try:
         d = [f"**Python:** {sys.version}", f"**Directorio:** {APP_DIR}"]
