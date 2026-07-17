@@ -47,7 +47,8 @@ CAPACIDADES_REGEX = re.compile(
 )
 SEGUIMIENTO_REGEX = re.compile(
     r"\b(y eso|y qué|y que|eso mismo|lo anterior|cuéntame|cuentame|explícame|explicame|"
-    r"amplía|amplia|sobre eso|dime más|y también|además|y los|más sobre)\b",
+    r"amplía|amplia|sobre eso|dime más|y también|además|y los|más sobre)\b|"
+    r"^(y en |y para |y de |y la |y el |y las |y los )",
     re.IGNORECASE,
 )
 DESPEDIDA_REGEX = re.compile(
@@ -288,8 +289,12 @@ class SIESEngine:
             return self._respuesta_saludo()
 
         # 1. Detectar intenciones conversacionales
+        # Si es SOLO saludo (≤3 palabras o solo palabras de saludo), responder saludo
+        # Si tiene "hola" + pregunta real, SEGUIR a clasificación
         if SALUDO_REGEX.search(pregunta_clean) and not SEGUIMIENTO_REGEX.search(pregunta_clean):
-            return self._respuesta_saludo()
+            solo_saludo = set(pregunta_clean.lower().split()) - {"hola", "buenas", "hey", "saludos", "buenos", "buen", "día", "dias", "tardes", "noches", "qué", "tal", "que"}
+            if len(pregunta_clean.split()) <= 3 or len(solo_saludo) <= 1:
+                return self._respuesta_saludo()
         if DESPEDIDA_REGEX.search(pregunta_clean):
             return self._respuesta_despedida()
         if CAPACIDADES_REGEX.search(pregunta_clean):
