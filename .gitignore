@@ -12,6 +12,9 @@ venv/
 .DS_Store
 Thumbs.db
 
+# Environment (API keys, secrets)
+.env
+
 # Chroma cache (se descarga en deploy)
 .chroma/
 

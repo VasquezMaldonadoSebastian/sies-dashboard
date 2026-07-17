@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 """
-sies_engine.py — Orquestador Unificado SIES
-==========================================
-
-Unifica grafo de conocimiento (506 hechos, 89 entidades) + DuckDB + 
-OpenCode API (3 modelos en cadena de fallback) para responder preguntas
+sies_engine.py — Orquestador Unificado SIES v3
+===========================================
+Unifica grafo de conocimiento (506 hechos, 89 entidades) + DuckDB +
+OpenRouter API / OpenCode API para responder preguntas en lenguaje natural
 sobre educación superior chilena.
 
-Modos de respuesta (auto-detectados):
-  - 'numerico': DuckDB (evolución, totales, porcentajes)
-  - 'semantico': Grafo de conocimiento (instituciones, conceptos, relaciones)
-  - 'mixto': Grafo + DuckDB + síntesis
+Modos de respuesta:
+  - 'numerico': DuckDB o datos estáticos, con síntesis NL
+  - 'semantico': Grafo de conocimiento, con síntesis NL
+  - 'mixto': Grafo + DuckDB + síntesis NL
   - 'guiado': No entendió → muestra opciones
 """
 
@@ -21,11 +20,11 @@ import traceback
 from pathlib import Path
 from typing import Optional
 
-# ── OpenAI-compatible SDK para OpenCode API ──────────────────────────────
+# ── OpenAI-compatible SDK ──────────────────────────────────────────────
 try:
     from openai import OpenAI, APIError, RateLimitError, APITimeoutError
 except ImportError:
-    OpenAI = None  # fallback sin API
+    OpenAI = None
 
 # ── Módulos del proyecto ─────────────────────────────────────────────────
 from grafo_conocimiento import GrafoConocimientoSIES
@@ -36,22 +35,51 @@ GRAFO_PATH = BASE / "grafo" / "grafo_sies.json"
 DB_PATH = BASE / "mifuturo_sies.db"
 STATIC_PATH = BASE / "dashboard_data.json"
 
-# ── Patrones de clasificación de turnos (inspirados en agente-kimn) ─────
-SALUDO_REGEX = re.compile(r"\b(hola|buenas|buenos días|buenas tardes|buenas noches|hey|saludos|qué tal|que tal|buen día|buena tarde)\b", re.IGNORECASE)
-CAPACIDADES_REGEX = re.compile(r"\b(qué puedes|que puedes|qué sabes|que sabes|qué haces|que haces|cómo funcionas|como funcionas|para qué sirves|para que sirves|capacidades|qué hago|que hago|quién eres|quien eres)\b", re.IGNORECASE)
-SEGUIMIENTO_REGEX = re.compile(r"\b(y eso|y qué|y que|eso mismo|lo anterior|cuéntame|cuentame|explícame|explicame|amplía|amplia|sobre eso|dime más|y también|además|y los|más sobre)\b", re.IGNORECASE)
-DESPEDIDA_REGEX = re.compile(r"\b(adios|adiós|chao|hasta luego|hasta pronto|nos vemos|bye|cuidate|cuídate|gracias|muchas gracias)\b", re.IGNORECASE)
-# Orden de resolución: environment variable → st.secrets (Streamlit Cloud)
-_api_key = os.environ.get("OPENCODE_API_KEY", os.environ.get("OPENAI_API_KEY", ""))
+# ── Clasificación de turnos ─────────────────────────────────────────────
+SALUDO_REGEX = re.compile(
+    r"\b(hola|buenas|buenos días|buenas tardes|buenas noches|hey|saludos|qué tal|que tal|buen día|buena tarde)\b",
+    re.IGNORECASE,
+)
+CAPACIDADES_REGEX = re.compile(
+    r"\b(qué puedes|que puedes|qué sabes|que sabes|qué haces|que haces|cómo funcionas|como funcionas|"
+    r"para qué sirves|para que sirves|capacidades|quién eres|quien eres)\b",
+    re.IGNORECASE,
+)
+SEGUIMIENTO_REGEX = re.compile(
+    r"\b(y eso|y qué|y que|eso mismo|lo anterior|cuéntame|cuentame|explícame|explicame|"
+    r"amplía|amplia|sobre eso|dime más|y también|además|y los|más sobre)\b",
+    re.IGNORECASE,
+)
+DESPEDIDA_REGEX = re.compile(
+    r"\b(adios|adiós|chao|hasta luego|hasta pronto|nos vemos|bye|cuidate|cuídate|gracias|muchas gracias)\b",
+    re.IGNORECASE,
+)
+
+# ═══════════════════════════════════════════════════════════════════════════
+# CONFIGURACIÓN OpenCode API
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Leer API key: env var → .env → st.secrets
+_api_key = os.environ.get("OPENCODE_API_KEY", "")
+if not _api_key:
+    try:
+        with open(BASE / ".env") as f:
+            for line in f:
+                if line.startswith("OPENCODE_API_KEY="):
+                    _api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                    break
+    except (FileNotFoundError, IOError):
+        pass
 if not _api_key:
     try:
         import streamlit as st
         _api_key = st.secrets.get("OPENCODE_API_KEY", "")
-    except (ImportError, Exception):
+    except Exception:
         pass
+
 OPENCODE_API_KEY = _api_key
 OPENCODE_BASE_URL = "https://opencode.ai/zen/v1"
-OPENCODE_MODELS = [  # Cadena de fallback
+OPENCODE_MODELS = [  # Modelos free — cadena de fallback
     "deepseek-v4-flash-free",
     "big-pickle",
     "mimo-v2.5-free",
@@ -63,63 +91,48 @@ SYSTEM_PROMPT = """Eres un analista experto en educación superior chilena, espe
 
 REGLAS:
 1. Usa SOLO los datos que se te entregan en el contexto. NO inventes cifras.
-2. Responde en español, claro y directo. Usa markdown ligero (negritas, tablas si aplica).
-3. Cuando tengas datos de MÚLTIPLES documentos, CRUZALOS en una respuesta integrada.
-4. Cita las fuentes al final: "📎 Fuente: [nombre del documento]"
-5. NUNCA incluyas texto raw de documentos. NUNCA incluyas estructura interna del wiki.
-6. Si no hay datos suficientes, dilo y sugiere preguntas alternativas.
-7. Sé conciso — responde en máximo 3-4 párrafos, tabla si aplica."""
-
+2. Responde en español, claro y conversacional, como un experto hablando con un colega.
+3. NO uses tablas markdown a menos que sean 3+ filas de datos comparativos.
+4. Prefiere frases como "En 2025 hubo 1.455.639 estudiantes" sobre tablas.
+5. Cuando tengas datos de MÚLTIPLES documentos, CRUZALOS en una respuesta integrada.
+6. Cita las fuentes al final con un 📎 breve.
+7. NUNCA incluyas raw text de documentos ni estructura interna.
+8. Sé conciso: máximo 3-4 párrafos.
+9. Si la pregunta anterior y la actual están relacionadas, úsalas para dar contexto."""
 
 # ═══════════════════════════════════════════════════════════════════════════
-# CLIENTE OPenCode API
+# SÍNTESIS CON LLM
 # ═══════════════════════════════════════════════════════════════════════════
 
-def _crear_cliente():
-    """Crea el cliente OpenAI apuntando a OpenCode API."""
+def _sintetizar_con_api(datos_markdown: str, pregunta: str, historial: list = None) -> Optional[str]:
+    """
+    Intenta sintetizar una respuesta usando la cadena de modelos OpenCode free.
+    Retorna None si todos los modelos fallan.
+    """
     if OpenAI is None:
         return None
     if not OPENCODE_API_KEY:
         return None
     try:
-        return OpenAI(
-            api_key=OPENCODE_API_KEY,
-            base_url=OPENCODE_BASE_URL,
-        )
+        cliente = OpenAI(api_key=OPENCODE_API_KEY, base_url=OPENCODE_BASE_URL)
     except Exception:
-        return None
-
-
-def _sintetizar_con_api(datos_markdown: str, pregunta: str, historial: list = None) -> Optional[str]:
-    """
-    Intenta sintetizar una respuesta usando la cadena de modelos OpenCode.
-    Retorna None si todos los modelos fallan.
-
-    Args:
-        datos_markdown: Contexto de datos disponibles (grafo, DB, etc.)
-        pregunta: Pregunta actual del usuario
-        historial: Mensajes anteriores (conversación multi-turno)
-    """
-    cliente = _crear_cliente()
-    if cliente is None:
         return None
 
     # Construir mensajes con historial
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
     if historial:
-        # Pasar solo los últimos 6 intercambios (útil para contexto sin saturar)
-        for msg in historial[-6:]:
+        for msg in historial[-4:]:
             role = msg.get("role", "user")
             content = msg.get("content", "")
             if role in ("user", "assistant") and content:
-                messages.append({"role": role, "content": content[:2000]})
+                messages.append({"role": role, "content": content[:1500]})
 
     user_prompt = (
         f"## DATOS DISPONIBLES\n\n"
         f"{datos_markdown}\n\n"
         f"## PREGUNTA DEL USUARIO\n\n{pregunta}\n\n"
-        f"Responde usando SOLO los datos entregados. Sé conciso."
+        f"Responde en español conversacional, usando SOLO los datos entregados."
     )
     messages.append({"role": "user", "content": user_prompt})
 
@@ -135,13 +148,106 @@ def _sintetizar_con_api(datos_markdown: str, pregunta: str, historial: list = No
             content = resp.choices[0].message.content
             if content and content.strip():
                 return content.strip()
-        except (APIError, RateLimitError, APITimeoutError) as e:
-            print(f"   ⚠️ Modelo {modelo}: {e}")
-            continue
         except Exception as e:
-            print(f"   ⚠️ Modelo {modelo} (error inesperado): {e}")
+            print(f"   ⚠️ {modelo}: {e}")
             continue
     return None
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# GENERADOR DE LENGUAJE NATURAL (FALLBACK SIN LLM)
+# ═══════════════════════════════════════════════════════════════════════════
+
+def _formatear_como_texto_natural(datos: dict, pregunta: str) -> str:
+    """
+    Convierte datos estructurados en texto conversacional.
+    Se usa cuando la API no está disponible.
+    """
+    modo = datos.get("modo", "general")
+    partes = []
+
+    if modo == "numerico":
+        evo = datos.get("evolucion", [])
+        if evo:
+            ult = evo[-1]
+            ant = evo[-2] if len(evo) > 1 else ult
+            año = ult.get("año", "")
+            total = ult.get("total", "")
+            pct_m = ult.get("pct_mujeres", "")
+            partes.append(f"En **{año}** había **{total:,}** estudiantes matriculados en educación superior en Chile.")
+            if pct_m:
+                partes.append(f"De ellos, **{pct_m:.1f}%** son mujeres.")
+            if ant and ant.get("total"):
+                crec = ((ult["total"] - ant["total"]) / ant["total"]) * 100
+                if crec > 0:
+                    partes.append(f"Esto representa un aumento del **{crec:.1f}%** respecto a {ant['año']}.")
+                else:
+                    partes.append(f"Esto es una disminución del **{abs(crec):.1f}%** respecto a {ant['año']}.")
+            partes.append("\n📎 *Fuente: Base de datos SIES 2007–2025*")
+
+    elif modo == "top_instituciones":
+        insts = datos.get("instituciones", [])
+        if insts:
+            partes.append(f"Las instituciones con mayor matrícula son:")
+            for i, inst in enumerate(insts[:5], 1):
+                nombre = inst.get("nombre", "")
+                total = inst.get("total", 0)
+                partes.append(f"  {i}. **{nombre}** — {total:,} estudiantes")
+            partes.append("\n📎 *Fuente: Base de datos SIES*")
+
+    elif modo == "entidad":
+        nombre = datos.get("nombre", "")
+        tipo = datos.get("tipo", "")
+        hechos = datos.get("hechos", [])
+        docs = datos.get("documentos", 0)
+
+        icono = {"institucion": "🏫", "region": "📍", "concepto": "📊"}.get(tipo, "🏷️")
+        partes.append(f"{icono} **{nombre}**")
+
+        if hechos:
+            for h in hechos[:4]:
+                valor = h.get("valor", "")
+                año = h.get("año", "")
+                ctx = h.get("contexto", "")
+                linea = f"  • {h.get('entidad', '')}: **{valor}**"
+                if año:
+                    linea += f" ({año})"
+                if ctx:
+                    linea += f" — {ctx[:80]}"
+                partes.append(linea)
+
+        if docs:
+            partes.append(f"\n📄 Información extraída de {docs} documentos oficiales del SIES.")
+        partes.append("\n📎 *Fuente: Informes SIES procesados*")
+
+    elif modo == "evolucion":
+        evo = datos.get("evolucion", [])
+        if evo:
+            primero = evo[0]
+            ultimo = evo[-1]
+            crecimiento = ((ultimo["total"] - primero["total"]) / primero["total"]) * 100
+            partes.append(
+                f"La matrícula en educación superior pasó de **{primero['total']:,}** estudiantes "
+                f"en **{primero['año']}** a **{ultimo['total']:,}** en **{ultimo['año']}**, "
+                f"un crecimiento del **{crecimiento:.1f}%** en {len(evo)} años."
+            )
+            # Hitos
+            pct_m_ini = primero.get("pct_mujeres", 0)
+            pct_m_fin = ultimo.get("pct_mujeres", 0)
+            if pct_m_ini and pct_m_fin:
+                delta_m = pct_m_fin - pct_m_ini
+                tendencia = "aumentado" if delta_m > 0 else "disminuido"
+                partes.append(
+                    f"La participación femenina ha {tendencia} de {pct_m_ini:.1f}% a {pct_m_fin:.1f}% "
+                    f"en el mismo período."
+                )
+            partes.append("\n📎 *Fuente: Base de datos SIES 2007–2025*")
+
+    else:
+        partes.append("No encontré información específica para tu consulta.")
+        partes.append("Puedes preguntar sobre matrícula, instituciones, titulación o retención.")
+
+    return "\n".join(partes)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -161,8 +267,13 @@ class SIESEngine:
             print("⚠️ Grafo no encontrado — algunas consultas no funcionarán")
 
         self.db_disponible = DB_PATH.exists()
+        self.modelos_api = [f"opencode:{m}" for m in OPENCODE_MODELS] if OPENCODE_API_KEY and OpenAI else []
+        if self.modelos_api:
+            print(f"🤖 API OpenCode activa: {', '.join(m.split(':')[1] for m in self.modelos_api)}")
+        else:
+            print("⚠️ Sin API key — usando solo generación de lenguaje natural (fallback)")
 
-        # Cargar datos estáticos (fallback para Cloud)
+        # Cargar datos estáticos
         self.estaticos = {}
         if STATIC_PATH.exists():
             with open(STATIC_PATH, "r", encoding="utf-8") as f:
@@ -171,32 +282,23 @@ class SIESEngine:
     # ── Consulta principal ────────────────────────────────────────────────
 
     def consultar(self, pregunta: str, consulta_anterior: str = "", historial: list = None) -> dict:
-        """
-        Responde una pregunta en lenguaje natural.
-
-        Args:
-            pregunta: Texto de la pregunta actual.
-            consulta_anterior: Última pregunta del usuario (para resolver follow-ups).
-
-        Returns:
-            dict con respuesta, fuentes, modo_usado, sugerencias
-        """
+        """Responde una pregunta en lenguaje natural."""
         pregunta_clean = pregunta.strip()
         if not pregunta_clean:
             return self._respuesta_saludo()
 
-        # 1. Detectar intenciones conversacionales primero
+        # 1. Detectar intenciones conversacionales
         if SALUDO_REGEX.search(pregunta_clean) and not SEGUIMIENTO_REGEX.search(pregunta_clean):
             return self._respuesta_saludo()
         if DESPEDIDA_REGEX.search(pregunta_clean):
             return self._respuesta_despedida()
         if CAPACIDADES_REGEX.search(pregunta_clean):
-            return self._respuesta_saludo()  # Misma respuesta con capacidades
+            return self._respuesta_saludo()
 
-        # 2. Resolver follow-ups con contexto anterior
+        # 2. Resolver follow-ups
         if SEGUIMIENTO_REGEX.search(pregunta_clean) and consulta_anterior:
             pregunta_resuelta = f"{consulta_anterior} — {pregunta_clean}"
-            print(f"🔗 Follow-up detectado, resuelto como: {pregunta_resuelta[:80]}")
+            print(f"🔗 Follow-up: {pregunta_resuelta[:80]}")
         else:
             pregunta_resuelta = pregunta_clean
 
@@ -205,7 +307,7 @@ class SIESEngine:
         print(f"🔍 Intención: {intencion}")
 
         if intencion == "numerico":
-            return self._responder_numerico(pregunta_resuelta)
+            return self._responder_numerico(pregunta_resuelta, historial=historial)
         elif intencion == "semantico":
             return self._responder_semantico(pregunta_resuelta, historial=historial)
         elif intencion == "mixto":
@@ -216,10 +318,8 @@ class SIESEngine:
     # ── Clasificador de intención ─────────────────────────────────────────
 
     def _clasificar_intencion(self, pregunta: str) -> str:
-        """Clasifica la pregunta en: numerico, semantico, mixto, guiado."""
         p = pregunta.lower().strip()
 
-        # Palabras clave numéricas
         patrones_numericos = [
             r"\bcuántos?\b", r"\bcuántas?\b", r"\btotal\b", r"\bporcentaje\b",
             r"\bevolución\b", r"\bevolucion\b", r"\bcrecimient[oó]\b",
@@ -227,11 +327,10 @@ class SIESEngine:
             r"\binstitución\b", r"\binstitucion\b", r"\bestudiantes\b",
             r"\bmatrícula\b", r"\bmatricula\b", r"\btitulación\b",
             r"\btitulacion\b", r"\bretención\b", r"\bretencion\b",
-            r"\b\d{4}\b",  # año
+            r"\b\d{4}\b",
         ]
         es_numerico = any(re.search(pat, p) for pat in patrones_numericos)
 
-        # Palabras clave semánticas (entidades, conceptos)
         patrones_semanticos = [
             r"\bqu[eé]\b.*\binform[eo]\b",
             r"\bd[ií]ce\b", r"\bdicen\b",
@@ -241,14 +340,11 @@ class SIESEngine:
             r"\bcompar[aeo]\b",
         ]
         es_semantico = any(re.search(pat, p) for pat in patrones_semanticos)
-        # También es semántico si menciona una entidad conocida
         if self.grafo_cargado:
             entidades_encontradas = self._buscar_entidades(p)
             if entidades_encontradas:
                 es_semantico = True
 
-        # Preguntas sobre capacidades → guiado siempre (ya capturadas arriba en consultar)
-        # Clasificación final
         if es_numerico and es_semantico:
             return "mixto"
         elif es_numerico:
@@ -256,26 +352,17 @@ class SIESEngine:
         elif es_semantico:
             return "semantico"
         else:
-            # Si tiene 3+ palabras significativas, asumir semántico
             tokens = [t for t in p.split() if len(t) > 3]
             if len(tokens) >= 3:
                 return "semantico"
             return "guiado"
 
-    # ── Buscar entidades en el grafo ──────────────────────────────────────
+    # ── Buscar entidades ──────────────────────────────────────────────────
 
     def _buscar_entidades(self, pregunta: str) -> list:
-        """Busca entidades en el grafo que coincidan con la pregunta.
-        
-        Prioriza coincidencias por alias (búsqueda exacta) sobre substring.
-        Si hay al menos un match fuerte por alias, descarta matches débiles
-        por substring. Esto evita que "que" en "que sabemos de la uct"
-        encuentre "Quechua" cuando lo relevante es UCT.
-        """
         if not self.grafo_cargado:
             return []
 
-        # Stopwords a ignorar
         stopwords = {
             "que", "las", "los", "del", "para", "con", "por", "como",
             "mas", "pero", "esta", "este", "entre", "todo", "esa", "eso",
@@ -284,25 +371,18 @@ class SIESEngine:
             "dice", "hace", "puede", "tiene", "sobre", "saber",
             "sus", "asi", "año", "ver", "dar", "fue", "hea", "sea",
         }
-        palabras = [
-            p for p in re.findall(r'\b\w{3,}\b', pregunta.lower())
-            if p not in stopwords
-        ]
+        palabras = [p for p in re.findall(r'\b\w{3,}\b', pregunta.lower()) if p not in stopwords]
 
-        alias_encontradas = []   # Match fuerte (vía alias_map)
-        substring_encontradas = []  # Match débil (substring genérico)
+        alias_encontradas = []
+        substring_encontradas = []
 
         for palabra in palabras:
             resultados = self.grafo.buscar_con_aliases(palabra)
             for r in resultados:
-                # Si buscar_con_aliases encontró algo, puede ser alias o substring
-                # Revisamos si la palabra original está en el alias_map (match fuerte)
                 from normalizar_entidades import ALIAS_MAP
                 es_match_fuerte = False
-                # match fuerte si: la palabra es un alias conocido, o es exactamente el nombre
                 if palabra in ALIAS_MAP:
                     es_match_fuerte = True
-                # también es fuerte si el nombre contiene la palabra como token completo
                 nombre_normalizado = r["nombre"].lower()
                 if palabra in nombre_normalizado.split():
                     es_match_fuerte = True
@@ -315,21 +395,105 @@ class SIESEngine:
                     if ent_dup and r["nombre"] not in [e["nombre"] for e in alias_encontradas]:
                         substring_encontradas.append(r)
 
-        # Decidir qué retornar: si hay matches fuertes, solo ellos
         if alias_encontradas:
             entidades = alias_encontradas
-            print(f"   Match fuerte: {[e['nombre'] for e in alias_encontradas]}")
         else:
             entidades = substring_encontradas
 
-        # Ordenar por relevancia y limitar
         entidades.sort(key=lambda x: x["n_hechos"], reverse=True)
         return entidades[:3]
 
-    # ── Modo semántico (grafo + OpenCode API) ─────────────────────────────
+    # ── Generar síntesis NL (API primero, fallback conversacional) ────────
+
+    def _sintetizar_respuesta(self, datos_md: str, pregunta: str, historial: list = None) -> Optional[str]:
+        """Intenta API, si falla retorna None (quien llama decide el fallback)."""
+        return _sintetizar_con_api(datos_md, pregunta, historial)
+
+    # ── Modo numérico ─────────────────────────────────────────────────────
+
+    def _responder_numerico(self, pregunta: str, historial: list = None) -> dict:
+        """Responde con datos numéricos, con síntesis NL."""
+        # 1. Intentar DB
+        db_data = self._consultar_db(pregunta)
+        if db_data:
+            # Intentar síntesis con API
+            respuesta_api = self._sintetizar_respuesta(db_data, pregunta, historial)
+            if respuesta_api:
+                return {
+                    "respuesta": respuesta_api,
+                    "fuentes": ["Base de datos SIES (2007-2025)"],
+                    "modo_usado": "numerico_api",
+                    "sugerencias": [
+                        "¿Cómo ha evolucionado la matrícula?",
+                        "¿Cuáles son las instituciones con más estudiantes?",
+                        "¿Cuál es la participación femenina?",
+                    ],
+                }
+            # Fallback NL sin API
+            datos_nl = self._datos_numerico_a_nl(db_data, pregunta)
+            return {
+                "respuesta": datos_nl,
+                "fuentes": ["Base de datos SIES (2007-2025)"],
+                "modo_usado": "numerico_nl",
+                "sugerencias": [
+                    "¿Cómo ha evolucionado la matrícula?",
+                    "¿Cuáles son las instituciones con más estudiantes?",
+                    "¿Cuál es la participación femenina?",
+                ],
+            }
+
+        # 2. Fallback: datos estáticos
+        return self._responder_desde_estaticos(pregunta, historial=historial)
+
+    def _datos_numerico_a_nl(self, db_data: str, pregunta: str) -> str:
+        """Convierte datos numéricos SQL en texto natural."""
+        # Extraer año y total de la tabla markdown
+        lineas = db_data.strip().split("\n")
+        partes = []
+
+        # Buscar la última fila de datos (después del encabezado)
+        filas_datos = [l for l in lineas if l.startswith("| ") and not l.startswith("|:") and not l.startswith("| Año")]
+        if not filas_datos:
+            return db_data  # fallback a tabla
+
+        # Última fila
+        ult = filas_datos[-1]
+        cols = [c.strip() for c in ult.split("|")[1:-1]]
+
+        if len(cols) >= 2:
+            año = cols[0]
+            total = cols[1]
+            partes.append(f"En **{año}** hay **{total}** estudiantes matriculados en educación superior en Chile.")
+
+            if len(cols) >= 4:
+                pct_m = cols[3].replace("%", "")
+                partes.append(f"Las mujeres representan el **{pct_m}%** de la matrícula.")
+
+        # Crecimiento si hay al menos 2 filas
+        if len(filas_datos) >= 2:
+            ant = filas_datos[-2]
+            ant_cols = [c.strip() for c in ant.split("|")[1:-1]]
+            if len(ant_cols) >= 2 and len(cols) >= 2:
+                try:
+                    total_act = int(total.replace(",", ""))
+                    total_ant = int(ant_cols[1].replace(",", ""))
+                    delta = total_act - total_ant
+                    if delta > 0:
+                        partes.append(f"Son **{delta:,}** más que el año anterior, lo que muestra una tendencia al alza en el acceso a la educación superior.")
+                    else:
+                        partes.append(f"Son **{abs(delta):,}** menos que el año anterior.")
+                except ValueError:
+                    pass
+
+        if not partes:
+            return db_data
+
+        partes.append("\n📎 *Fuente: Datos SIES — mifuturo.cl*")
+        return "\n".join(partes)
+
+    # ── Modo semántico ────────────────────────────────────────────────────
 
     def _responder_semantico(self, pregunta: str, historial: list = None) -> dict:
-        """Responde usando el grafo de conocimiento + OpenCode API."""
         if not self.grafo_cargado:
             return self._respuesta_error("grafo_no_disponible")
 
@@ -337,27 +501,24 @@ class SIESEngine:
         if not entidades:
             return self._respuesta_guiada(pregunta)
 
-        # 1. Recuperar datos del grafo (con límite anti-vómito)
         datos_grafo = self._formatear_datos_grafo(entidades)
 
-        # 2. Intentar síntesis con OpenCode API
-        respuesta_api = _sintetizar_con_api(datos_grafo, pregunta, historial=historial)
-
+        # Intentar API
+        respuesta_api = self._sintetizar_respuesta(datos_grafo, pregunta, historial)
         if respuesta_api:
             fuentes = self._extraer_fuentes(entidades)
-            sugerencias = self._generar_sugerencias(entidades)
             return {
                 "respuesta": respuesta_api,
                 "fuentes": fuentes,
                 "modo_usado": "semantico_api",
-                "sugerencias": sugerencias,
+                "sugerencias": self._generar_sugerencias(entidades),
             }
 
-        # 3. Fallback: respuesta estructurada sin LLM
-        return self._responder_semantico_sin_llm(entidades)
+        # Fallback NL sin API
+        return self._responder_semantico_nl(entidades)
 
-    def _responder_semantico_sin_llm(self, entidades: list) -> dict:
-        """Responde con datos del grafo (fallback sin LLM) — formato conversacional."""
+    def _responder_semantico_nl(self, entidades: list) -> dict:
+        """Respuesta semántica en lenguaje natural, sin LLM."""
         if not entidades:
             return self._respuesta_guiada("")
 
@@ -371,89 +532,172 @@ class SIESEngine:
         tipo = ent_principal["tipo"]
         partes = []
 
-        # Encabezado limpio
         icono = {"institucion": "🏫", "region": "📍", "concepto": "📊"}.get(tipo, "🏷️")
         partes.append(f"{icono} **{nombre}**")
 
-        # Resumen breve
         for ent_nombre, info in data["entidades"].items():
-            n_hechos = len([h for h in info.get("hechos", []) if isinstance(h.get("valor"), (int, float))])
-            n_cuali = len([h for h in info.get("hechos", []) if not isinstance(h.get("valor"), (int, float))])
-            partes.append(f"📄 {len(info['documentos'])} documentos · {n_hechos} datos numéricos · {n_cuali} hallazgos")
-
-            # Hechos numéricos más relevantes (top 5)
+            n_docs = len(info["documentos"])
             hechos_num = [h for h in info.get("hechos", []) if isinstance(h.get("valor"), (int, float))]
+            hechos_cuali = [h for h in info.get("hechos", []) if not isinstance(h.get("valor"), (int, float))]
+
             if hechos_num:
-                # Ordenar por año descendente y limitar
+                # Tomar los más relevantes (ordenados por año descendente)
                 hechos_num.sort(key=lambda x: str(x.get("año", "")), reverse=True)
-                hechos_mostrar = hechos_num[:5]
-                for h in hechos_mostrar:
+                for h in hechos_num[:5]:
                     valor = f"{h['valor']:,.0f}" if isinstance(h['valor'], float) else str(h['valor'])
                     año = f" ({h['año']})" if h.get("año") else ""
-                    ctx = h.get("contexto", "")[:60]
-                    linea = f"  • {h['entidad']}: **{valor}**{año}"
+                    ctx = h.get("contexto", "")[:80]
+                    linea = f"  • {h.get('entidad', '')}: **{valor}**{año}"
                     if ctx:
                         linea += f" — {ctx}"
                     partes.append(linea)
 
-            # Hallazgos cualitativos clave (top 2)
-            hechos_cuali = [h for h in info.get("hechos", []) if not isinstance(h.get("valor"), (int, float))]
             if hechos_cuali:
                 for h in hechos_cuali[:2]:
-                    ctx = h.get("contexto", h.get("afirmacion", ""))[:100]
+                    ctx = h.get("contexto", h.get("afirmacion", ""))[:120]
                     if ctx:
                         partes.append(f"  💡 {ctx}")
 
-            # Conexiones
-            if info.get("relaciones"):
-                rels = info["relaciones"][:3]
-                conexiones = ", ".join(f"{r['destino']}" for r in rels)
-                partes.append(f"  🔗 Relacionado con: {conexiones}")
+            if n_docs:
+                partes.append(f"\n📄 Información presente en {n_docs} informes oficiales del SIES.")
 
-            # Fuentes
             for doc in info.get("documentos", [])[:3]:
                 archivo = doc.get("archivo", "")
                 if archivo:
                     fuentes.add(archivo.replace("Informe_", "").replace("_SIES.md", "").replace("_.md", ""))
 
-        respuesta = "\n".join(partes)
-
-        # Mencionar otras entidades relacionadas encontradas
-        if len(entidades) > 1:
-            otras = ", ".join(e["nombre"][:25] for e in entidades[1:4])
-            respuesta += f"\n\n💡 *También: {otras}*"
-
         if fuentes:
-            respuesta += f"\n\n📎 *Fuentes: {', '.join(sorted(fuentes)[:3])}*"
+            partes.append(f"\n📎 *Fuentes: {', '.join(sorted(fuentes)[:3])}*")
 
         return {
-            "respuesta": respuesta,
+            "respuesta": "\n".join(partes),
             "fuentes": list(fuentes),
-            "modo_usado": "semantico_estructurado",
+            "modo_usado": "semantico_nl",
             "sugerencias": self._generar_sugerencias(entidades),
         }
 
-    # ── Modo numérico (DuckDB / datos estáticos) ──────────────────────────
+    # ── Modo mixto ────────────────────────────────────────────────────────
 
-    def _responder_numerico(self, pregunta: str) -> dict:
-        """Responde con datos numéricos desde DuckDB o JSON estático."""
-        respuesta = self._consultar_db(pregunta)
-        if respuesta:
+    def _responder_mixto(self, pregunta: str, historial: list = None) -> dict:
+        datos_partes = []
+
+        entidades = self._buscar_entidades(pregunta)
+        if entidades:
+            datos_partes.append(self._formatear_datos_grafo(entidades[:2]))
+
+        db_data = self._consultar_db(pregunta)
+        if db_data:
+            datos_partes.append(f"### 📊 Datos numéricos\n\n{db_data}")
+
+        if not datos_partes:
+            return self._respuesta_guiada(pregunta)
+
+        datos_combinados = "\n\n".join(datos_partes)
+
+        respuesta_api = self._sintetizar_respuesta(datos_combinados, pregunta, historial)
+        if respuesta_api:
+            fuentes = self._extraer_fuentes(entidades) if entidades else []
             return {
-                "respuesta": respuesta,
-                "fuentes": ["Base de datos SIES (2007-2025)"],
-                "modo_usado": "numerico",
-                "sugerencias": [
-                    "¿Cómo ha evolucionado la matrícula?",
-                    "¿Cuáles son las instituciones con más estudiantes?",
-                    "¿Cuál es la participación femenina?",
-                ],
+                "respuesta": respuesta_api,
+                "fuentes": fuentes,
+                "modo_usado": "mixto_api",
+                "sugerencias": self._generar_sugerencias(entidades) if entidades else [],
             }
-        # Si no hay DB, buscar en datos estáticos
-        return self._responder_desde_estaticos(pregunta)
+
+        # Fallback NL: armar respuesta combinada
+        respuesta_partes = []
+
+        # Si hay entidades, formatear NL
+        if entidades:
+            nl_resp = self._responder_semantico_nl(entidades)
+            respuesta_partes.append(nl_resp["respuesta"])
+
+        # Si hay datos DB, formatear NL
+        if db_data:
+            nl_db = self._datos_numerico_a_nl(db_data, pregunta)
+            if nl_db:
+                respuesta_partes.append(nl_db)
+
+        respuesta_final = "\n\n".join(respuesta_partes) if respuesta_partes else datos_combinados
+
+        return {
+            "respuesta": respuesta_final,
+            "fuentes": [],
+            "modo_usado": "mixto_nl",
+            "sugerencias": [],
+        }
+
+    # ── Modo guiado ───────────────────────────────────────────────────────
+
+    def _respuesta_saludo(self) -> dict:
+        return {
+            "respuesta": (
+                "¡Hola! 😊 Soy tu **Analista SIES**. Puedo consultar **506 datos** extraídos de **5 informes** oficiales del SIES.\n\n"
+                "📊 **Matrícula** — totales, evolución, por región\n"
+                "👤 **Brechas de Género** — participación femenina\n"
+                "🎓 **Titulación** — titulados por año\n"
+                "📈 **Retención** — permanencia 1er año\n\n"
+                "💡 *Prueba preguntando: \"¿Cuántos estudiantes en 2025?\" o \"¿Qué sabemos de la UCT?\"*"
+            ),
+            "fuentes": [],
+            "modo_usado": "saludo",
+            "sugerencias": [
+                "¿Cuántos estudiantes en 2025?",
+                "¿Qué sabemos de la UCT?",
+                "¿Cómo ha evolucionado la matrícula?",
+                "¿Qué instituciones tienen más estudiantes?",
+            ],
+        }
+
+    def _respuesta_despedida(self) -> dict:
+        return {
+            "respuesta": "¡De nada! 😊 Si necesitas algo más sobre educación superior chilena, aquí estaré. ¡Que tengas un excelente día!",
+            "fuentes": [],
+            "modo_usado": "despedida",
+            "sugerencias": [],
+        }
+
+    def _respuesta_guiada(self, pregunta: str = "") -> dict:
+        if pregunta and len(pregunta) > 3:
+            intro = f"No encontré información específica para **\"{pregunta[:80]}\"**. Pero esto es lo que puedo consultar:\n\n"
+        else:
+            intro = ""
+
+        return {
+            "respuesta": (
+                f"{intro}"
+                "📊 **Matrícula** — evolución, totales, por región, por tipo de IES\n"
+                "👤 **Brechas de Género** — participación femenina, % por área\n"
+                "🎓 **Titulación** — totales, % mujeres\n"
+                "📈 **Retención** — tasas de permanencia\n\n"
+                "💡 **Prueba con preguntas como:**\n"
+                "• \"¿Cuántos estudiantes había en 2025?\"\n"
+                "• \"¿Qué sabemos de la UCT?\"\n"
+                "• \"¿Cómo ha evolucionado la matrícula?\"\n"
+                "• \"¿Qué instituciones tienen más estudiantes?\""
+            ),
+            "fuentes": [],
+            "modo_usado": "guiado",
+            "sugerencias": [
+                "¿Cuántos estudiantes había en 2025?",
+                "¿Qué sabemos de la UCT?",
+                "¿Cómo ha evolucionado la matrícula?",
+                "¿Qué instituciones tienen más estudiantes?",
+            ],
+        }
+
+    def _respuesta_error(self, codigo: str) -> dict:
+        return {
+            "respuesta": "⚠️ El grafo de conocimiento no está disponible. Algunas consultas pueden no funcionar.",
+            "fuentes": [],
+            "modo_usado": "error",
+            "sugerencias": [],
+        }
+
+    # ── Consulta DB ──────────────────────────────────────────────────────
 
     def _consultar_db(self, pregunta: str) -> Optional[str]:
-        """Consulta DuckDB o SQLite para datos numéricos."""
+        """Retorna datos en markdown desde DuckDB o SQLite."""
         if not self.db_disponible:
             return None
         try:
@@ -465,24 +709,23 @@ class SIESEngine:
             p = pregunta.lower()
             años = [int(m) for m in re.findall(r'\b(20[0-2]\d)\b', pregunta) if 2007 <= int(m) <= 2025]
 
-            # Crear vista evolucion (con manejo de errores en columnas)
+            # Vista evolucion
             try:
                 con.execute("""
                     CREATE OR REPLACE VIEW evolucion AS
-                    SELECT
-                        CAST(REPLACE(AÑO::VARCHAR, 'MAT_', '') AS INTEGER) AS año,
-                        CAST(NULLIF("TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT) AS total,
-                        CAST(NULLIF("TOTAL MATRÍCULA MUJERES"::VARCHAR, '') AS BIGINT) AS mujeres,
-                        CAST(NULLIF("TOTAL MATRÍCULA PRIMER AÑO"::VARCHAR, '') AS BIGINT) AS primer_año
+                    SELECT CAST(REPLACE(AÑO::VARCHAR, 'MAT_', '') AS INTEGER) AS año,
+                           CAST(NULLIF("TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT) AS total,
+                           CAST(NULLIF("TOTAL MATRÍCULA MUJERES"::VARCHAR, '') AS BIGINT) AS mujeres,
+                           CAST(NULLIF("TOTAL MATRÍCULA PRIMER AÑO"::VARCHAR, '') AS BIGINT) AS primer_año
                     FROM sies.matricula
-                    WHERE AÑO IS NOT NULL AND CAST(NULLIF("TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT) IS NOT NULL
+                    WHERE AÑO IS NOT NULL
+                      AND CAST(NULLIF("TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT) IS NOT NULL
                 """)
             except Exception as e:
-                print(f"⚠️ No se pudo crear vista evolucion: {e}")
-                # Intentar enfoque alternativo: consulta directa con manejo de nulos
-                return self._responder_desde_sql_directo(con, p, años)
+                print(f"⚠️ Error vista: {e}")
+                return None
 
-            # Patrón 1: evolución histórica
+            # Evolución histórica
             if any(w in p for w in ["evolucion", "crecimiento", "histórica", "serie"]):
                 try:
                     rows = con.execute("""
@@ -499,19 +742,18 @@ class SIESEngine:
                             lines.append(f"| {r[0]} | {r[1]:,} | {r[2]:.1f}% | {crec} |")
                         return "\n".join(lines)
                 except Exception as e:
-                    print(f"⚠️ Error en consulta evolucion: {e}")
+                    print(f"⚠️ Error evolucion: {e}")
 
-            # Patrón 2: instituciones/top
-            if "institución" in p or "institucion" in p or "universidad" in p or "top" in p or "mayores" in p:
+            # Top instituciones
+            if any(w in p for w in ["institución", "institucion", "universidad", "top", "mayores"]):
                 try:
-                    año_cond = f"m.AÑO = 'MAT_{años[0]}'" if años else "m.AÑO = 'MAT_2025'"
+                    año_filtro = f"m.AÑO = 'MAT_{años[0]}'" if años else "m.AÑO = 'MAT_2025'"
                     rows = con.execute(f"""
                         SELECT m."NOMBRE INSTITUCIÓN" AS inst,
                                SUM(CAST(NULLIF(m."TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT)) AS tot
                         FROM sies.matricula m
-                        WHERE {año_cond}
+                        WHERE {año_filtro}
                           AND m."NOMBRE INSTITUCIÓN" IS NOT NULL
-                          AND m."NOMBRE INSTITUCIÓN" != ''
                           AND m."TOTAL MATRÍCULA" IS NOT NULL
                         GROUP BY m."NOMBRE INSTITUCIÓN"
                         ORDER BY tot DESC LIMIT 10
@@ -523,9 +765,9 @@ class SIESEngine:
                             lines.append(f"| {inst[:55]} | {int(r[1]):,} |")
                         return "\n".join(lines)
                 except Exception as e:
-                    print(f"⚠️ Error en consulta instituciones: {e}")
+                    print(f"⚠️ Error inst: {e}")
 
-            # Patrón 3: consulta general por año(s)
+            # Consulta general
             try:
                 if años:
                     rows = con.execute(f"""
@@ -544,68 +786,22 @@ class SIESEngine:
                 if rows:
                     lines = ["| Año | Total | Mujeres | % Mujeres |", "|:---:|------:|--------:|:---------:|"]
                     for r in rows:
-                        total_val = int(r[1]) if r[1] is not None else 0
-                        mujeres_val = int(r[2]) if r[2] is not None else 0
-                        pct_val = float(r[3]) if r[3] is not None else 0.0
-                        lines.append(f"| {r[0]} | {total_val:,} | {mujeres_val:,} | {pct_val:.1f}% |")
+                        total_v = int(r[1]) if r[1] is not None else 0
+                        mujeres_v = int(r[2]) if r[2] is not None else 0
+                        pct_v = float(r[3]) if r[3] is not None else 0.0
+                        lines.append(f"| {r[0]} | {total_v:,} | {mujeres_v:,} | {pct_v:.1f}% |")
                     return "\n".join(lines)
             except Exception as e:
-                print(f"⚠️ Error en consulta general: {e}")
+                print(f"⚠️ Error general: {e}")
 
         except Exception as e:
-            print(f"⚠️ DB error general: {e}")
+            print(f"⚠️ DB error: {e}")
         return None
 
-    def _responder_desde_sql_directo(self, con, pregunta: str, años: list) -> Optional[str]:
-        """Fallback: consulta SQL directa sin vista, cuando falla la creación de la vista evolucion."""
-        try:
-            p = pregunta.lower()
-            año_cond = ""
-            if años:
-                año_cond = f"AND CAST(REPLACE(AÑO::VARCHAR, 'MAT_', '') AS INTEGER) IN ({','.join(map(str, años))})"
+    # ── Estáticos ─────────────────────────────────────────────────────────
 
-            if any(w in p for w in ["institución", "institucion", "universidad", "top", "mayores"]):
-                año_filtro = f"m.AÑO = 'MAT_{años[0]}'" if años else "m.AÑO = 'MAT_2025'"
-                rows = con.execute(f"""
-                    SELECT m."NOMBRE INSTITUCIÓN" AS inst,
-                           SUM(CAST(NULLIF(m."TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT)) AS tot
-                    FROM sies.matricula m
-                    WHERE {año_filtro}
-                      AND m."NOMBRE INSTITUCIÓN" IS NOT NULL
-                      AND m."TOTAL MATRÍCULA" IS NOT NULL
-                    GROUP BY m."NOMBRE INSTITUCIÓN"
-                    ORDER BY tot DESC LIMIT 5
-                """).fetchall()
-                if rows:
-                    lines = ["## 🏫 Top Instituciones\n", "| Institución | Matrícula |", "|-------------|----------:|"]
-                    for r in rows:
-                        inst = r[0].decode() if isinstance(r[0], bytes) else str(r[0])
-                        total_v = int(r[1]) if r[1] is not None else 0
-                        lines.append(f"| {inst[:55]} | {total_v:,} |")
-                    return "\n".join(lines)
-
-            # Query general directa
-            rows = con.execute(f"""
-                SELECT CAST(REPLACE(AÑO::VARCHAR, 'MAT_', '') AS INTEGER) AS año,
-                       SUM(CAST(NULLIF("TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT)) AS total,
-                       SUM(CAST(NULLIF("TOTAL MATRÍCULA MUJERES"::VARCHAR, '') AS BIGINT)) AS mujeres
-                FROM sies.matricula
-                WHERE CAST(NULLIF("TOTAL MATRÍCULA"::VARCHAR, '') AS BIGINT) IS NOT NULL {año_cond}
-                GROUP BY año ORDER BY año DESC LIMIT 5
-            """).fetchall()
-            if rows:
-                lines = ["| Año | Total | Mujeres |", "|:---:|------:|--------:|"]
-                for r in rows:
-                    total_v = int(r[1]) if r[1] is not None else 0
-                    mujeres_v = int(r[2]) if r[2] is not None else 0
-                    lines.append(f"| {r[0]} | {total_v:,} | {mujeres_v:,} |")
-                return "\n".join(lines)
-        except Exception as e:
-            print(f"⚠️ Error en SQL directo: {e}")
-        return None
-
-    def _responder_desde_estaticos(self, pregunta: str) -> dict:
-        """Responde usando datos estáticos (funciona sin DB)."""
+    def _responder_desde_estaticos(self, pregunta: str, historial: list = None) -> dict:
+        """Respuesta desde datos estáticos, con síntesis NL."""
         p = pregunta.lower()
         evo = self.estaticos.get("matricula_evolucion", [])
 
@@ -616,19 +812,17 @@ class SIESEngine:
         ant = evo[-2] if len(evo) > 1 else ult
         crec = f"+{((ult['total_millones']-ant['total_millones'])/ant['total_millones']*100):.1f}%" if ant['total_millones'] else "—"
 
-        texto = (
-            f"## 📊 Datos de Matrícula\n\n"
-            f"**{ult['año']}:** {ult['total_millones']:.2f} millones de estudiantes\n"
-            f"**Mujeres:** {ult['pct_mujeres']:.1f}% de la matrícula\n"
-            f"**Crecimiento vs {ant['año']}:** {crec}\n\n"
-            f"📎 Fuente: Datos precalculados SIES\n\n"
-            f"💡 *Pregunta por evolución histórica, regiones o instituciones específicas.*"
-        )
+        # Datos para NL
+        datos_nl = {
+            "modo": "numerico",
+            "evolucion": [{"año": e["año"], "total": int(e["total_millones"] * 1000000), "pct_mujeres": e["pct_mujeres"]} for e in evo[-5:]],
+        }
+        respuesta_nl = _formatear_como_texto_natural(datos_nl, pregunta)
 
         return {
-            "respuesta": texto,
+            "respuesta": respuesta_nl,
             "fuentes": ["Datos precalculados SIES"],
-            "modo_usado": "numerico_estatico",
+            "modo_usado": "numerico_nl",
             "sugerencias": [
                 "¿Cómo ha evolucionado la matrícula desde 2007?",
                 "¿Cuál es la participación femenina en 2025?",
@@ -636,173 +830,41 @@ class SIESEngine:
             ],
         }
 
-    # ── Modo mixto (grafo + DuckDB + API) ─────────────────────────────────
-
-    def _responder_mixto(self, pregunta: str, historial: list = None) -> dict:
-        """Combina datos del grafo y DuckDB con síntesis."""
-        datos_partes = []
-
-        # 1. Datos del grafo
-        entidades = self._buscar_entidades(pregunta)
-        if entidades:
-            datos_partes.append(self._formatear_datos_grafo(entidades[:2]))
-
-        # 2. Datos numéricos
-        db_data = self._consultar_db(pregunta)
-        if db_data:
-            datos_partes.append(f"### 📊 Datos numéricos\n\n{db_data}")
-
-        if not datos_partes:
-            return self._respuesta_guiada(pregunta)
-
-        datos_combinados = "\n\n".join(datos_partes)
-
-        # 3. Intentar síntesis con API
-        respuesta_api = _sintetizar_con_api(datos_combinados, pregunta, historial=historial)
-        if respuesta_api:
-            fuentes = self._extraer_fuentes(entidades) if entidades else []
-            return {
-                "respuesta": respuesta_api,
-                "fuentes": fuentes,
-                "modo_usado": "mixto_api",
-                "sugerencias": self._generar_sugerencias(entidades) if entidades else [],
-            }
-
-        # 4. Fallback: mostrar datos combinados
-        return {
-            "respuesta": f"## Datos disponibles\n\n{datos_combinados}",
-            "fuentes": [],
-            "modo_usado": "mixto_estructurado",
-            "sugerencias": [],
-        }
-
-    # ── Modo guiado (no entendió) ─────────────────────────────────────────
-
-    def _respuesta_saludo(self) -> dict:
-        """Responde a saludos y consultas sobre capacidades."""
-        texto = (
-            "¡Hola! 😊 Soy tu **Analista SIES**. Puedo consultar **506 datos** extraídos de **5 informes** oficiales del SIES.\n\n"
-            "📊 **Matrícula** — totales, evolución, por región\n"
-            "👤 **Brechas de Género** — participación femenina\n"
-            "🎓 **Titulación** — titulados por año\n"
-            "📈 **Retención** — permanencia 1er año\n\n"
-            "💡 *Prueba preguntando: \"¿Cuántos estudiantes en 2025?\" o \"¿Qué sabemos de la UCT?\"*"
-        )
-        return {
-            "respuesta": texto,
-            "fuentes": [],
-            "modo_usado": "saludo",
-            "sugerencias": [
-                "¿Cuántos estudiantes en 2025?",
-                "¿Qué sabemos de la UCT?",
-                "¿Cómo ha evolucionado la matrícula?",
-                "¿Qué instituciones tienen más estudiantes?",
-            ],
-        }
-
-    def _respuesta_despedida(self) -> dict:
-        """Responde a despedidas y agradecimientos."""
-        return {
-            "respuesta": "¡De nada! 😊 Si necesitas algo más sobre educación superior chilena, aquí estaré. ¡Que tengas un excelente día!",
-            "fuentes": [],
-            "modo_usado": "despedida",
-            "sugerencias": [],
-        }
-
-    def _respuesta_guiada(self, pregunta: str = "") -> dict:
-        """Guía al usuario cuando no se entiende la pregunta."""
-        # Si la pregunta tiene contenido pero no se encontró nada
-        if pregunta and len(pregunta) > 3:
-            intro = (
-                f"No encontré información específica para **\"{pregunta[:80]}\"**. "
-                "Aquí lo que SÍ puedo consultar:\n\n"
-            )
-        else:
-            intro = ""
-
-        texto = (
-            f"{intro}"
-            "📊 **Matrícula** — evolución, totales, por región, por tipo de IES\n"
-            "👤 **Brechas de Género** — participación femenina, % por área\n"
-            "🎓 **Titulación** — totales, % mujeres\n"
-            "📈 **Retención** — tasas de permanencia\n\n"
-            "💡 **Prueba con preguntas como:**\n"
-            "• \"¿Cuántos estudiantes había en 2025?\"\n"
-            "• \"¿Qué sabemos de la UCT?\"\n"
-            "• \"¿Cómo ha evolucionado la matrícula?\"\n"
-            "• \"¿Qué dice el informe de Brechas de Género 2024?\"\n"
-            "• \"¿Qué instituciones tienen más estudiantes?\""
-        )
-
-        return {
-            "respuesta": texto,
-            "fuentes": [],
-            "modo_usado": "guiado",
-            "sugerencias": [
-                "¿Cuántos estudiantes había en 2025?",
-                "¿Qué sabemos de la UCT?",
-                "¿Cómo ha evolucionado la matrícula?",
-                "¿Qué dice el informe de Brechas de Género 2024?",
-                "¿Qué instituciones tienen más estudiantes?",
-            ],
-        }
-
-    def _respuesta_error(self, codigo: str) -> dict:
-        return {
-            "respuesta": "⚠️ El grafo de conocimiento no está disponible. Algunas consultas pueden no funcionar.",
-            "fuentes": [],
-            "modo_usado": "error",
-            "sugerencias": [],
-        }
-
     # ── Helpers ───────────────────────────────────────────────────────────
 
     def _formatear_datos_grafo(self, entidades: list) -> str:
-        """Formatea datos del grafo para el prompt de la API (con límites)."""
         partes = []
-
         for ent in entidades[:2]:
             data = self.grafo.query_entidad(ent["nombre"])
             if not data.get("encontrada"):
                 continue
-
             for nombre_ent, info in data["entidades"].items():
                 partes.append(f"**{nombre_ent}** ({info['tipo']})\n")
-
-                # Documentos: max 3
                 if info["documentos"]:
                     docs = [f"- {d['archivo'][:40]} ({d.get('año', '')})" for d in info["documentos"][:3]]
                     partes.append("Documentos:\n" + "\n".join(docs) + "\n")
-
-                # Hechos numéricos: max 8
                 num_hechos = [h for h in info["hechos"] if isinstance(h.get("valor"), (int, float))]
                 if num_hechos:
                     partes.append("Datos:\n")
                     for h in num_hechos[:8]:
                         valor = f"{h['valor']:,.0f}" if isinstance(h['valor'], float) else str(h['valor'])
-                        año = f"({h['año']})" if h.get('año') else ""
-                        ctx = f" — {h['contexto'][:80]}" if h.get('contexto') else ""
+                        año = f"({h['año']})" if h.get("año") else ""
+                        ctx = f" — {h['contexto'][:80]}" if h.get("contexto") else ""
                         partes.append(f"- {h['entidad']}: {valor}{año}{ctx}\n")
-
-                # Hechos cualitativos: max 3
                 cualitativos = [h for h in info["hechos"] if not isinstance(h.get("valor"), (int, float))]
                 if cualitativos:
-                    partes.append("Hallazgos cualitativos:\n")
+                    partes.append("Hallazgos:\n")
                     for h in cualitativos[:3]:
                         ctx = h.get("contexto", h.get("afirmacion", ""))[:120]
                         if ctx:
                             partes.append(f"- {ctx}\n")
-
-                # Relaciones: max 4
                 if info["relaciones"]:
                     partes.append("Conexiones:\n")
                     for r in info["relaciones"][:4]:
                         partes.append(f"- {r['origen']} → {r['destino']}\n")
-
-        return "\n".join(partes)[:4000]  # Límite total para el prompt
+        return "\n".join(partes)[:4000]
 
     def _extraer_fuentes(self, entidades: list) -> list:
-        """Extrae nombres de documentos fuente de las entidades."""
         fuentes = set()
         for ent in entidades[:3]:
             data = self.grafo.query_entidad(ent["nombre"])
@@ -813,7 +875,6 @@ class SIESEngine:
         return sorted(fuentes)[:5]
 
     def _generar_sugerencias(self, entidades: list) -> list:
-        """Genera preguntas de seguimiento basadas en entidades encontradas."""
         if not entidades:
             return [
                 "¿Cuántos estudiantes había en 2025?",
@@ -821,7 +882,6 @@ class SIESEngine:
                 "¿Cómo ha evolucionado la matrícula?",
             ]
         nombre = entidades[0]["nombre"]
-        # Usar versión corta si existe un alias conocido
         alias_corto = {"Universidad Católica de Temuco": "la UCT"}
         ref = alias_corto.get(nombre, nombre)
         return [
