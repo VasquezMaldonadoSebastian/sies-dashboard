@@ -336,11 +336,12 @@ if st.session_state.page == "chat":
                 with st.spinner("Consultando..."):
                     try:
                         # Pasar la consulta anterior para follow-ups
-                        r = engine.consultar(
-                            prompt,
-                            consulta_anterior=st.session_state.get("ultima_consulta", ""),
-                            historial=st.session_state.messages,
-                        )
+                        import inspect
+                        consultar_sig = inspect.signature(engine.consultar)
+                        kwargs = {"consulta_anterior": st.session_state.get("ultima_consulta", "")}
+                        if "historial" in consultar_sig.parameters:
+                            kwargs["historial"] = st.session_state.messages
+                        r = engine.consultar(prompt, **kwargs)
                         st.markdown(r["respuesta"])
                         if r.get("fuentes"):
                             st.caption(f"📎 {', '.join(r['fuentes'][:3])}")
